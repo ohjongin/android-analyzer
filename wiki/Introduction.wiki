@@ -1,0 +1,12 @@
+= Goals =
+The Android Analyzer project aims at developing an Android application that analyzes and collects hardware and software capabilities of devices based on the Android OS. Capability reports can be sent to an online database, currently hosted at [http://AndroidFragmentation.com] sister-site, where a comprehensive user interface is presented for browsing and comparing device capabilities for one or more devices. We believe that the Android developer community with benefit significantly from having an in-depth capability analysis at their fingertips, saving time, money and frustration.
+
+= Deliverables =
+The project will produce a single APK file, that will be published as a free application on the Android Market. This allows the developer community (as well as non-developer enthusiasts) to access the application easily and without any extra tooling. As the project evolves and new versions are released, the application on the Market will be updated accordingly.
+
+The architecture of Android Analyzer also allows it to be embedded into third-party applications, which may provide their own UI.
+
+= Architecture =
+The range of hardware and software capabilities than will be analyzed and reported on is significant - from display characteristics, to memory, sensors, location, built-in applications, and so on. Each capability group requires dealing with one or more specific Android APIs, Linux APIs or the Linux OS in general. In order to make the development more manageable and scalable, the related functionality and capability analysis code is grouped into a separate plugin. For example, there will be separate plugins for display, memory, and so on.
+
+Plugins are discovered by the Android Analyzer Core, which exposes a plugin API, through which plugins are initialized, invoked and the results are collected. Plugins can be delivered as part of the main Android Analyzer APK, but can also be deployed via standalone APKs and invoked via AIDL, as long as they follow the discovery mechanism. This approach adds more flexibility to third-parties, which may want to develop their own plugins, that analyze specific functionality not covered by the open source effort.
