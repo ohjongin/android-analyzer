@@ -9,4 +9,18 @@ The architecture of Android Analyzer also allows it to be embedded into third-pa
 = Architecture =
 The range of hardware and software capabilities than will be analyzed and reported on is significant - from display characteristics, to memory, sensors, location, built-in applications, and so on. Each capability group requires dealing with one or more specific Android APIs, Linux APIs or the Linux OS in general. In order to make the development more manageable and scalable, the related functionality and capability analysis code is grouped into a separate plugin. For example, there will be separate plugins for display, memory, and so on.
 
-Plugins are discovered by the Android Analyzer Core, which exposes a plugin API, through which plugins are initialized, invoked and the results are collected. Plugins can be delivered as part of the main Android Analyzer APK, but can also be deployed via standalone APKs and invoked via AIDL, as long as they follow the discovery mechanism. This approach adds more flexibility to third-parties, which may want to develop their own plugins, that analyze specific functionality not covered by the open source effort.
+Please refer to the [WikiSyntax Architecture] page for more details.
+
+= Roadmap =
+The concrete roadmap and feature list will be elaborated on in the [WikiSyntax Roadmap] page. Major project releases are expected to be published every 3 months and will be kept in-sync with the evolution of the AndroidFragmentation.com site.
+
+= Community =
+We welcome your feedback and contributions, and look forward to creating a vibrant community!
+
+Ways to contribute:
+* Use the issue tracker to submit feature requests, bugs, patches, etc.
+* Submit code reviews
+* Become a developer of new plugins and features
+* Discuss the project at [http://groups.google.com/group/android-analyzer/ Android Analyzer Google Group]
+
+To become a developer, first participate at the discussion group or mailing list by showing your interest in the project and your ability to help the project. Then, ask the project owners to make you a member of the project.
