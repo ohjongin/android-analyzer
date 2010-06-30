@@ -12,7 +12,7 @@ The range of hardware and software capabilities than will be analyzed and report
 Please refer to the [WikiSyntax Architecture] page for more details.
 
 = Roadmap =
-The concrete roadmap and feature list will be elaborated on in the [WikiSyntax Roadmap] page. Major project releases are expected to be published every 3 months and will be kept in-sync with the evolution of the AndroidFragmentation.com site.
+The concrete roadmap and feature list will be elaborated on in the [WikiSyntax Roadmap] page. Major project releases are expected to be published every 3 months and will be kept in-sync with the evolution of the [http://AndroidFragmentation.com Android Fragmentation] site.
 
 = Community =
 We welcome your feedback and contributions, and look forward to creating a vibrant community!
