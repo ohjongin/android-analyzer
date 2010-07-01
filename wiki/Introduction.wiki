@@ -19,9 +19,9 @@ The concrete roadmap and feature list will be elaborated on in the [Roadmap] pag
 We welcome your feedback and contributions, and look forward to creating a vibrant community!
 
 Ways to contribute:
-* Use the issue tracker to submit feature requests, bugs, patches, etc.
-* Submit code reviews
-* Become a developer of new plugins and features
-* Discuss the project at [http://groups.google.com/group/android-analyzer/ Android Analyzer Google Group]
+  * Use the issue tracker to submit feature requests, bugs, patches, etc.
+  * Submit code reviews
+  * Become a developer of new plugins and features
+  * Discuss the project at [http://groups.google.com/group/android-analyzer/ Android Analyzer Google Group]
 
 To become a developer, first participate at the discussion group or mailing list by showing your interest in the project and your ability to help the project. Then, ask the project owners to make you a member of the project.
