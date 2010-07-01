@@ -1,5 +1,4 @@
 #labels Phase-Design
-#sidebar TableOfContents
 Android Analyzer consists of the following high-level components:
   * Analyzer Core - takes care of plugin discovery, analysis and reporting flow. Plugins are discovered by the Analyzer Core, which exposes a plugin API, through which plugins are initialized, invoked and the results are collected
   * Plugin - plugins analyze on or more specific capabilities and report back the data to the Analyzer Core. Plugins can be delivered as part of the main Android Analyzer APK, but can also be deployed via standalone APKs and invoked via AIDL, as long as they follow the discovery mechanism. This approach adds more flexibility to third-parties, which may want to develop their own plugins, that analyze specific functionality not covered by the open source effort.
