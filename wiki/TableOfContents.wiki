@@ -1,4 +1,5 @@
   * [Introduction]
   * [Roadmap]
   * [Architecture]
+    * [Plugins]
     * [DeviceReports Device Reports]
