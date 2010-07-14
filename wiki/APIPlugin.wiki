@@ -1,0 +1,12 @@
+The API plugin collects data on available Android and Google APIs and their versions.
+
+*Plugin Name:* API Plugin
+*Class Name:* {{{org.androidanalyzer.plugins.api.APIPlugin}}}
+
+The following table defines the structure of data being inserted in the report, and the APIs or methods used to retrieve the value.
+
+|| *Node* || *Node* || *Node* || *Value* || *Retrieval Method* ||
+|| API  || 
+||      || Android API Level || || <integer> || {{{System.getProperty(android.os.Build.VERSION)}}} ||
+||      || Google || || || ||
+||      || || com.google.android.maps || <boolean> || {{{Class.forName("com.google.android.maps.MapView")}}} ||
