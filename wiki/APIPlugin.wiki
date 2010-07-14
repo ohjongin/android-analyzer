@@ -7,6 +7,6 @@ The following table defines the structure of data being inserted in the report, 
 
 || *Node* || *Node* || *Node* || *Value* || *Retrieval Method* ||
 || API  || 
-||      || Android API Level || || <integer> || {{{System.getProperty(android.os.Build.VERSION)}}} ||
+||      || Android API Level || || _integer_ || {{{System.getProperty(android.os.Build.VERSION)}}} ||
 ||      || Google || || || ||
-||      || || com.google.android.maps || <boolean> || {{{Class.forName("com.google.android.maps.MapView")}}} ||
+||      || || com.google.android.maps || _boolean_ || {{{Class.forName("com.google.android.maps.MapView")}}} ||
