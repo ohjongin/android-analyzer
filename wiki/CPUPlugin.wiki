@@ -9,8 +9,8 @@ The following table defines the structure of data being inserted in the report, 
 || CPU|| || || || ||
 || || Manufacturer || || _string_ || If the architecture is ARM parse the {{{/proc/cpuinfo}}} file for the manufacturer code in line starting with _CPU implementer_ (see below) ||
 || || Instruction Set || || _string_ || {{{System.getProperty(OS_ARCH)}}} ||
-|| || Name || || {{{string}}} || Parse the {{{/proc/cpuinfo}}} file for the processor name code in line starting with _Processor_ ||
-|| || Operational Frequency || || _string_ (xxx MHz) || Read the {{{/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq}}} file and divide by 1000 to get MHz ||
+|| || Name || || _string_ || Parse the {{{/proc/cpuinfo}}} file for the processor name code in line starting with _Processor_ ||
+|| || Operational Frequency || || _string_ (e.g. "xxx MHz") || Read the {{{/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq}}} file and divide by 1000 to get MHz ||
 
 Known ARM manufacturer codes:
   * 0x41: ARM Limited
