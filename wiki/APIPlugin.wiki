@@ -6,7 +6,7 @@ The API plugin collects data on available Android and Google APIs and their vers
 The following table defines the structure of data being inserted in the report, and the APIs or methods used to retrieve the value.
 
 || *Node* || *Node* || *Node* || *Value* || *Retrieval Method* ||
-|| API  || 
+|| API  || || || || ||
 ||      || Android API Level || || _integer_ || {{{System.getProperty(android.os.Build.VERSION)}}} ||
 ||      || Google || || || ||
 ||      || || com.google.android.maps || _boolean_ || {{{Class.forName("com.google.android.maps.MapView")}}} ||
