@@ -2,4 +2,6 @@
   * [Roadmap]
   * [Architecture]
     * [Plugins]
+      * [APIPlugin]
+      * [CPUPlugin]
     * [DeviceReports Device Reports]
