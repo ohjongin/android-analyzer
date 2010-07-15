@@ -9,11 +9,11 @@ The following table defines the structure of data being inserted in the report, 
 || Displays || || || || ||
 ||      || Display-<x> || || || || ||
 ||      || || Location || || || ||
-||      || || Horizontal Resolution|| || || ||
-||      || || Vertical Resolution|| || || ||
-||      || || Display size|| || || ||
-||      || || Display technology|| || || ||
-||      || || Touch support|| || || ||
-||      || || Color depth|| || || ||
+||      || || Horizontal Resolution|| || ||
+||      || || Vertical Resolution|| || ||
+||      || || Display size|| || ||
+||      || || Display technology|| || ||
+||      || || Touch support|| || ||
+||      || || Color depth|| || ||
 
 Note: for each present display a separate {{{Display-<x>}}} node is created, {{{<x>}}} starting from 0.
