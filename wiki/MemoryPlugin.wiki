@@ -10,7 +10,7 @@ The following table defines the structure of data being inserted in the report, 
 || Memory  || || || || || ||
 ||      || ROM || || _integer_ || || Unknown, N/A ||
 ||      || RAM || || _integer_ || || Parse the value of {{{/proc/meminfo}}} file for the value in line starting with _MemTotal_ ||
-||      || Internal Storage || || _integer_ || K || See [MemoryPlugin#Internal Storage Analysis] below ||
+||      || Internal Storage || || _integer_ || K || See [MemoryPlugin#Internal_Storage_Analysis] below ||
 ||      || External Storage || || || || ||
 ||      || || Media type || _string_ (e.g. _mmc_) || || Return _mmc_ if {{{new File("/dev/block/mmcblk0").exists())}}} ||
 ||      || || Maximum size || _integer_ || K || Unknown, N/A ||
