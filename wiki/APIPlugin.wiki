@@ -1,6 +1,7 @@
 The API plugin collects data on available Android and Google APIs and their versions.
 
 *Plugin Name:* API Plugin
+
 *Class Name:* {{{org.androidanalyzer.plugins.api.APIPlugin}}}
 
 The following table defines the structure of data being inserted in the report, and the APIs or methods used to retrieve the value.
