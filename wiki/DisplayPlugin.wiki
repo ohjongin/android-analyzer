@@ -13,8 +13,8 @@ The following table defines the structure of data being inserted in the report, 
 ||      || || Vertical Resolution || _integer_ || pixels || {{{DisplayMetrics.ydpi}}} ||
 ||      || || Density || _integer_ || dpi || {{{DisplayMetrics.density}}} ||
 ||      || || Display size || || || Unknown, but we could use xdpi, ydpi and dpi to calculate the size diagonal ||
-||      || || Display technology || || || Unknown, N/A ||
-||      || || Touch support || || || Unknown, N/A ||
-||      || || Color depth || || || Unknown, N/A ||
+||      || || Display technology || _string_ (e.g. AMOLED, etc.) || || Unknown, N/A ||
+||      || || Touch support || _boolean_ (e.g. Y, N) || || Unknown, N/A ||
+||      || || Color depth || _integer_ (e.g. 16, 32) || bits || Unknown, N/A ||
 
 Note: for each present display a separate Display-{{{<x>}}} node is created, {{{<x>}}} starting from 0.
