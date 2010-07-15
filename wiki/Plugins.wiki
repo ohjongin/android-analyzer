@@ -3,7 +3,7 @@ The following table gives an overview of plugins that we plan to develop.
 || *Plugin* || *Description* || *Release* || *Status* || *Owner* ||
 || [DisplayPlugin Display] || Collects data for all present displays, like width, height, DPI, etc. || 1.0 || Done || George Chepilev ||
 || Radio || Collects information on radio interfaces: 2G/3G/4G, Bluetooth, WiFi, etc.|| 1.0 || In progress || George Chepilev ||
-|| Memory || Retrieves the amount of total and free memory, for ROM, RAM, internal and external storage || 1.0 || Done || Kaloyan Raev ||
+|| [MemoryPlugin Memory] || Retrieves the amount of total and free memory, for ROM, RAM, internal and external storage || 1.0 || Done || Kaloyan Raev ||
 || [APIPlugin API] || Reports on the Android API level, and present Google APIs and versions || 1.0 || Done || George Chepilev ||
 || [CPUPlugin CPU] || Reports information on the CPU manufacturer, instruction set, clock speed || 1.0 || Done || Kaloyan Raev ||
 || Location || Collects information on location support and positioning methods || 1.0 || In progress || Kaloyan Raev ||
