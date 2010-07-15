@@ -1,0 +1,19 @@
+The API plugin collects data on available displays and their capabilities
+
+*Plugin Name:* Display Plugin
+*Class Name:* {{{org.androidanalyzer.plugins.display.DisplayPlugin}}}
+
+The following table defines the structure of data being inserted in the report, and the APIs or methods used to retrieve the value.
+
+|| *Node* || *Node* || *Node* || *Value* || *Retrieval Method* ||
+|| Displays || || || || ||
+||      || Display-<x> || || || || ||
+||      || || Location || || || ||
+||      || || Horizontal Resolution|| || || ||
+||      || || Vertical Resolution|| || || ||
+||      || || Display size|| || || ||
+||      || || Display technology|| || || ||
+||      || || Touch support|| || || ||
+||      || || Color depth|| || || ||
+
+Note: for each present display a separate {{{Display-<x>}}} node is created, {{{<x>}}} starting from 0.
