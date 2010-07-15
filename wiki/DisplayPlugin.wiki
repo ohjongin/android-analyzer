@@ -12,7 +12,7 @@ The following table defines the structure of data being inserted in the report, 
 ||      || || Horizontal Resolution || _integer_ || pixels || {{{DisplayMetrics.xdpi}}} ||
 ||      || || Vertical Resolution || _integer_ || pixels || {{{DisplayMetrics.ydpi}}} ||
 ||      || || Density || _integer_ || dpi || {{{DisplayMetrics.density}}} ||
-||      || || Display size || || || Unknown, but we could use xdpi, ydpi and dpi to calculate the size diagonal ||
+||      || || Display size || _double_ (e.g. 3.7) || inch || Unknown, but we could use xdpi, ydpi and dpi to calculate the size diagonal ||
 ||      || || Display technology || _string_ (e.g. AMOLED, etc.) || || Unknown, N/A ||
 ||      || || Touch support || _boolean_ (e.g. Y, N) || || Unknown, N/A ||
 ||      || || Color depth || _integer_ (e.g. 16, 32) || bits || Unknown, N/A ||
