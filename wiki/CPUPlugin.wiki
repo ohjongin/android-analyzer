@@ -1,6 +1,7 @@
 This plugin collects information on the device's main CPU.
 
 *Plugin Name:* CPU Plugin
+
 *Class Name:* {{{org.androidanalyzer.plugins.cpu.CPUPlugin}}}
 
 The following table defines the structure of data being inserted in the report, and the APIs or methods used to retrieve the value.
