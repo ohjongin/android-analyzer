@@ -5,4 +5,5 @@
       * [APIPlugin]
       * [CPUPlugin]
       * [DisplayPlugin]
+      * [MemoryPlugin]
     * [DeviceReports Device Reports]
