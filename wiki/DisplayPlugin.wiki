@@ -5,15 +5,16 @@ The API plugin collects data on available displays and their capabilities
 
 The following table defines the structure of data being inserted in the report, and the APIs or methods used to retrieve the value.
 
-|| *Node* || *Node* || *Node* || *Value* || *Retrieval Method* ||
+|| *Node* || *Node* || *Node* || *Value* || *Metric* || *Retrieval Method* ||
 || Displays || || || || ||
-||      || Display-<x> || || ||
-||      || || Location || || || ||
-||      || || Horizontal Resolution|| || ||
-||      || || Vertical Resolution|| || ||
-||      || || Display size|| || ||
-||      || || Display technology|| || ||
-||      || || Touch support|| || ||
-||      || || Color depth|| || ||
+||      || Display-<x> || || || || ||
+||      || || Location || _string_ (e.g. "front", "back") || || Unknown, N/A ||
+||      || || Horizontal Resolution || _integer_ || pixels || {{{DisplayMetrics.xdpi}}} ||
+||      || || Vertical Resolution || _integer_ || pixels || {{{DisplayMetrics.ydpi}}} ||
+||      || || Density || _integer_ || dpi || {{{DisplayMetrics.density}}} ||
+||      || || Display size || || || || Unknown, but we could use xdpi, ydpi and dpi to calculate the size diagonal ||
+||      || || Display technology || || || Unknown, N/A ||
+||      || || Touch support || || || Unknown, N/A ||
+||      || || Color depth || || || Unknown, N/A ||
 
 Note: for each present display a separate {{{Display-<x>}}} node is created, {{{<x>}}} starting from 0.
