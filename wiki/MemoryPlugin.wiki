@@ -1,6 +1,7 @@
 This plugin collects data on various memory capabilities, like ROM, RAM, removable storage, etc.
 
 *Plugin Name:* Memory Plugin
+
 *Class Name:* {{{org.androidanalyzer.plugins.memory.MemoryPlugin}}}
 
 The following table defines the structure of data being inserted in the report, and the APIs or methods used to retrieve the value.
