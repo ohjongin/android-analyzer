@@ -1,0 +1,45 @@
+This plugin collects data on available cameras and their capabilities.
+
+*Plugin Name:* Camera Plugin
+
+*Class Name:* {{{org.androidanalyzer.plugins.camera.CameraPlugin}}}
+
+The following table defines the structure of data being inserted in the report, and the APIs or methods used to retrieve the value.
+
+|| *Node* || *Node* || *Node* || *Value* || *Metric* || *Retrieval Method* ||
+|| Cameras || || || || ||
+||      || Camera-{{{<x>}}} || || || || ||
+||      || || Location || _string_ (e.g. "front", "back") || || Unknown, N/A ||
+||      || || Resolution || || || || ||
+||      || || Flash || || || || ||
+||      || || Image || || || || ||
+||      || || || Autofocus || || || ||
+||      || || || Zoome|| || || ||
+||      || || || Geotagging || || || ||
+||      || || || Hand jitter reduction || || || ||
+||      || || || Red eye reduction|| || || ||
+||      || || || Face recognition|| || || ||
+||      || || || Dynamic range optimization || || || ||
+||      || || || Formats || || || ||
+||      || || || Resolutions || || || ||
+||      || || || Supported compression ratios || || || ||
+||      || || Video || || || || ||
+||      || || || Self timer || || || ||
+||      || || || Flash / movie light || || || ||
+||      || || || Zoom || || || ||
+||      || || || White balance / brightness|| || || ||
+||      || || || Color tone || || || ||
+||      || || || Self-portrait video mode || || || ||
+||      || || || Long video capture || || || ||
+||      || || || Other capabilities|| || || ||
+||      || || || Formats || || || ||
+||      || || || Resolutions || || || ||
+||      || || || Video encoding || || || ||
+||      || || || Audio encoding || || || ||
+||      || || || Maximum frame rate || || || ||
+||      || || || Maximum video bitrate || || || ||
+||      || || || Maximum audio bitrate || || || ||
+||      || || || File size limit || || || ||
+
+
+Note: for each present camera a separate Display-{{{<x>}}} node is created, {{{<x>}}} starting from 0.
