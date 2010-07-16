@@ -6,10 +6,10 @@ This plugin collects data on available cameras and their capabilities.
 
 The following table defines the structure of data being inserted in the report, and the APIs or methods used to retrieve the value.
 
-|| *Node* || *Node* || *Node* || *Value* || *Metric* || *Retrieval Method* ||
-|| Cameras || || || || ||
-||      || Camera-{{{<x>}}} || || || || ||
-||      || || Location || _string_ (e.g. "front", "back") || || Unknown, N/A ||
+|| *Node* || *Node* || *Node* || *Node* || *Value* || *Metric* || *Retrieval Method* ||
+|| Cameras || || || || || || ||
+||      || Camera-{{{<x>}}} || || || || || ||
+||      || || Location || _string_ (e.g. "front", "back") || || || Unknown, N/A ||
 ||      || || Resolution || || || || ||
 ||      || || Flash || || || || ||
 ||      || || Image || || || || ||
