@@ -9,7 +9,7 @@ The following table defines the structure of data being inserted in the report, 
 || *Node* || *Node* || *Node* || *Node* || *Value* || *Metric* || *Retrieval Method* ||
 || Cameras || || || || || || ||
 ||      || Camera-{{{<x>}}} || || || || || ||
-||      || || Location || _string_ (e.g. "front", "back") || || || Unknown, N/A ||
+||      || || Location || || _string_ (e.g. "front", "back") || || Unknown, N/A ||
 ||      || || Resolution || || || || ||
 ||      || || Flash || || || || ||
 ||      || || Image || || || || ||
