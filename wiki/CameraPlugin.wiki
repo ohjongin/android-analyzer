@@ -16,9 +16,9 @@ The following table defines the structure of data being inserted in the report, 
 ||      || || || Autofocus || || [_string_, ...] (comma-separated list of values: _auto_, _edof_, _fixed_, _infinity_, _macro_) || {{{Camera.Parameters.getSupportedFocusModes()}}} ||
 ||      || || || Zoom || _boolean_ || || {{{Camera.Parameters.isZoomSupported()}}} ||
 ||      || || || Geotagging || _boolean_ || || Unknown, N/A ||
-||      || || || Hand jitter reduction || || _boolean_ || || Unknown, N/A ||
+||      || || || Hand jitter reduction || _boolean_ || || Unknown, N/A ||
 ||      || || || Red eye reduction|| || || Check if {{{Camera.Parameters.getSupportedFlashModes()}}} returns _red-eye_||
-||      || || || Face recognition || || _boolean_ || || Unknown, N/A ||
+||      || || || Face recognition || _boolean_ || || Unknown, N/A ||
 ||      || || || Dynamic range optimization || || _boolean_ || || Unknown, N/A ||
 ||      || || || Formats || [_string_, ...] (comma-separated list of values: _JPEG_, _NV16_, _NV21_, _RGB_565_, _YUY2_) || || {{{Camera.Parameters.getSupportedPictureFormats()}}} ||
 ||      || || || Resolutions || || || ||
