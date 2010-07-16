@@ -9,18 +9,18 @@ The following table defines the structure of data being inserted in the report, 
 || *Node* || *Node* || *Node* || *Node* || *Value* || *Metric* || *Retrieval Method* ||
 || Cameras || || || || || || ||
 ||      || Camera-{{{<x>}}} || || || || || ||
-||      || || Location || || _string_ (e.g. "front", "back") || || Unknown, N/A ||
-||      || || Resolution || || || || ||
-||      || || Flash || || || || ||
+||      || || Location || || _string_ (e.g. _front_, _back_ || || Unknown, N/A ||
+||      || || Resolution || || || || {{{Camera.Parameters.getSupportedPictureSizes()}}} ||
+||      || || Flash || || [_string_, ...] (comma-separated list of values: _off_, _on_, _red-eye_, _torch_) || || {{{Camera.Parameters.getSupportedFlashModes()}}} ||
 ||      || || Image || || || || ||
-||      || || || Autofocus || || || ||
-||      || || || Zoome|| || || ||
-||      || || || Geotagging || || || ||
-||      || || || Hand jitter reduction || || || ||
-||      || || || Red eye reduction|| || || ||
-||      || || || Face recognition|| || || ||
-||      || || || Dynamic range optimization || || || ||
-||      || || || Formats || || || ||
+||      || || || Autofocus || || [_string_, ...] (comma-separated list of values: _auto_, _edof_, _fixed_, _infinity_, _macro_) || {{{Camera.Parameters.getSupportedFocusModes()}}} ||
+||      || || || Zoom || _boolean_ || || {{{Camera.Parameters.isZoomSupported()}}} ||
+||      || || || Geotagging || _boolean_ || || Unknown, N/A ||
+||      || || || Hand jitter reduction || || _boolean_ || || Unknown, N/A ||
+||      || || || Red eye reduction|| || || Check if {{{Camera.Parameters.getSupportedFlashModes()}}} returns _red-eye_||
+||      || || || Face recognition || || _boolean_ || || Unknown, N/A ||
+||      || || || Dynamic range optimization || || _boolean_ || || Unknown, N/A ||
+||      || || || Formats || [_string_, ...] (comma-separated list of values: _JPEG_, _NV16_, _NV21_, _RGB_565_, _YUY2_) || || {{{Camera.Parameters.getSupportedPictureFormats()}}} ||
 ||      || || || Resolutions || || || ||
 ||      || || || Supported compression ratios || || || ||
 ||      || || Video || || || || ||
