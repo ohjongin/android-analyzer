@@ -6,4 +6,5 @@
       * [CPUPlugin]
       * [DisplayPlugin]
       * [MemoryPlugin]
+      * [CameraPlugin]
     * [DeviceReports Device Reports]
