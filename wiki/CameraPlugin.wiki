@@ -21,8 +21,8 @@ The following table defines the structure of data being inserted in the report, 
 ||      || || || Face recognition || _boolean_ || || Unknown, N/A ||
 ||      || || || Dynamic range optimization || _boolean_ || || Unknown, N/A ||
 ||      || || || Formats || _string_ (comma-separated list of values: _JPEG_, _NV16_, _NV21_, _RGB_565_, _YUY2_) || || {{{Camera.Parameters.getSupportedPictureFormats()}}} ||
-||      || || || Resolutions || || || ||
-||      || || || Supported compression ratios || || || ||
+||      || || || Resolutions || _string_ (comma-separated list of WxH values, e.g. _320x240_, _240x320_, etc.) || || {{{Camera.Parameters.getSupportedPictureSizes()}}} ||
+||      || || || Supported compression ratios || || || Unknown, N/A ||
 ||      || || Video || || || || ||
 ||      || || || Self timer || || || ||
 ||      || || || Flash / movie light || || || ||
