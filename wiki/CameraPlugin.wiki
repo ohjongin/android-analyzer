@@ -13,6 +13,7 @@ The following table defines the structure of data being inserted in the report, 
 ||      || || Resolution || || || || {{{Camera.Parameters.getSupportedPictureSizes()}}} ||
 ||      || || Flash || || <_string_, ...> (comma-separated list of values: _off_, _on_, _red-eye_, _torch_) || || {{{Camera.Parameters.getSupportedFlashModes()}}} ||
 ||      || || Image || || || || ||
+||      || || || Self timer || || || Unknown, N/A ||
 ||      || || || Autofocus || _string_ (comma-separated list of values: _auto_, _edof_, _fixed_, _infinity_, _macro_)|| || {{{Camera.Parameters.getSupportedFocusModes()}}} ||
 ||      || || || Zoom || _boolean_ || || {{{Camera.Parameters.isZoomSupported()}}} ||
 ||      || || || Geotagging || _boolean_ || || Unknown, N/A ||
@@ -24,22 +25,34 @@ The following table defines the structure of data being inserted in the report, 
 ||      || || || Resolutions || _string_ (comma-separated list of WxH values, e.g. _320x240_, _240x320_, etc.) || || {{{Camera.Parameters.getSupportedPictureSizes()}}} ||
 ||      || || || Supported compression ratios || || || Unknown, N/A ||
 ||      || || Video || || || || ||
-||      || || || Self timer || || || ||
-||      || || || Flash / movie light || || || ||
-||      || || || Zoom || || || ||
-||      || || || White balance / brightness|| || || ||
-||      || || || Color tone || || || ||
-||      || || || Self-portrait video mode || || || ||
-||      || || || Long video capture || || || ||
-||      || || || Other capabilities|| || || ||
-||      || || || Formats || || || ||
-||      || || || Resolutions || || || ||
-||      || || || Video encoding || || || ||
-||      || || || Audio encoding || || || ||
-||      || || || Maximum frame rate || || || ||
-||      || || || Maximum video bitrate || || || ||
-||      || || || Maximum audio bitrate || || || ||
-||      || || || File size limit || || || ||
+||      || || || Self timer || || || Unknown, N/A ||
+||      || || || Flash / movie light || _boolean_ || || Check if {{{Camera.Parameters.getSupportedFlashModes()}}} returns _torch_||
+||      || || || Zoom || || || Unknown, N/A ||
+||      || || || White balance / brightness || _string_ (comma-separated list of values: _auto_, _cloudy-daylight_, _daylight_, _fluorescent_, _incandescent_, _shade_, _twilight_, _warm-fluorescent_) || || {{{Camera.Parameters.getSupportedWhiteBalance()}}} ||
+||      || || || Color tone || _string_ (comma-separated list of values: _none_, _posterize_, _sepia_, _solarize_, _whiteboard_) || || {{{Camera.Parameters.getSupportedColorEffects()}}} ||
+||      || || || Self-portrait video mode || || || Unknown, N/A ||
+||      || || || Long video capture || || || Unknown, N/A ||
+||      || || || Other capabilities|| || || Unknown, N/A  ||
+||      || || || Formats || || || TBD ||
+||      || || || Resolutions || || || TBD ||
+||      || || || Video encoding || || || TBD ||
+||      || || || Audio encoding || || || TBD ||
+||      || || || Maximum frame rate || || || TBD ||
+||      || || || Maximum video bitrate || || || TBD ||
+||      || || || Maximum audio bitrate || || || TBD ||
+||      || || || File size limit || _long_ || _B_ (bytes) || See [#File_Size_Limit]||
 
 
-Note: for each present camera a separate Display-{{{<x>}}} node is created, {{{<x>}}} starting from 0.
+Note: for each present camera a separate Camera-{{{<x>}}} node is created, {{{<x>}}} starting from 0.
+
+== File Size Limit ==
+Current approach to determining a file size limit:
+{{{
+long maxFileSize = getAvailableStorage() - LOW_STORAGE_THRESHOLD / 4;
+if (requestedSizeLimit > 0 && requestedSizeLimit < maxFileSize)
+    maxFileSize = requestedSizeLimit;
+
+try {
+    mMediaRecorder.setMaxFileSize(maxFileSize);
+} catch (Throwable t) {}
+}}}
