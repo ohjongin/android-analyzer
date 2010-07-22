@@ -7,4 +7,5 @@
       * [DisplayPlugin]
       * [MemoryPlugin]
       * [CameraPlugin]
+      * [SensorPlugin]
     * [DeviceReports Device Reports]
