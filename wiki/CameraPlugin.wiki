@@ -13,7 +13,7 @@ The following table defines the structure of data being inserted in the report, 
 ||      || || Resolution || || || _double_ || MP || {{{Camera.Parameters.getSupportedPictureSizes()}}} ||
 ||      || || Flash || || || || || ||
 ||      || || || Supported || || _boolean_ (Y, N) || || {{{Camera.Parameters.getSupportedFlashModes()}}} ||
-||      || || || Features || || || || ||
+||      || || || Capabilities || || || || ||
 ||      || || || || Flash type || || || Unknown, N/A  ||
 ||      || || Image || || || || || ||
 ||      || || || Self timer || || || || Unknown, N/A ||
