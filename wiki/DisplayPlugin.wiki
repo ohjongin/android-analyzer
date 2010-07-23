@@ -17,5 +17,6 @@ The following table defines the structure of data being inserted in the report, 
 ||      || || Display technology || _string_ (e.g. AMOLED, etc.) || || Unknown, N/A ||
 ||      || || Touch support || _boolean_ (e.g. Y, N) || || Unknown, N/A ||
 ||      || || Color depth || _integer_ (e.g. 16, 32) || bits || Unknown, N/A ||
+||      || || Refresh rate || _integer_ (e.g. 60, 65) || fps || display.getRefreshRate() ||
 
 Note: for each present display a separate Display-{{{<x>}}} node is created, {{{<x>}}} starting from 0.
