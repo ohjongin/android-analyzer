@@ -10,7 +10,7 @@ The following table defines the structure of data being inserted in the report, 
 || Cameras || || || || || || || ||
 ||      || Camera-{{{<x>}}} || || || || || || ||
 ||      || || Location || || || _string_ (e.g. _front_, _back_ || || Unknown, N/A ||
-||      || || Resolution || || || _double_ || MP || {{{Camera.Parameters.getSupportedPictureSizes()}}} ||
+||      || || Resolution || || || _double_ || MP || API1: {{{Camera.Parameters.getPictureSize()}}}<br>API5: {{{Camera.Parameters.getSupportedPictureSizes()}}} ||
 ||      || || Flash || || || || || ||
 ||      || || || Supported || || _boolean_ (Y, N) || || {{{Camera.Parameters.getSupportedFlashModes()}}} ||
 ||      || || || Capabilities || || || || ||
@@ -24,8 +24,10 @@ The following table defines the structure of data being inserted in the report, 
 ||      || || || Red eye reduction|| || _boolean_ (Y, N) || || Check if {{{Camera.Parameters.getSupportedFlashModes()}}} returns _red-eye_||
 ||      || || || Face recognition || || _boolean_ (Y, N) || || Unknown, N/A ||
 ||      || || || Dynamic range optimization || || _boolean_ (Y, N) || || Unknown, N/A ||
-||      || || || Formats || || _string_ (comma-separated list of values: _JPEG_, _NV16_, _NV21_, _RGB_565_, _YUY2_) || || {{{Camera.Parameters.getSupportedPictureFormats()}}} ||
-||      || || || Resolutions || || _string_ (comma-separated list of WxH values, e.g. _320x240_, _240x320_, etc.) || || {{{Camera.Parameters.getSupportedPictureSizes()}}} ||
+||      || || || Formats || || _string_ (comma-separated list of values: _JPEG_, _NV16_, _NV21_, _RGB_565_, _YUY2_) || || Map each value from {{{Camera.Parameters.getSupportedPictureFormats()}}} to _string_ represantation ||
+||      || || || Resolutions || || || || ||
+||      || || || || Maximum supported || _string_ (WxH value, e.g. _320x240_ or _240x320_, etc.) || || API1: {{{Camera.Parameters.getPictureSize()}}}<br>API5: {{{Camera.Parameters.getSupportedPictureSizes()}}} ||
+||      || || || || Supported || _string_ (comma-separated list of WxH values, e.g. _320x240_, _240x320_, etc.) || || {{{Camera.Parameters.getSupportedPictureSizes()}}} ||
 ||      || || || Supported compression ratios || || || || Unknown, N/A ||
 ||      || || Video || || || || || ||
 ||      || || || Self timer || || || || Unknown, N/A ||
