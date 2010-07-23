@@ -12,6 +12,7 @@ The following table defines the structure of data being inserted in the report, 
 ||      || || Supported ||  ||_boolean_ (Y, N) || {{{LocationManager.getAllProviders().contains("gps")}}}  ||
 ||      || || Capabilities || || || ||
 ||      || || || A-GPS  ||_boolean_ (Y, N) || {{{Settings.Secure.getInt(this.getContentResolver(), ASSISTED_GPS_ENABLED) != 0}}} ||
-||      || Network-based || || || _boolean_ (Y, N) || {{{LocationManager.getAllProviders().contains("network")}}} ||
+||      || Network-based || || || || ||
+|| || || Supported || || _boolean_ (Y, N) || {{{LocationManager.getAllProviders().contains("network")}}} ||
 
 *Privacy policy: this plugin MUST NEVER report the device location to the backend. Querying device location for determining positioning method accuracy is allowed, as long as this data never leaves the device.*
