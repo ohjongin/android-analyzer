@@ -142,21 +142,7 @@
 	         </intent-filter>
         </service>
 		
-		<!-- **** Dummy Plugin **** -->
-         <receiver android:enabled="true"
-	          android:exported="true"
-	          android:label="dummy receiver"
-	          android:name=".plugins.dummy.BReceiver">
-	           <intent-filter>
-	                <action android:name="org.androidanalyzer.plugins.discovery" />
-	            </intent-filter>
-	    </receiver>
-	    <service android:name=".plugins.dummy.DummyPlugin" android:process=":aanalyzer_plugins">
-	    	<intent-filter>
-                <action android:name="org.androidanalyzer.plugins.dummy.DummyPlugin" />
-	         </intent-filter>
-        </service>		
-        
+       
 	</application>
 
 	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
