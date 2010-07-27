@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Activity Names Strings -->
+	<string name="app_name">Device Analyzer</string>
+	
+	<!-- Progress Dialog -->
+	<string name="progress_dialog_title">Starting device analisys</string>
+	<string name="progress_dialog_msg">Plugin name:</string>
+	
+	<!-- Alert Dialog-->
+	<string name="alert_dialog_warning_title">Warning</string>
+	<string name="alert_dialog_warning_msg">Sending data failed!</string>
+	<string name="alert_dialog_warning_host">Host URI is invalid!</string>
+	<string name="alert_dialog_ok">OK</string>
+	<string name="alert_dialog_pos_title">Info</string>
+	<string name="alert_dialog_pos_ss">Data successfully sent!</string>
+	
+	<!-- Menu items-->
+	<string name="menu_settings">Settings</string>
+	
+</resources>
