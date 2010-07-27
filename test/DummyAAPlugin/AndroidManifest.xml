@@ -16,7 +16,7 @@
         <receiver android:enabled="true"
 	          android:exported="true"
 	          android:label="dummy receiver"
-	          android:name=".DummyExternalPlugin$BReceiver">
+	          android:name=".BReceiver">
 	           <intent-filter>
 	                <action android:name="org.androidanalyzer.plugins.discovery" />
 	            </intent-filter>
