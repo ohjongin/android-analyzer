@@ -12,4 +12,8 @@ interface IAnalyzerPlugin {
     
     void stopAnalysis();
     
+    long getTimeout();
+    
+    void setDebugEnabled(boolean enabled);
+    
 }
