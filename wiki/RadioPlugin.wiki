@@ -1,0 +1,12 @@
+This plugin collects data on the radio interface and capabilities.
+
+*Plugin Name:* Radio Interfaces Plugin
+
+*Class Name:* {{{org.androidanalyzer.plugins.radiointerfaces.RadioInterfacesPlugin}}}
+
+The following table defines the structure of data being inserted in the report, and the APIs or methods used to retrieve the value.
+
+|| *Node* || *Node* || *Node* || *Node* || *Value* || *Retrieval Method* ||
+|| Radio Interfaces|| || || || || ||
+
+*Privacy policy: this plugin MUST NEVER report device's private identifiers, like IMSI, IMEI, MSID, ESN, MEID, etc.
