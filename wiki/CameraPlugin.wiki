@@ -6,45 +6,57 @@ This plugin collects data on available cameras and their capabilities.
 
 The following table defines the structure of data being inserted in the report, and the APIs or methods used to retrieve the value.
 
-|| *Node* || *Node* || *Node* || *Node* || *Node* || *Value* || *Metric* || *Retrieval Method* ||
-|| Cameras || || || || || || || ||
-||      || Camera-{{{<x>}}} || || || || || || ||
-||      || || Location || || || _string_ (e.g. _front_, _back_ || || Unknown, N/A ||
-||      || || Resolution || || || _double_ || MP || API1: {{{Camera.Parameters.getPictureSize()}}}<br>API5: {{{Camera.Parameters.getSupportedPictureSizes()}}} ||
-||      || || Flash || || || || || ||
-||      || || || Supported || || _boolean_ (Y, N) || || {{{Camera.Parameters.getSupportedFlashModes()}}} ||
-||      || || || Capabilities || || || || ||
-||      || || || || Flash type || || || Unknown, N/A  ||
-||      || || Image || || || || || ||
-||      || || || Self timer || || || || Unknown, N/A ||
-||      || || || Focus modes || || _string_ (comma-separated list of values: _auto_, _edof_, _fixed_, _infinity_, _macro_)|| || {{{Camera.Parameters.getSupportedFocusModes()}}} ||
-||      || || || Zoom || || _boolean_ (Y, N) || || {{{Camera.Parameters.isZoomSupported()}}} ||
-||      || || || Geotagging || || _boolean_ (Y, N) || || Unknown, N/A ||
-||      || || || Hand jitter reduction || || _boolean_ (Y, N) || || Unknown, N/A ||
-||      || || || Red eye reduction|| || _boolean_ (Y, N) || || Check if {{{Camera.Parameters.getSupportedFlashModes()}}} returns _red-eye_||
-||      || || || Face recognition || || _boolean_ (Y, N) || || Unknown, N/A ||
-||      || || || Dynamic range optimization || || _boolean_ (Y, N) || || Unknown, N/A ||
-||      || || || Formats || || _string_ (comma-separated list of values: _JPEG_, _NV16_, _NV21_, _RGB_565_, _YUY2_) || || Map each value from {{{Camera.Parameters.getSupportedPictureFormats()}}} to _string_ represantation ||
-||      || || || Resolutions || || || || ||
-||      || || || || Maximum supported || _string_ (WxH value, e.g. _320x240_ or _240x320_, etc.) || || API1: {{{Camera.Parameters.getPictureSize()}}}<br>API5: {{{Camera.Parameters.getSupportedPictureSizes()}}} ||
-||      || || || || Supported || _string_ (comma-separated list of WxH values, e.g. _320x240_, _240x320_, etc.) || || {{{Camera.Parameters.getSupportedPictureSizes()}}} ||
-||      || || || Supported compression ratios || || || || Unknown, N/A ||
-||      || || Video || || || || || ||
-||      || || || Self timer || || || || Unknown, N/A ||
-||      || || || Flash / movie light || || _boolean_ (Y, N) || || Check if {{{Camera.Parameters.getSupportedFlashModes()}}} returns _torch_||
-||      || || || Zoom || || _boolean_ (Y, N) || || Unknown, N/A ||
-||      || || || White balance / brightness || || _string_ (comma-separated list of values: _auto_, _cloudy-daylight_, _daylight_, _fluorescent_, _incandescent_, _shade_, _twilight_, _warm-fluorescent_) || || {{{Camera.Parameters.getSupportedWhiteBalance()}}} ||
-||      || || || Color tone || || _string_ (comma-separated list of values: _none_, _posterize_, _sepia_, _solarize_, _whiteboard_) || || {{{Camera.Parameters.getSupportedColorEffects()}}} ||
-||      || || || Self-portrait video mode || || || || Unknown, N/A ||
-||      || || || Long video capture || || || || Unknown, N/A ||
-||      || || || Other capabilities|| || || || Unknown, N/A  ||
-||      || || || Formats || || || || TBD ||
-||      || || || Resolutions || || || || TBD ||
-||      || || || Video encoding || || || || TBD ||
-||      || || || Audio encoding || || || || TBD ||
-||      || || || Maximum frame rate || || || || TBD ||
-||      || || || Maximum video bitrate || || || || TBD ||
-||      || || || Maximum audio bitrate || || || || TBD ||
+|| *Node* || *Node* || *Node* || *Node* || *Node* || *Node* || *Value* || *Metric* || *Retrieval Method* ||
+|| Cameras || || || || || || || || ||
+||      || Camera-{{{<x>}}} || || || || || || || ||
+||      || || Location || || || || _string_ (e.g. _front_, _back_ || || Unknown, N/A ||
+||      || || Resolution || || || || _double_ || MP || API1: {{{Camera.Parameters.getPictureSize()}}}<br>API5: {{{Camera.Parameters.getSupportedPictureSizes()}}} ||
+||      || || Flash || || || || || || ||
+||      || || || Supported || || || _boolean_ (Y, N) || || {{{Camera.Parameters.getSupportedFlashModes()}}} ||
+||      || || || Capabilities || || || || || ||
+||      || || || || Flash type || || || || Unknown, N/A  ||
+||      || || Image || || || || || || ||
+||      || || || Self timer || || || || || Unknown, N/A ||
+||      || || || Focus modes || || || _string_ (comma-separated list of values: _auto_, _edof_, _fixed_, _infinity_, _macro_)|| || {{{Camera.Parameters.getSupportedFocusModes()}}} ||
+||      || || || Zoom || || || _boolean_ (Y, N) || || {{{Camera.Parameters.isZoomSupported()}}} ||
+||      || || || Geotagging || || || _boolean_ (Y, N) || || Unknown, N/A ||
+||      || || || Hand jitter reduction || || || _boolean_ (Y, N) || || Unknown, N/A ||
+||      || || || Red eye reduction|| || || _boolean_ (Y, N) || || Check if {{{Camera.Parameters.getSupportedFlashModes()}}} returns _red-eye_||
+||      || || || Face recognition || || || _boolean_ (Y, N) || || Unknown, N/A ||
+||      || || || Dynamic range optimization || || || _boolean_ (Y, N) || || Unknown, N/A ||
+||      || || || Formats || || || _string_ (comma-separated list of values: _JPEG_, _NV16_, _NV21_, _RGB_565_, _YUY2_) || || Map each value from {{{Camera.Parameters.getSupportedPictureFormats()}}} to _string_ represantation ||
+||      || || || Resolutions || || || || || ||
+||      || || || || Maximum supported || || _string_ (WxH value, e.g. _320x240_ or _240x320_, etc.) || || API1: {{{Camera.Parameters.getPictureSize()}}}<br>API5: {{{Camera.Parameters.getSupportedPictureSizes()}}} ||
+||      || || || || Supported || || _string_ (comma-separated list of WxH values, e.g. _320x240_, _240x320_, etc.) || || {{{Camera.Parameters.getSupportedPictureSizes()}}} ||
+||      || || || Supported compression ratios || || || || || Unknown, N/A ||
+||      || || Video || || || || || || ||
+||      || || || Self timer || || || || || Unknown, N/A ||
+||      || || || Flash / movie light || || || _boolean_ (Y, N) || || Check if {{{Camera.Parameters.getSupportedFlashModes()}}} returns _torch_||
+||      || || || Zoom || || || _boolean_ (Y, N) || || Unknown, N/A ||
+||      || || || White balance / brightness || || || _string_ (comma-separated list of values: _auto_, _cloudy-daylight_, _daylight_, _fluorescent_, _incandescent_, _shade_, _twilight_, _warm-fluorescent_) || || {{{Camera.Parameters.getSupportedWhiteBalance()}}} ||
+||      || || || Color tone || || || _string_ (comma-separated list of values: _none_, _posterize_, _sepia_, _solarize_, _whiteboard_) || || {{{Camera.Parameters.getSupportedColorEffects()}}} ||
+||      || || || Self-portrait video mode || || || || || Unknown, N/A ||
+||      || || || Long video capture || || || || || Unknown, N/A ||
+||      || || || Other capabilities|| || || || || Unknown, N/A  ||
+||      || || || Formats || || || || || ||
+||      || || || || MPEG-4 || || boolean (Y, N) || || {{{android.os.SystemProperties.get("ro.media.enc.file.format")}}} ||
+||      || || || || 3GPP || || boolean (Y, N) || || {{{android.os.SystemProperties.get("ro.media.enc.file.format")}}} ||
+||      || || || || 3GP2 || || boolean (Y, N) || || {{{android.os.SystemProperties.get("ro.media.enc.file.format")}}} ||
+||      || || || Video encoding || || || || || ||
+||      || || || || Codec(X) || || || || {{{android.os.SystemProperties.get("ro.media.enc.vid.codec")}}} or parse /system/build.prop ||
+||      || || || || || Supported resolutions || string (comma-separated list of WxH values, e.g. 320x240, 240x320, etc.) || || {{{android.os.SystemProperties.get("ro.media.enc.vid.codec(x).width")}}}<br>{{{android.os.SystemProperties.get("ro.media.enc.vid.codec(x).height")}}} <br> or parse /system/build.prop ||
+||      || || || || || Minimum framerate || integer || fps || {{{android.os.SystemProperties.get("ro.media.enc.vid.codec(x).fps")}}} or parse /system/build.prop ||
+||      || || || || || Maximum framerate || integer || fps || {{{android.os.SystemProperties.get("ro.media.enc.vid.codec(x).fps")}}} <br> or parse /system/build.prop ||
+||      || || || || || Minimum bitrate || integer || bps || {{{android.os.SystemProperties.get("ro.media.enc.vid.codec(x).bps")}}} <br> or parse /system/build.prop ||
+||      || || || || || Maximum bitrate || integer || bps || {{{android.os.SystemProperties.get("ro.media.enc.vid.codec(x).bps")}}} <br> or parse /system/build.prop ||
+||      || || || Audio encoding || || || || || {{{android.os.SystemProperties.get("ro.media.enc.aud.codec")}}}  <br> or parse /system/build.prop||
+||      || || || || Codec(X) || || || || {{{android.os.SystemProperties.get("ro.media.enc.vid.codec")}}} or parse /system/build.prop ||
+||      || || || || || Minimum bitrate || integer || bps || {{{android.os.SystemProperties.get("ro.media.enc.vid.codec(x).bps")}}} <br> or parse /system/build.prop ||
+||      || || || || || Maximum bitrate || integer || bps || {{{android.os.SystemProperties.get("ro.media.enc.vid.codec(x).bps")}}} <br> or parse /system/build.prop ||
+||      || || || || || Minimum frequency || integer || hz || {{{android.os.SystemProperties.get("ro.media.enc.aud.codec(x).hz")}}} <br> or parse /system/build.prop ||
+||      || || || || || Maximum frequency || integer || hz || {{{android.os.SystemProperties.get("ro.media.enc.aud.codec(x).hz")}}} <br> or parse /system/build.prop ||
+||      || || || || || Minimum channels || integer || channels || {{{android.os.SystemProperties.get("ro.media.enc.aud.codec(x).ch")}}} or parse /system/build.prop ||
+||      || || || || || Maximum channels || integer || channels || {{{android.os.SystemProperties.get("ro.media.enc.aud.codec(x).ch")}}} <br> or parse /system/build.prop ||
 
 
 Note: for each present camera a separate Camera-{{{<x>}}} node is created, {{{<x>}}} starting from 0.
