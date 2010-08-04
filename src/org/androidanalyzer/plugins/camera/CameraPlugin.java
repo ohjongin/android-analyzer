@@ -3,11 +3,15 @@
  */
 package org.androidanalyzer.plugins.camera;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
+import java.util.StringTokenizer;
 
 import org.androidanalyzer.Constants;
 import org.androidanalyzer.core.Data;
@@ -56,7 +60,7 @@ public class CameraPlugin extends AbstractPlugin {
   private static final String IMAGE_SUPPORTED_FORMATS = "Supported formats";
   private static final String IMAGE_RESOLUTIONS = "Resolutions";
   private static final String IMAGE_RESOLUTIONS_MAXIMUM_RESOLUTION = "Maximum resolution";
-  private static final String IMAGE_RESOLUTIONS_SUPPORTED_RESOLUTIONS = "Supported";
+  private static final String IMAGE_RESOLUTIONS_SUPPORTED_RESOLUTIONS = "Supported resolutions";
   private static final String IMAGE_SUPPORTED_COMPRESSION_RATIOS = "Supported compression ratios";
   private static final String VIDEO_PARENT_NODE = "Video";
   private static final String VIDEO_SELF_TIMER = "Self Timer";
@@ -67,21 +71,42 @@ public class CameraPlugin extends AbstractPlugin {
   private static final String VIDEO_SELF_PORTRAIT_VIDEO_MODE = "Self-Portrait Video Mode";
   private static final String VIDEO_LONG_VIDEO_CAPTURE = "Long Video Capture";
   private static final String VIDEO_OTHER_CAPABILITIES = "Other capabilities";
+  private static final String VIDEO_FORMATS = "Formats";
   private static final String VIDEO_FORMATS_MPEG4 = "MPEG-4";
   private static final String VIDEO_FORMATS_3GPP = "3GPP";
   private static final String VIDEO_FORMATS_3GP2 = "3GP2";
-  private static final String VIDEO_VIDEO_ENCODING_MPEG4_PART_2 = "MPEG-4 Part 2";
-  private static final String VIDEO_VIDEO_ENCODING_MPEG4_PART_10 = "MPEG-4 Part 10";
-  private static final String VIDEO_VIDEO_ENCODING_H263 = "H.263";
-  private static final String VIDEO_AUDIO_ENCODING_AAC = "AAC";
-  private static final String VIDEO_AUDIO_ENCODING_AMR_NB = "AMR-NB";
-  private static final String VIDEO_RESOLUTIONS_QCIF_176_X_144 = "QCIF (176 x 144)";
-  private static final String VIDEO_RESOLUTIONS_QVGA_320_X_240 = "QVGA (320 x 240)";
-  private static final String VIDEO_RESOLUTIONS_CIF_352_X_288 = "CIF (352 x 288)";
+  private static final String VIDEO_ENCODING = "Video encoding";
+  private static final String VIDEO_ENCODING_MPEG4_PART_2 = "MPEG-4 Part 2";
+  private static final String VIDEO_ENCODING_MPEG4_PART_10 = "H.264";
+  private static final String VIDEO_ENCODING_H263 = "H.263";
+  private static final String AUDIO_ENCODING = "Audio encoding";
+  private static final String AUDIO_ENCODING_AAC = "AAC";
+  private static final String AUDIO_ENCODING_AMR_NB = "AMR-NB";
+  private static final String VIDEO_RESOLUTIONS = "Supported resolutions";
   private static final String VIDEO_MAXIMUM_BITRATE = "Maximum bitrate";
-  private static final String VIDEO_MAXIMUM_FRAME_RATE = "Maximum frame rate";
-  private static final String VIDEO_MAXIMUM_AUDIO_BITRATE = "Maximum audio bitrate";
+  private static final String VIDEO_MINIMUM_BITRATE = "Minimum bitrate";
+  private static final String VIDEO_MAXIMUM_FRAME_RATE = "Maximum framerate";
+  private static final String VIDEO_MINIMUM_FRAME_RATE = "Minimum framerate";
+  private static final String AUDIO_MIN_FREQ = "Minimum frequency";
+  private static final String AUDIO_MAX_FREQ = "Maximum frequency";
+  private static final String AUDIO_MIN_CHANNELS = "Minimum channels";
+  private static final String AUDIO_MAX_CHANNELS = "Maximum channels";
+  private static final String AUDIO_MAXIMUM_BITRATE = "Maximum bitrate";
+  private static final String AUDIO_MINIMUM_BITRATE = "Minimum bitrate";
   private static final String VIDEO_FILE_SIZE_LIMIT = "File size limit";
+
+  private static final String BUILD_PROPERTIES_FILE = "/system/build.prop";
+  private static final String VIDEO_SUPPORTED_FORMATS = "ro.media.enc.file.format";
+  private static final String VIDEO_SUPPORTED_ENCODERS = "ro.media.enc.vid.codec";
+  private static final String VIDEO_CODEC_CAPABILITES_PREFIX = "ro.media.enc.vid";
+  private static final String VIDEO_ENCODER_H264 = "h264";
+  private static final String VIDEO_ENCODER_M4V = "m4v";
+  private static final String VIDEO_ENCODER_H263 = "h263";
+
+  private static final String AUDIO_SUPPORTED_ENCODERS = "ro.media.enc.aud.codec";
+  private static final String AUDIO_CODEC_CAPABILITES_PREFIX = "ro.media.enc.aud";
+  private static final String AUDIO_ENCODER_AAC = "aac";
+  private static final String AUDIO_ENCODER_AMR_NB = "amrnb";
 
   private static final String SUPPORTED = "Supported";
 
@@ -94,14 +119,20 @@ public class CameraPlugin extends AbstractPlugin {
       /* Data children nodes */
       /* Image children attributes */
       new Object[] { IMAGE_PARENT_NODE, "getImageZoomSupported", "getImageFocusModes", "getImageRedEyeReduction",
-          new Object[] { IMAGE_FORMAT, "getFormatSupportedFormats" },
-          new Object[] { IMAGE_RESOLUTIONS, "getResolutionMaximumSupported", "getResolutionSupported" }, },
+          new Object[] { IMAGE_FORMAT, "getFormatSupportedFormats" }, "getResolutionSupported" },
       /* Video children attributes */
-      new Object[] { VIDEO_PARENT_NODE, "getVideoFlashLightSupported", "getVideoSupportedWhiteBalance",
-          "getVideoSupportedColorEffects", } };
+      new Object[] {
+          VIDEO_PARENT_NODE,
+          "getVideoFlashLightSupported",
+          "getVideoSupportedWhiteBalance",
+          "getVideoSupportedColorEffects",
+          new Object[] { VIDEO_FORMATS, "getVideoFormatMP4Supported", "getVideoFormat3GPPSupported",
+              "getVideoFormat3GP2Supported" }, "getVideoEncodersInfo", "getAudioEncodersInfo" } };
 
   private Camera cachedCamera = null;
   private Camera.Parameters[] camParams = null;
+  private boolean readSysPropsFromFile = false;
+  private Properties buildProps = null;
 
   /*
    * (non-Javadoc)
@@ -310,9 +341,436 @@ public class CameraPlugin extends AbstractPlugin {
     return params;
   }
 
-  // ///////////////////////////////////////////////
-  /* Getter methods for camera parameters */
-  // ///////////////////////////////////////////////
+  /** ***************************************************/
+  /** Getter methods for camera parameters */
+  /** ***************************************************/
+
+  private Data getVideoEncodersInfo(int cameraNumber) {
+    String formats = getSystemProperty(VIDEO_SUPPORTED_ENCODERS, false);
+    String formatsFromFile = getSystemProperty(VIDEO_SUPPORTED_ENCODERS, true);
+    Logger.DEBUG(TAG, "formats : " + formats);
+    Logger.DEBUG(TAG, "formatsFromFile : " + formatsFromFile);
+
+    StringTokenizer token = null;
+    if (formats != null && formatsFromFile != null) {
+      if (formats.length() >= formatsFromFile.length()) {
+        token = new StringTokenizer(formats, ",");
+      } else {
+        token = new StringTokenizer(formatsFromFile, ",");
+        readSysPropsFromFile = true;
+      }
+    } else if (formats != null) {
+      token = new StringTokenizer(formats, ",");
+    } else if (formatsFromFile != null) {
+      token = new StringTokenizer(formatsFromFile, ",");
+      readSysPropsFromFile = true;
+    } else {
+      return null;
+    }
+
+    Data parent = new Data();
+    try {
+      parent.setName(VIDEO_ENCODING);
+      while (token.hasMoreTokens()) {
+        String format = token.nextToken();
+        String name = null;
+        if (format.equals(VIDEO_ENCODER_H263)) {
+          name = VIDEO_ENCODING_H263;
+        } else if (format.equals(VIDEO_ENCODER_H264)) {
+          name = VIDEO_ENCODING_MPEG4_PART_10;
+        } else if (format.equals(VIDEO_ENCODER_M4V)) {
+          name = VIDEO_ENCODING_MPEG4_PART_2;
+        }
+        Data formData = null;
+        if (name != null) {
+          formData = new Data();
+          formData.setName(name);
+        }
+        Data resolutions = getResolutions(cameraNumber, format);
+        if (resolutions != null)
+          formData.setValue(resolutions);
+        Data minBitrate = getMinBitrate(cameraNumber, format);
+        if (minBitrate != null)
+          formData.setValue(minBitrate);
+        Data maxBitrate = getMaxBitrate(cameraNumber, format);
+        if (maxBitrate != null)
+          formData.setValue(maxBitrate);
+        Data minFramerate = getMinFramerate(cameraNumber, format);
+        if (minFramerate != null)
+          formData.setValue(minFramerate);
+        Data maxFramerate = getMaxFramerate(cameraNumber, format);
+        if (maxFramerate != null)
+          formData.setValue(maxFramerate);
+
+        if (formData != null)
+          parent.setValue(formData);
+      }
+    } catch (Exception e) {
+      parent = null;
+      Logger.DEBUG(TAG, "Could not create Video Encoding Node !", e);
+    }
+    return parent;
+  }
+
+  /**
+   * @param format
+   * @return
+   */
+  private Data getEncFormatCapability(int cameraNumber, String format, String property, String name, String metric,
+      boolean maxValue) {
+    String framerates = getSystemProperty(property, readSysPropsFromFile);
+    if (framerates != null) {
+      StringTokenizer token = new StringTokenizer(framerates, ",");
+      if (maxValue) {
+        token.nextToken();
+      }
+      String minFramerate = token.nextToken();
+      if (minFramerate != null && minFramerate.length() > 0) {
+        Data data = new Data();
+        try {
+          data.setName(name);
+          data.setValue(minFramerate);
+          data.setValueType(Constants.NODE_VALUE_TYPE_INT);
+          data.setValueMetric(metric);
+          return data;
+        } catch (Exception e) {
+          Logger.DEBUG(TAG, "Could not create " + name + " node for format : " + format, e);
+          return null;
+        }
+      }
+    }
+    return null;
+  }
+
+  /**
+   * @param format
+   * @return
+   */
+  private Data getMinFramerate(int cameraNumber, String format) {
+    return getEncFormatCapability(cameraNumber, format, VIDEO_CODEC_CAPABILITES_PREFIX + "." + format + ".fps",
+        VIDEO_MINIMUM_FRAME_RATE, "fps", false);
+  }
+
+  /**
+   * @param format
+   * @return
+   */
+  private Data getMaxFramerate(int cameraNumber, String format) {
+    return getEncFormatCapability(cameraNumber, format, VIDEO_CODEC_CAPABILITES_PREFIX + "." + format + ".fps",
+        VIDEO_MAXIMUM_FRAME_RATE, "fps", true);
+  }
+
+  /**
+   * @param format
+   * @return
+   */
+  private Data getMinBitrate(int cameraNumber, String format) {
+    return getEncFormatCapability(cameraNumber, format, VIDEO_CODEC_CAPABILITES_PREFIX + "." + format + ".bps",
+        VIDEO_MINIMUM_BITRATE, "bps", false);
+  }
+
+  /**
+   * @param format
+   * @return
+   */
+  private Data getMaxBitrate(int cameraNumber, String format) {
+    return getEncFormatCapability(cameraNumber, format, VIDEO_CODEC_CAPABILITES_PREFIX + "." + format + ".bps",
+        VIDEO_MAXIMUM_BITRATE, "bps", true);
+  }
+
+  /**
+   * @param format
+   * @return
+   */
+  private Data getResolutions(int cameraNumber, String format) {
+    Data res = new Data();
+    try {
+      res.setName(VIDEO_RESOLUTIONS);
+
+      String ws = getSystemProperty(VIDEO_CODEC_CAPABILITES_PREFIX + "." + format + ".width", readSysPropsFromFile);
+      String hs = getSystemProperty(VIDEO_CODEC_CAPABILITES_PREFIX + "." + format + ".height", readSysPropsFromFile);
+      Logger.DEBUG(TAG, "Supported resolutions widths/heights = " + ws + "/" + hs);
+      StringTokenizer token = new StringTokenizer(ws, ",");
+      if (token.countTokens() == 2) {
+        String minW = token.nextToken();
+        String maxW = token.nextToken();
+        token = new StringTokenizer(hs, ",");
+        String minH = token.nextToken();
+        String maxH = token.nextToken();
+        if (minW != null && maxW != null && minH != null && maxH != null) {
+          Camera.Parameters params = getCameraParams(cameraNumber);
+
+          List<Camera.Size> sizes = null;
+          if (params != null) {
+            if (getAPIversion() >= 5) {
+              String methodName = "getSupportedPreviewSizes";
+              try {
+                Method method = Camera.Parameters.class.getDeclaredMethod(methodName);
+                if (method != null) {
+                  sizes = (List<Size>) method.invoke(params, null);
+                }
+              } catch (SecurityException e) {
+                Logger.DEBUG(TAG, "Security check failed obtaining method : " + methodName);
+              } catch (NoSuchMethodException e) {
+                Logger.DEBUG(TAG, "No such method : " + methodName);
+              } catch (IllegalArgumentException e) {
+              } catch (IllegalAccessException e) {
+              } catch (InvocationTargetException e) {
+              }
+            }
+          }
+          StringBuffer resolutions = null;
+          if (sizes != null && sizes.size() > 0) {
+            boolean foundMax = false;
+            for (Size size : sizes) {
+              if (foundMax == false && maxW.equals(String.valueOf(size.width))
+                  && maxH.equals(String.valueOf(size.height))) {
+                foundMax = true;
+              }
+              if (foundMax == true) {
+                if (resolutions == null) {
+                  resolutions = new StringBuffer();
+                  resolutions.append(size.width + "x" + size.height);
+                } else {
+                  resolutions.append("," + size.width + "x" + size.height);
+                }
+              }
+              if (minW.equals(String.valueOf(size.width)) && minH.equals(String.valueOf(size.height))) {
+                break;
+              }
+            }
+          } else {
+            resolutions = new StringBuffer();
+            resolutions.append(minW + "x" + minH + "," + maxW + "x" + maxH);
+          }
+          if (resolutions != null) {
+            res.setValue(resolutions.toString());
+            return res;
+          }
+        }
+      }
+      if (res.getValue() == null) {
+        res.setStatus(Constants.NODE_STATUS_FAILED);
+        res.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
+      }
+    } catch (Exception e) {
+      Logger.DEBUG(TAG, "Could not create supported resolutions node for format : " + format, e);
+    }
+    return null;
+  }
+
+  private Data getAudioEncodersInfo(int cameraNumber) {
+    String formats = getSystemProperty(AUDIO_SUPPORTED_ENCODERS, false);
+    String formatsFromFile = getSystemProperty(AUDIO_SUPPORTED_ENCODERS, true);
+    Logger.DEBUG(TAG, "audio formats : " + formats);
+    Logger.DEBUG(TAG, "audio formatsFromFile : " + formatsFromFile);
+
+    StringTokenizer token = null;
+    if (formats != null && formatsFromFile != null) {
+      if (formats.length() >= formatsFromFile.length()) {
+        token = new StringTokenizer(formats, ",");
+      } else {
+        token = new StringTokenizer(formatsFromFile, ",");
+        readSysPropsFromFile = true;
+      }
+    } else if (formats != null) {
+      token = new StringTokenizer(formats, ",");
+    } else if (formatsFromFile != null) {
+      token = new StringTokenizer(formatsFromFile, ",");
+      readSysPropsFromFile = true;
+    } else {
+      return null;
+    }
+
+    Data parent = new Data();
+    try {
+      parent.setName(AUDIO_ENCODING);
+      while (token.hasMoreTokens()) {
+        String format = token.nextToken();
+        String name = null;
+        if (format.equals(AUDIO_ENCODER_AMR_NB)) {
+          name = AUDIO_ENCODING_AMR_NB;
+        } else if (format.equals(AUDIO_ENCODER_AAC)) {
+          name = AUDIO_ENCODER_AAC;
+        }
+        Data formData = null;
+        if (name != null) {
+          formData = new Data();
+          formData.setName(name);
+        }
+        Data minBitrate = getMinAudioBitrate(cameraNumber, format);
+        if (minBitrate != null)
+          formData.setValue(minBitrate);
+        Data maxBitrate = getMaxAudioBitrate(cameraNumber, format);
+        if (maxBitrate != null)
+          formData.setValue(maxBitrate);
+        Data minFrequency = getMinAudioFrequency(cameraNumber, format);
+        if (minFrequency != null)
+          formData.setValue(minFrequency);
+        Data maxFrequency = getMaxAudioFrequency(cameraNumber, format);
+        if (maxFrequency != null)
+          formData.setValue(maxFrequency);
+        Data minChannels = getMinAudioChannels(cameraNumber, format);
+        if (minChannels != null)
+          formData.setValue(minChannels);
+        Data maxChannels = getMaxAudioChannels(cameraNumber, format);
+        if (maxChannels != null)
+          formData.setValue(maxChannels);
+
+        if (formData != null)
+          parent.setValue(formData);
+      }
+    } catch (Exception e) {
+      parent = null;
+      Logger.DEBUG(TAG, "Could not create Audio Encoding Node !", e);
+    }
+    return parent;
+
+  }
+
+  /**
+   * @param cameraNumber
+   * @param format
+   * @return
+   */
+  private Data getMinAudioChannels(int cameraNumber, String format) {
+    return getEncFormatCapability(cameraNumber, format, AUDIO_CODEC_CAPABILITES_PREFIX + "." + format + ".ch",
+        AUDIO_MIN_CHANNELS, "channels", false);
+  }
+
+  /**
+   * @param cameraNumber
+   * @param format
+   * @return
+   */
+  private Data getMaxAudioChannels(int cameraNumber, String format) {
+    return getEncFormatCapability(cameraNumber, format, AUDIO_CODEC_CAPABILITES_PREFIX + "." + format + ".ch",
+        AUDIO_MAX_CHANNELS, "channels", true);
+  }
+
+  /**
+   * @param cameraNumber
+   * @param format
+   * @return
+   */
+  private Data getMaxAudioFrequency(int cameraNumber, String format) {
+    return getEncFormatCapability(cameraNumber, format, AUDIO_CODEC_CAPABILITES_PREFIX + "." + format + ".hz",
+        AUDIO_MAX_FREQ, "hz", true);
+  }
+
+  /**
+   * @param cameraNumber
+   * @param format
+   * @return
+   */
+  private Data getMinAudioFrequency(int cameraNumber, String format) {
+    return getEncFormatCapability(cameraNumber, format, AUDIO_CODEC_CAPABILITES_PREFIX + "." + format + ".hz",
+        AUDIO_MIN_FREQ, "hz", false);
+  }
+
+  /**
+   * @param cameraNumber
+   * @param format
+   * @return
+   */
+  private Data getMaxAudioBitrate(int cameraNumber, String format) {
+    return getEncFormatCapability(cameraNumber, format, AUDIO_CODEC_CAPABILITES_PREFIX + "." + format + ".bps",
+        AUDIO_MAXIMUM_BITRATE, "bps", true);
+  }
+
+  /**
+   * @param cameraNumber
+   * @param format
+   * @return
+   */
+  private Data getMinAudioBitrate(int cameraNumber, String format) {
+    return getEncFormatCapability(cameraNumber, format, AUDIO_CODEC_CAPABILITES_PREFIX + "." + format + ".bps",
+        AUDIO_MINIMUM_BITRATE, "bps", false);
+  }
+
+  private Data getVideoFormatMP4Supported(int cameraNumber) {
+    return getVideoFormatSupported(VIDEO_FORMATS_MPEG4);
+  }
+
+  private Data getVideoFormat3GPPSupported(int cameraNumber) {
+    return getVideoFormatSupported(VIDEO_FORMATS_3GPP);
+  }
+
+  private Data getVideoFormat3GP2Supported(int cameraNumber) {
+    return getVideoFormatSupported(VIDEO_FORMATS_3GP2);
+  }
+
+  /**
+   * @param videoFormats3gpp
+   * @return
+   */
+  private Data getVideoFormatSupported(String videoFormat) {
+    String formats = getSystemProperty(VIDEO_SUPPORTED_FORMATS, readSysPropsFromFile);
+
+    Data data = new Data();
+    try {
+      data.setName(videoFormat);
+      if (formats != null && formats.length() > 0) {
+        boolean supported = false;
+        if (videoFormat.equals(VIDEO_FORMATS_3GPP)) {
+          if (formats.contains("3gp")) {
+            supported = true;
+          }
+        } else if (videoFormat.equals(VIDEO_FORMATS_MPEG4)) {
+          if (formats.contains("mp4")) {
+            supported = true;
+          }
+        } else if (videoFormat.equals(VIDEO_FORMATS_3GP2)) {
+          if (formats.contains("3g2")) {
+            supported = true;
+          }
+        }
+        if (supported) {
+          data.setValue(Constants.NODE_VALUE_YES);
+        } else {
+          data.setValue(Constants.NODE_VALUE_NO);
+        }
+
+      } else {
+        data.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
+        data.setStatus(Constants.NODE_STATUS_FAILED);
+      }
+      return data;
+    } catch (Exception e) {
+      Logger.DEBUG(TAG, "Could not create node for Video format : " + videoFormat);
+    }
+    return null;
+  }
+
+  /**
+   * @param videoSupportedFormats
+   * @return
+   */
+  private String getSystemProperty(String propKey, boolean fromFile) {
+    String value = null;
+    if (fromFile) {
+      if (buildProps == null) {
+        buildProps = new Properties();
+        try {
+          buildProps.load(new FileInputStream(BUILD_PROPERTIES_FILE));
+        } catch (IOException e) {
+          Logger.DEBUG(TAG, "Could not read build.prop file !", e);
+        }
+      }
+      value = buildProps.getProperty(propKey);
+    } else {
+      try {
+        Class sysPropClass = Class.forName("android.os.SystemProperties");
+        Method getMethod = sysPropClass.getMethod("get", String.class);
+        value = (String) getMethod.invoke(sysPropClass.newInstance(), propKey);
+      } catch (Exception e) {
+        Logger.DEBUG(TAG, "Could not get systemProperty : " + propKey, e);
+      }
+    }
+    Logger.DEBUG(TAG, "system prop  " + propKey + " = " + value);
+    return value;
+  }
+
   private Data getAvailableMode(int cameraNumber, String nodeName, String methodName, String fieldName) {
     Camera.Parameters params = getCameraParams(cameraNumber);
     Data data = null;
@@ -607,53 +1065,53 @@ public class CameraPlugin extends AbstractPlugin {
     return data;
   }
 
-  private Data getResolutionMaximumSupported(int cameraNumber) {
-    Camera.Parameters params = getCameraParams(cameraNumber);
-    Data data = null;
-    Size size = null;
-    if (getAPIversion() >= 5) {
-      String methodName = "getSupportedPictureSizes";
-      try {
-        Method method = Camera.Parameters.class.getDeclaredMethod(methodName);
-        if (method != null) {
-          List<Camera.Size> sizes = (List<Size>) method.invoke(params, null);
-          if (sizes != null && sizes.size() > 0) {
-            size = sizes.get(0);
-          } else {
-            Logger.DEBUG(TAG, "No sizes available!");
-          }
-        }
-      } catch (SecurityException e) {
-        Logger.DEBUG(TAG, "Security check failed obtaining method : " + methodName);
-      } catch (NoSuchMethodException e) {
-        Logger.DEBUG(TAG, "No such method : " + methodName);
-      } catch (IllegalArgumentException e) {
-      } catch (IllegalAccessException e) {
-      } catch (InvocationTargetException e) {
-      }
-    }
-    if ((getAPIversion() > 0 && getAPIversion() < 5) || size == null) {
-      size = params.getPictureSize();
-    }
-    if (size != null) {
-      data = new Data();
-      try {
-        data.setName(IMAGE_RESOLUTIONS_MAXIMUM_RESOLUTION);
-        String value = String.valueOf(size.width) + "x" + size.height;
-        data.setValue(value);
-      } catch (Exception e) {
-        Logger.ERROR(TAG, "Could not create node name !");
-        data = null;
-      }
-    }
-    if (data == null) {
-      data = dataFailed(IMAGE_RESOLUTIONS_MAXIMUM_RESOLUTION);
-    }
-    if (data != null) {
-      Logger.DEBUG(TAG, "Camera Max resolution : " + data.getValue());
-    }
-    return data;
-  }
+//  private Data getResolutionMaximumSupported(int cameraNumber) {
+//    Camera.Parameters params = getCameraParams(cameraNumber);
+//    Data data = null;
+//    Size size = null;
+//    if (getAPIversion() >= 5) {
+//      String methodName = "getSupportedPictureSizes";
+//      try {
+//        Method method = Camera.Parameters.class.getDeclaredMethod(methodName);
+//        if (method != null) {
+//          List<Camera.Size> sizes = (List<Size>) method.invoke(params, null);
+//          if (sizes != null && sizes.size() > 0) {
+//            size = sizes.get(0);
+//          } else {
+//            Logger.DEBUG(TAG, "No sizes available!");
+//          }
+//        }
+//      } catch (SecurityException e) {
+//        Logger.DEBUG(TAG, "Security check failed obtaining method : " + methodName);
+//      } catch (NoSuchMethodException e) {
+//        Logger.DEBUG(TAG, "No such method : " + methodName);
+//      } catch (IllegalArgumentException e) {
+//      } catch (IllegalAccessException e) {
+//      } catch (InvocationTargetException e) {
+//      }
+//    }
+//    if ((getAPIversion() > 0 && getAPIversion() < 5) || size == null) {
+//      size = params.getPictureSize();
+//    }
+//    if (size != null) {
+//      data = new Data();
+//      try {
+//        data.setName(IMAGE_RESOLUTIONS_MAXIMUM_RESOLUTION);
+//        String value = String.valueOf(size.width) + "x" + size.height;
+//        data.setValue(value);
+//      } catch (Exception e) {
+//        Logger.ERROR(TAG, "Could not create node name !");
+//        data = null;
+//      }
+//    }
+//    if (data == null) {
+//      data = dataFailed(IMAGE_RESOLUTIONS_MAXIMUM_RESOLUTION);
+//    }
+//    if (data != null) {
+//      Logger.DEBUG(TAG, "Camera Max resolution : " + data.getValue());
+//    }
+//    return data;
+//  }
 
   private Data getFormatSupportedFormats(int cameraNumber) {
     String nodeName = IMAGE_SUPPORTED_FORMATS;
