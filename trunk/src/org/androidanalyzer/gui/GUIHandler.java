@@ -4,7 +4,6 @@ import org.androidanalyzer.Constants;
 import org.androidanalyzer.R;
 import org.androidanalyzer.core.Data;
 import org.androidanalyzer.core.utils.Logger;
-import org.androidanalyzer.gui.AnalyzerGUI;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;

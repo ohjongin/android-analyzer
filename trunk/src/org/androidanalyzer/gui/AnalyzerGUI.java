@@ -9,7 +9,6 @@ import org.androidanalyzer.core.AnalyzerCore;
 import org.androidanalyzer.core.Data;
 import org.androidanalyzer.core.UICallback;
 import org.androidanalyzer.core.utils.Logger;
-import org.androidanalyzer.transport.Reporter;
 import org.apache.http.client.HttpResponseException;
 
 import android.app.Activity;
@@ -18,7 +17,6 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Message;
 import android.view.Menu;

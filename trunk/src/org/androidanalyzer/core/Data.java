@@ -10,7 +10,6 @@ import org.androidanalyzer.Constants;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 /**
  * Parcelable Data object used in plugins to create data
@@ -26,8 +25,6 @@ public class Data implements Parcelable {
   public int describeContents() {
     return 0;
   }
-  
-  
 
   public void writeToParcel(Parcel out, int flags) {
     out.writeBundle(bundle);
@@ -82,18 +79,14 @@ public class Data implements Parcelable {
    * given an exception is raised. When value is Data type
    * the method automatically generates ArrayList<Data> to
    * which the Data object is appended. This array list is
-   * returned on getValue(). 
-   * 
-   * For String value dafault
-   * values are set for
+   * returned on getValue(). For String value dafault values
+   * are set for
    * ValueType(Constants.NODE_VALUE_TYPE_STRING),
    * Status(Constants.NODE_STATUS_OK),InputSource(Constants.
    * NODE_INPUT_SOURCE_AUTOMATIC) and and
    * ConfirmationLevel(Constants
-   * .NODE_CONFIRMATION_LEVEL_TEST_CASE_CONFIRMED).
-   * 
-   * For Data value the dafault
-   * values are 
+   * .NODE_CONFIRMATION_LEVEL_TEST_CASE_CONFIRMED). For Data
+   * value the dafault values are
    * ValueType(Constants.NODE_VALUE_TYPE_DATA),
    * Status(Constants.NODE_STATUS_OK),InputSource(Constants.
    * NODE_INPUT_SOURCE_AUTOMATIC) and and
@@ -112,21 +105,25 @@ public class Data implements Parcelable {
         setInputSource(Constants.NODE_INPUT_SOURCE_AUTOMATIC);
         setConfirmationLevel(Constants.NODE_CONFIRMATION_LEVEL_TEST_CASE_CONFIRMED);
       } else if (value instanceof Data) {
-        Data data = (Data) value;
-        setValueType(Constants.NODE_VALUE_TYPE_DATA);
-        setStatus(Constants.NODE_STATUS_OK);
-        setInputSource(Constants.NODE_INPUT_SOURCE_AUTOMATIC);
-        setConfirmationLevel(Constants.NODE_CONFIRMATION_LEVEL_TEST_CASE_CONFIRMED);
-        Object temp = bundle.get(Constants.NODE_VALUE);
-        ArrayList<Parcelable> list = null;
-        if (temp instanceof ArrayList<?>){
-          list = (ArrayList<Parcelable>) temp;
+        if (((Data) value).getValue() != null) {
+          Data data = (Data) value;
+          setValueType(Constants.NODE_VALUE_TYPE_DATA);
+          setStatus(Constants.NODE_STATUS_OK);
+          setInputSource(Constants.NODE_INPUT_SOURCE_AUTOMATIC);
+          setConfirmationLevel(Constants.NODE_CONFIRMATION_LEVEL_TEST_CASE_CONFIRMED);
+          Object temp = bundle.get(Constants.NODE_VALUE);
+          ArrayList<Parcelable> list = null;
+          if (temp instanceof ArrayList<?>) {
+            list = (ArrayList<Parcelable>) temp;
+          }
+          if (list == null) {
+            list = new ArrayList<Parcelable>();
+          }
+          list.add(data);
+          bundle.putParcelableArrayList(Constants.NODE_VALUE, list);
+        } else {
+          throw new Exception(Constants.NO_VALUE_IN_DATA_OBJECT);
         }
-        if (list == null) {
-          list = new ArrayList<Parcelable>();
-        }
-        list.add(data);
-        bundle.putParcelableArrayList(Constants.NODE_VALUE, list);
       } else {
         throw new Exception(Constants.VALUE_TYPE_INCORRECT);
       }
