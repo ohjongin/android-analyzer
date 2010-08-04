@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.security.cert.LDAPCertStoreParameters;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -78,6 +77,7 @@ public class MemoryPlugin extends AbstractPlugin {
         ramD.setStatus(Constants.NODE_STATUS_FAILED);
         ramD.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
       }
+      children.add(ramD);
     } catch (Exception e) {
       Logger.ERROR(TAG, "Could not create RAM Node!", e);
     }
@@ -95,6 +95,7 @@ public class MemoryPlugin extends AbstractPlugin {
         intStorageD.setStatus(Constants.NODE_STATUS_FAILED);
         intStorageD.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
       }
+      children.add(intStorageD);
     } catch (Exception e) {
       Logger.ERROR(TAG, "Could not create Internal Storage Node!", e);
     }
@@ -110,6 +111,7 @@ public class MemoryPlugin extends AbstractPlugin {
         extStorMediaType.setStatus(Constants.NODE_STATUS_FAILED);
         extStorMediaType.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
       }
+      children.add(extStorMediaType);
     } catch (Exception e) {
       Logger.ERROR(TAG, "Could not create Ext Storage Type Node!", e);
     }

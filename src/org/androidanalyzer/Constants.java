@@ -37,6 +37,7 @@ public class Constants {
 
   public static final String VALUE_NULL = "Value is null!";
   public static final String VALUE_TYPE_INCORRECT = "Value type is incorrect!";
+  public static final String NO_VALUE_IN_DATA_OBJECT = "Data Object has no value!";
 
   public static final String HANDLER_PROGRESS = "handler.progress";
   public static final String HANDLER_SEND = "handler.send";
@@ -47,4 +48,5 @@ public class Constants {
   public static final int LAYOUT_SEND = 2;
   public static final String ROOT_DATA = "Data";
   public static final String MD5_IMEI = "md5.imei";
+
 }
