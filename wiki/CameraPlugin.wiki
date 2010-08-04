@@ -25,9 +25,7 @@ The following table defines the structure of data being inserted in the report, 
 ||      || || || Face recognition || || || _boolean_ (Y, N) || || Unknown, N/A ||
 ||      || || || Dynamic range optimization || || || _boolean_ (Y, N) || || Unknown, N/A ||
 ||      || || || Formats || || || _string_ (comma-separated list of values: _JPEG_, _NV16_, _NV21_, _RGB_565_, _YUY2_) || || Map each value from {{{Camera.Parameters.getSupportedPictureFormats()}}} to _string_ represantation ||
-||      || || || Resolutions || || || || || ||
-||      || || || || Maximum supported || || _string_ (WxH value, e.g. _320x240_ or _240x320_, etc.) || || API1: {{{Camera.Parameters.getPictureSize()}}}<br>API5: {{{Camera.Parameters.getSupportedPictureSizes()}}} ||
-||      || || || || Supported || || _string_ (comma-separated list of WxH values, e.g. _320x240_, _240x320_, etc.) || || {{{Camera.Parameters.getSupportedPictureSizes()}}} ||
+||      || || || Supported resolutions || || || _string_ (comma-separated list of WxH values, e.g. _320x240_, _240x320_, etc.) || || {{{Camera.Parameters.getSupportedPictureSizes()}}} ||
 ||      || || || Supported compression ratios || || || || || Unknown, N/A ||
 ||      || || Video || || || || || || ||
 ||      || || || Self timer || || || || || Unknown, N/A ||
@@ -43,20 +41,23 @@ The following table defines the structure of data being inserted in the report, 
 ||      || || || || 3GPP || || boolean (Y, N) || || {{{android.os.SystemProperties.get("ro.media.enc.file.format")}}} ||
 ||      || || || || 3GP2 || || boolean (Y, N) || || {{{android.os.SystemProperties.get("ro.media.enc.file.format")}}} ||
 ||      || || || Video encoding || || || || || ||
-||      || || || || Codec(X) || || || || {{{android.os.SystemProperties.get("ro.media.enc.vid.codec")}}} or parse /system/build.prop ||
-||      || || || || || Supported resolutions || string (comma-separated list of WxH values, e.g. 320x240, 240x320, etc.) || || {{{android.os.SystemProperties.get("ro.media.enc.vid.codec(x).width")}}}<br>{{{android.os.SystemProperties.get("ro.media.enc.vid.codec(x).height")}}} <br> or parse /system/build.prop ||
-||      || || || || || Minimum framerate || integer || fps || {{{android.os.SystemProperties.get("ro.media.enc.vid.codec(x).fps")}}} or parse /system/build.prop ||
-||      || || || || || Maximum framerate || integer || fps || {{{android.os.SystemProperties.get("ro.media.enc.vid.codec(x).fps")}}} <br> or parse /system/build.prop ||
-||      || || || || || Minimum bitrate || integer || bps || {{{android.os.SystemProperties.get("ro.media.enc.vid.codec(x).bps")}}} <br> or parse /system/build.prop ||
-||      || || || || || Maximum bitrate || integer || bps || {{{android.os.SystemProperties.get("ro.media.enc.vid.codec(x).bps")}}} <br> or parse /system/build.prop ||
-||      || || || Audio encoding || || || || || {{{android.os.SystemProperties.get("ro.media.enc.aud.codec")}}}  <br> or parse /system/build.prop||
-||      || || || || Codec(X) || || || || {{{android.os.SystemProperties.get("ro.media.enc.vid.codec")}}} or parse /system/build.prop ||
-||      || || || || || Minimum bitrate || integer || bps || {{{android.os.SystemProperties.get("ro.media.enc.vid.codec(x).bps")}}} <br> or parse /system/build.prop ||
-||      || || || || || Maximum bitrate || integer || bps || {{{android.os.SystemProperties.get("ro.media.enc.vid.codec(x).bps")}}} <br> or parse /system/build.prop ||
-||      || || || || || Minimum frequency || integer || hz || {{{android.os.SystemProperties.get("ro.media.enc.aud.codec(x).hz")}}} <br> or parse /system/build.prop ||
-||      || || || || || Maximum frequency || integer || hz || {{{android.os.SystemProperties.get("ro.media.enc.aud.codec(x).hz")}}} <br> or parse /system/build.prop ||
-||      || || || || || Minimum channels || integer || channels || {{{android.os.SystemProperties.get("ro.media.enc.aud.codec(x).ch")}}} or parse /system/build.prop ||
-||      || || || || || Maximum channels || integer || channels || {{{android.os.SystemProperties.get("ro.media.enc.aud.codec(x).ch")}}} <br> or parse /system/build.prop ||
+||      || || || || {{{<codec>}}} || || || || {{{android.os.SystemProperties.get("ro.media.enc.vid.codec")}}} or parse /system/build.prop ||
+||      || || || || || Supported resolutions || string (comma-separated list of WxH values, e.g. 320x240, 240x320, etc.) || || {{{android.os.SystemProperties.get("ro.media.enc.vid.<codec>.width")}}}<br>{{{android.os.SystemProperties.get("ro.media.enc.vid.<codec>.height")}}} <br> or parse /system/build.prop ||
+||      || || || || || Minimum framerate || integer || fps || {{{android.os.SystemProperties.get("ro.media.enc.vid.<codec>.fps")}}} or parse /system/build.prop ||
+||      || || || || || Maximum framerate || integer || fps || {{{android.os.SystemProperties.get("ro.media.enc.vid.<codec>.fps")}}} <br> or parse /system/build.prop ||
+||      || || || || || Minimum bitrate || integer || bps || {{{android.os.SystemProperties.get("ro.media.enc.vid.<codec>.bps")}}} <br> or parse /system/build.prop ||
+||      || || || || || Maximum bitrate || integer || bps || {{{android.os.SystemProperties.get("ro.media.enc.vid.<codec>.bps")}}} <br> or parse /system/build.prop ||
+||      || || || Audio encoding || || || || || ||
+||      || || || || {{{<codec>}}} || || || || {{{android.os.SystemProperties.get("ro.media.enc.vid.codec")}}} or parse /system/build.prop ||
+||      || || || || || Minimum bitrate || integer || bps || {{{android.os.SystemProperties.get("ro.media.enc.vid.<codec>.bps")}}} <br> or parse /system/build.prop ||
+||      || || || || || Maximum bitrate || integer || bps || {{{android.os.SystemProperties.get("ro.media.enc.vid.<codec>.bps")}}} <br> or parse /system/build.prop ||
+||      || || || || || Minimum frequency || integer || Hz || {{{android.os.SystemProperties.get("ro.media.enc.aud.<codec>.hz")}}} <br> or parse /system/build.prop ||
+||      || || || || || Maximum frequency || integer || Hz || {{{android.os.SystemProperties.get("ro.media.enc.aud.<codec>.hz")}}} <br> or parse /system/build.prop ||
+||      || || || || || Minimum channels || integer || channels || {{{android.os.SystemProperties.get("ro.media.enc.aud.<codec>.ch")}}} or parse /system/build.prop ||
+||      || || || || || Maximum channels || integer || channels || {{{android.os.SystemProperties.get("ro.media.enc.aud.<codec>.ch")}}} <br> or parse /system/build.prop ||
 
 
-Note: for each present camera a separate Camera-{{{<x>}}} node is created, {{{<x>}}} starting from 0.
+Note: for each present camera a separate Camera-{{{<x>}}} node is created, {{{<x>}}} starting from 0. <br><br>
+
+{{{<codec>}}} is the string representation of a codec name (e.g h264,m4v,h263,aac,amrnb etc. )
+)
