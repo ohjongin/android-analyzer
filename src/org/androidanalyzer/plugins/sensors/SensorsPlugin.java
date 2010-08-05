@@ -34,7 +34,7 @@ public class SensorsPlugin extends AbstractPlugin {
 	private static final String MAGNETIC = "Magnetic field";
 	private static final String SENSOR_NAME = "Name";
 	/** Sensors features */
-	private static final String SENSORS_CNT = "Sensors_";
+	private static final String SENSORS_CNT = "Sensor-";
 	private static final String MAX_RANGE = "Maximum range";
 	private static final String POWER = "Power";
 	private static final String RESOLUTION = "Resolution";
