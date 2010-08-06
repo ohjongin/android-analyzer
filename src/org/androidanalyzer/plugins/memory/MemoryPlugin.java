@@ -45,6 +45,7 @@ public class MemoryPlugin extends AbstractPlugin {
   private static final String MEMORY_METRIC = "K";
 
   private static final CharSequence FLASH_FILE_SYSTEM = "yaffs";
+  private static final CharSequence UBI_FILE_SYSTEM = "ubifs";
 
   /*
    * (non-Javadoc)
@@ -214,7 +215,7 @@ public class MemoryPlugin extends AbstractPlugin {
     try {
       buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
       while ((line = buf.readLine()) != null) {
-        if (line.contains(FLASH_FILE_SYSTEM)) {
+        if (line.contains(FLASH_FILE_SYSTEM) || line.contains(UBI_FILE_SYSTEM)) {
           StringTokenizer token = new StringTokenizer(line, " ");
           while (token.hasMoreElements()) {
             String mntPoint = token.nextToken();

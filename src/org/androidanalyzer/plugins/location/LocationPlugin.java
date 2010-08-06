@@ -58,14 +58,17 @@ public class LocationPlugin extends AbstractPlugin {
       /* GPS */
       gps = new Data();
       gps.setName(GPS);
+      Data gpsSupported = new Data();
+      gpsSupported.setName("Supported");
       String gpsAvailable = getGpsAvailable();
       if (gpsAvailable != null && gpsAvailable.length() > 0) {
-        gps.setValue(gpsAvailable);
-        gps.setStatus(Constants.NODE_STATUS_OK);
+        gpsSupported.setValue(gpsAvailable);
+        gpsSupported.setValueType(Constants.NODE_VALUE_TYPE_BOOLEAN);
       } else {
-        gps.setStatus(Constants.NODE_STATUS_FAILED);
-        gps.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
+        gpsSupported.setStatus(Constants.NODE_STATUS_FAILED);
+        gpsSupported.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
       }
+      gps.setValue(gpsSupported);
       children.add(gps);
     } catch (Exception e) {
       Logger.DEBUG(TAG, "Could not set GPS node !");
