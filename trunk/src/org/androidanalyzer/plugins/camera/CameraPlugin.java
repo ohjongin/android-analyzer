@@ -352,16 +352,16 @@ public class CameraPlugin extends AbstractPlugin {
     Logger.DEBUG(TAG, "formatsFromFile : " + formatsFromFile);
 
     StringTokenizer token = null;
-    if (formats != null && formatsFromFile != null) {
+    if (formats != null && formats.length() > 0 && formatsFromFile != null && formatsFromFile.length() > 0) {
       if (formats.length() >= formatsFromFile.length()) {
         token = new StringTokenizer(formats, ",");
       } else {
         token = new StringTokenizer(formatsFromFile, ",");
         readSysPropsFromFile = true;
       }
-    } else if (formats != null) {
+    } else if (formats != null && formats.length() > 0) {
       token = new StringTokenizer(formats, ",");
-    } else if (formatsFromFile != null) {
+    } else if (formatsFromFile != null && formatsFromFile.length() > 0) {
       token = new StringTokenizer(formatsFromFile, ",");
       readSysPropsFromFile = true;
     } else {
@@ -566,16 +566,16 @@ public class CameraPlugin extends AbstractPlugin {
     Logger.DEBUG(TAG, "audio formatsFromFile : " + formatsFromFile);
 
     StringTokenizer token = null;
-    if (formats != null && formatsFromFile != null) {
+    if (formats != null && formats.length() > 0 && formatsFromFile != null && formatsFromFile.length() > 0) {
       if (formats.length() >= formatsFromFile.length()) {
         token = new StringTokenizer(formats, ",");
       } else {
         token = new StringTokenizer(formatsFromFile, ",");
         readSysPropsFromFile = true;
       }
-    } else if (formats != null) {
+    } else if (formats != null && formats.length() > 0) {
       token = new StringTokenizer(formats, ",");
-    } else if (formatsFromFile != null) {
+    } else if (formatsFromFile != null && formatsFromFile.length() > 0) {
       token = new StringTokenizer(formatsFromFile, ",");
       readSysPropsFromFile = true;
     } else {
@@ -1065,53 +1065,63 @@ public class CameraPlugin extends AbstractPlugin {
     return data;
   }
 
-//  private Data getResolutionMaximumSupported(int cameraNumber) {
-//    Camera.Parameters params = getCameraParams(cameraNumber);
-//    Data data = null;
-//    Size size = null;
-//    if (getAPIversion() >= 5) {
-//      String methodName = "getSupportedPictureSizes";
-//      try {
-//        Method method = Camera.Parameters.class.getDeclaredMethod(methodName);
-//        if (method != null) {
-//          List<Camera.Size> sizes = (List<Size>) method.invoke(params, null);
-//          if (sizes != null && sizes.size() > 0) {
-//            size = sizes.get(0);
-//          } else {
-//            Logger.DEBUG(TAG, "No sizes available!");
-//          }
-//        }
-//      } catch (SecurityException e) {
-//        Logger.DEBUG(TAG, "Security check failed obtaining method : " + methodName);
-//      } catch (NoSuchMethodException e) {
-//        Logger.DEBUG(TAG, "No such method : " + methodName);
-//      } catch (IllegalArgumentException e) {
-//      } catch (IllegalAccessException e) {
-//      } catch (InvocationTargetException e) {
-//      }
-//    }
-//    if ((getAPIversion() > 0 && getAPIversion() < 5) || size == null) {
-//      size = params.getPictureSize();
-//    }
-//    if (size != null) {
-//      data = new Data();
-//      try {
-//        data.setName(IMAGE_RESOLUTIONS_MAXIMUM_RESOLUTION);
-//        String value = String.valueOf(size.width) + "x" + size.height;
-//        data.setValue(value);
-//      } catch (Exception e) {
-//        Logger.ERROR(TAG, "Could not create node name !");
-//        data = null;
-//      }
-//    }
-//    if (data == null) {
-//      data = dataFailed(IMAGE_RESOLUTIONS_MAXIMUM_RESOLUTION);
-//    }
-//    if (data != null) {
-//      Logger.DEBUG(TAG, "Camera Max resolution : " + data.getValue());
-//    }
-//    return data;
-//  }
+  // private Data getResolutionMaximumSupported(int
+  // cameraNumber) {
+  // Camera.Parameters params =
+  // getCameraParams(cameraNumber);
+  // Data data = null;
+  // Size size = null;
+  // if (getAPIversion() >= 5) {
+  // String methodName = "getSupportedPictureSizes";
+  // try {
+  // Method method =
+  // Camera.Parameters.class.getDeclaredMethod(methodName);
+  // if (method != null) {
+  // List<Camera.Size> sizes = (List<Size>)
+  // method.invoke(params, null);
+  // if (sizes != null && sizes.size() > 0) {
+  // size = sizes.get(0);
+  // } else {
+  // Logger.DEBUG(TAG, "No sizes available!");
+  // }
+  // }
+  // } catch (SecurityException e) {
+  // Logger.DEBUG(TAG,
+  // "Security check failed obtaining method : " +
+  // methodName);
+  // } catch (NoSuchMethodException e) {
+  // Logger.DEBUG(TAG, "No such method : " + methodName);
+  // } catch (IllegalArgumentException e) {
+  // } catch (IllegalAccessException e) {
+  // } catch (InvocationTargetException e) {
+  // }
+  // }
+  // if ((getAPIversion() > 0 && getAPIversion() < 5) ||
+  // size == null) {
+  // size = params.getPictureSize();
+  // }
+  // if (size != null) {
+  // data = new Data();
+  // try {
+  // data.setName(IMAGE_RESOLUTIONS_MAXIMUM_RESOLUTION);
+  // String value = String.valueOf(size.width) + "x" +
+  // size.height;
+  // data.setValue(value);
+  // } catch (Exception e) {
+  // Logger.ERROR(TAG, "Could not create node name !");
+  // data = null;
+  // }
+  // }
+  // if (data == null) {
+  // data =
+  // dataFailed(IMAGE_RESOLUTIONS_MAXIMUM_RESOLUTION);
+  // }
+  // if (data != null) {
+  // Logger.DEBUG(TAG, "Camera Max resolution : " +
+  // data.getValue());
+  // }
+  // return data;
+  // }
 
   private Data getFormatSupportedFormats(int cameraNumber) {
     String nodeName = IMAGE_SUPPORTED_FORMATS;
@@ -1249,7 +1259,7 @@ public class CameraPlugin extends AbstractPlugin {
       data.setName(parentNodeName);
       data.setStatus(Constants.NODE_STATUS_FAILED);
       data.setValue(reason);
-      data.setValue(Constants.NODE_VALUE_TYPE_STRING);
+      data.setValueType(Constants.NODE_VALUE_TYPE_STRING);
     } catch (Exception e) {
       Logger.ERROR(TAG, "Could not set failed node : " + parentNodeName);
       data = null;
