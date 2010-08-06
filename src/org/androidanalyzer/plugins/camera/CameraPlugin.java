@@ -655,7 +655,7 @@ public class CameraPlugin extends AbstractPlugin {
    */
   private Data getMaxAudioFrequency(int cameraNumber, String format) {
     return getEncFormatCapability(cameraNumber, format, AUDIO_CODEC_CAPABILITES_PREFIX + "." + format + ".hz",
-        AUDIO_MAX_FREQ, "hz", true);
+        AUDIO_MAX_FREQ, "Hz", true);
   }
 
   /**
@@ -665,7 +665,7 @@ public class CameraPlugin extends AbstractPlugin {
    */
   private Data getMinAudioFrequency(int cameraNumber, String format) {
     return getEncFormatCapability(cameraNumber, format, AUDIO_CODEC_CAPABILITES_PREFIX + "." + format + ".hz",
-        AUDIO_MIN_FREQ, "hz", false);
+        AUDIO_MIN_FREQ, "Hz", false);
   }
 
   /**
@@ -1193,7 +1193,7 @@ public class CameraPlugin extends AbstractPlugin {
   private Data getCameraResolution(int cameraNumber) {
     Camera.Parameters params = getCameraParams(cameraNumber);
     Data data = null;
-    Size size = null;
+    double size = 0;
     if (getAPIversion() >= 5) {
       String methodName = "getSupportedPictureSizes";
       try {
@@ -1201,7 +1201,13 @@ public class CameraPlugin extends AbstractPlugin {
         if (method != null) {
           List<Camera.Size> sizes = (List<Size>) method.invoke(params, null);
           if (sizes != null && sizes.size() > 0) {
-            size = sizes.get(0);
+            for (Size curSize : sizes) {
+              if (size == 0) {
+                size = curSize.height * curSize.width;
+              } else if (size < (curSize.height * curSize.width)) {
+                size = curSize.height * curSize.width;
+              }
+            }
           } else {
             Logger.DEBUG(TAG, "No sizes available!");
           }
@@ -1215,16 +1221,18 @@ public class CameraPlugin extends AbstractPlugin {
       } catch (InvocationTargetException e) {
       }
     }
-    if ((getAPIversion() > 0 && getAPIversion() < 5) || size == null) {
-      size = params.getPictureSize();
+    if ((getAPIversion() > 0 && getAPIversion() < 5) || size == 0) {
+      Size sizeFromParams = params.getPictureSize();
+      if (sizeFromParams != null) {
+        size = sizeFromParams.width * sizeFromParams.height;
+      }
     }
-    if (size != null) {
+    if (size > 0) {
       data = new Data();
       try {
         data.setName(PARENT_NODE_NAME_RESOLUTION);
-        double value = (size.height * size.width);
-        value = value / 1000000;
-        data.setValue(String.valueOf(value));
+        size = size / 1000000;
+        data.setValue(String.valueOf(size));
         data.setValueMetric("MP");
         data.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
       } catch (Exception e) {
