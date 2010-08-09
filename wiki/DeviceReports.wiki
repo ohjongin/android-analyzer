@@ -14,7 +14,7 @@ This is a [http://android-analyzer.googlecode.com/svn/trunk/docs/Sample%20Device
 || || || || Version || String || || ||
 || || || Plugins || || || || ||
 || || || || Plugin_0 || || || ||
-|| || || || || Human Name || String || ||
+|| || || || || Human name || String || ||
 || || || || || Class name || String || ||
 || || || || || Version || String  || ||
 || || || || || Vendor || String  || ||
