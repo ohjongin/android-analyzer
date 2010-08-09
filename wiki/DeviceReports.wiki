@@ -11,17 +11,17 @@ This is a [http://android-analyzer.googlecode.com/svn/trunk/docs/Sample%20Device
 || || || < Node > || || || || || ||
 || || || Metadata || || || || || ||
 || || || || Analyzer || || || || ||
-|| || || || || Version || || || ||
+|| || || || || Version || String || || ||
 || || || || Plugins || || || || ||
 || || || || || Plugin_0 || || || ||
-|| || || || || || Human Name || || ||
-|| || || || || || Class name || || ||
-|| || || || || || Version || || ||
-|| || || || || || Vendor || || ||
+|| || || || || || Human Name || String || ||
+|| || || || || || Class name || String || ||
+|| || || || || || Version || String  || ||
+|| || || || || || Vendor || String  || ||
 || || || || Device || || || || ||
-|| || || || || ID || || || ||
+|| || || || || ID || String  || || ||
 || || || || Report || || || || ||
-|| || || || || ID || || || ||
+|| || || || || ID || String  || || ||
 
 For further detail about *< Node >* structure please see [Plugins Plugins] section.
 
