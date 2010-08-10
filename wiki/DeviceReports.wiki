@@ -18,6 +18,7 @@ This is a [http://android-analyzer.googlecode.com/svn/trunk/docs/Sample%20Device
 || || || || || Class name || String || ||
 || || || || || Version || String  || ||
 || || || || || Vendor || String  || ||
+|| || || || || Status || String  || ||
 || || || Device || || || || ||
 || || || || ID || String  || || ||
 || || || Report || || || || ||
