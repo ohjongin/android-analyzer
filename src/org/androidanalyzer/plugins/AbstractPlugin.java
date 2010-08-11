@@ -113,6 +113,33 @@ public abstract class AbstractPlugin extends Service {
       Logger.setDebug(enabled);
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.androidanalyzer.core.IAnalyzerPlugin#getClassName()
+     */
+		@Override
+		public String getClassName() throws RemoteException {
+			return getPluginClassName();
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see org.androidanalyzer.core.IAnalyzerPlugin#getVersion()
+		 */
+		@Override
+		public String getVersion() throws RemoteException {
+			return getPluginVersion();
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see org.androidanalyzer.core.IAnalyzerPlugin#getVendor()
+		 */
+		@Override
+		public String getVendor() throws RemoteException {
+			return getPluginVendor();
+		}
+
   }
 
   private BroadcastReceiver breceiver = new BroadcastReceiver() {
@@ -240,6 +267,7 @@ public abstract class AbstractPlugin extends Service {
    * @return pluginName
    */
   abstract public String getPluginName();
+  
 
   /**
    * Return plugin timeout. Once the timeout is reached
@@ -255,6 +283,13 @@ public abstract class AbstractPlugin extends Service {
    * @return pluginVersion
    */
   abstract public String getPluginVersion();
+  
+  /**
+   * Return plugin vendor
+   * 
+   * @return pluginVendor
+   */
+  abstract public String getPluginVendor();
 
   /**
    * Return plugin class name

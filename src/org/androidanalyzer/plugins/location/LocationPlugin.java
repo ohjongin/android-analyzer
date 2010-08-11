@@ -24,8 +24,10 @@ import android.provider.Settings.SettingNotFoundException;
 public class LocationPlugin extends AbstractPlugin {
 
   private static final String TAG = "Analyzer-LocationPlugin";
-  public static final String NAME = "Location Plugin";
-  public static final String PARENT_NODE_NAME = "Location";
+  private static final String NAME = "Location Plugin";
+  private static final String PLUGIN_VERSION = "1.0.0";
+  private static final String PLUGIN_VENDOR = "ProSyst Software GmbH";
+  private static final String PARENT_NODE_NAME = "Location";
 
   private static final String GPS = "GPS";
   private static final String AGPS = "A-GPS support";
@@ -147,9 +149,19 @@ public class LocationPlugin extends AbstractPlugin {
    */
   @Override
   public String getPluginVersion() {
-    return "1.0.0";
+    return PLUGIN_VERSION;
   }
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.androidanalyzer.plugins.AbstractPlugin#getPluginVendor()
+	 */
+	@Override
+	public String getPluginVendor() {
+		return PLUGIN_VENDOR;
+	}
+	
   /*
    * (non-Javadoc)
    * @see org.androidanalyzer.plugins.location.
@@ -221,5 +233,7 @@ public class LocationPlugin extends AbstractPlugin {
     }
     return Constants.NODE_VALUE_NO;
   }
+
+
 
 }

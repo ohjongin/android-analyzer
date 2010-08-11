@@ -113,6 +113,21 @@ public abstract class AbstractPlugin extends Service {
       Logger.setDebug(enabled);
     }
 
+		@Override
+		public String getPluginClassName() throws RemoteException {
+			return getPluginClassName();
+		}
+
+		@Override
+		public String getPluginVersion() throws RemoteException {
+			return getPluginVersion();
+		}
+
+		@Override
+		public String getPluginVendor() throws RemoteException {
+			return getPluginVendor();
+		}
+
   }
 
   private BroadcastReceiver breceiver = new BroadcastReceiver() {
@@ -240,6 +255,7 @@ public abstract class AbstractPlugin extends Service {
    * @return pluginName
    */
   abstract public String getPluginName();
+  
 
   /**
    * Return plugin timeout. Once the timeout is reached
@@ -255,6 +271,13 @@ public abstract class AbstractPlugin extends Service {
    * @return pluginVersion
    */
   abstract public String getPluginVersion();
+  
+  /**
+   * Return plugin vendor
+   * 
+   * @return pluginVendor
+   */
+  abstract public String getPluginVendor();
 
   /**
    * Return plugin class name

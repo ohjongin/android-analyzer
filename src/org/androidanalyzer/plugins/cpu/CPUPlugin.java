@@ -21,10 +21,10 @@ import org.androidanalyzer.plugins.AbstractPlugin;
  */
 public class CPUPlugin extends AbstractPlugin {
 
-  public static final String NAME = "CPU Plugin";
-  public static final String PLUGIN_VERSION = "1.0.0";
-  public static final String PARENT_NODE_NAME = "CPU";
-
+	private static final String NAME = "CPU Plugin";
+  private static final String PLUGIN_VERSION = "1.0.0";
+  private static final String PLUGIN_VENDOR = "ProSyst Software GmbH";
+  private static final String PARENT_NODE_NAME = "CPU";
   private static final String TAG = "Analyzer-CPUPlugin";
   private static final String OS_ARCH = "os.arch";
   private static final String INSTRUCTION_SET = "Instruction Set";
@@ -61,6 +61,7 @@ public class CPUPlugin extends AbstractPlugin {
       Data manifacturer = new Data();
       manifacturer.setName(MANUFACTURER);
       String manifac = getCpuManufacturer();
+			Logger.DEBUG(TAG, "Manifacturer: " + manifac);
       if (manifac != null && manifac.length() > 0) {
         manifacturer.setValue(manifac);
         manifacturer.setStatus(Constants.NODE_STATUS_OK);
@@ -79,7 +80,7 @@ public class CPUPlugin extends AbstractPlugin {
     try {
       Data insSet = new Data();
       insSet.setName(INSTRUCTION_SET);
-
+			Logger.DEBUG(TAG, "OS Architecture: " + os_arch);
       if (os_arch != null && os_arch.length() > 0) {
         insSet.setValue(os_arch);
         insSet.setStatus(Constants.NODE_STATUS_OK);
@@ -97,6 +98,7 @@ public class CPUPlugin extends AbstractPlugin {
       Data name = new Data();
       name.setName(CPU_NAME);
       String nameString = getCpuName();
+      Logger.DEBUG(TAG, "CPU name: " + nameString);
       if (nameString != null && nameString.length() > 0) {
         name.setValue(nameString);
         name.setStatus(Constants.NODE_STATUS_OK);
@@ -121,6 +123,7 @@ public class CPUPlugin extends AbstractPlugin {
         validValue = true;
       } catch (Exception e) {
       }
+      Logger.DEBUG(TAG, "Frequency: " + freq);
       if (freq != null && freq.length() > 0 && validValue) {
         frequency.setValue(freq);
         frequency.setStatus(Constants.NODE_STATUS_OK);
@@ -161,6 +164,17 @@ public class CPUPlugin extends AbstractPlugin {
     return PLUGIN_VERSION;
   }
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.androidanalyzer.plugins.AbstractPlugin#getPluginVendor()
+	 */
+	@Override
+	public String getPluginVendor() {
+		// TODO Auto-generated method stub
+		return PLUGIN_VENDOR;
+	}
+	
   /*
    * (non-Javadoc)
    * @see

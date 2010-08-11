@@ -7,7 +7,6 @@ import org.androidanalyzer.core.Data;
 import org.androidanalyzer.core.utils.Logger;
 import org.androidanalyzer.plugins.AbstractPlugin;
 
-
 /**
  * Description
  * 
@@ -17,6 +16,8 @@ import org.androidanalyzer.plugins.AbstractPlugin;
 public class APIPlugin extends AbstractPlugin {
 
 	private static final String NAME = "API Plugin";
+	private static final String PLUGIN_VERSION = "1.0.0";
+	private static final String PLUGIN_VENDOR = "ProSyst Software GmbH";
 	private static final String API = "API";
 	private static final String ANDROID_API_LEVEL = "Android API Level";
 	private static final String GOOGLE = "Google";
@@ -50,7 +51,17 @@ public class APIPlugin extends AbstractPlugin {
 	 */
 	@Override
 	public String getPluginVersion() {
-		return "1.0.0";
+		return PLUGIN_VERSION;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.androidanalyzer.plugins.AbstractPlugin#getPluginVendor()
+	 */
+	@Override
+	public String getPluginVendor() {
+		return PLUGIN_VENDOR;
 	}
 
 	/*
@@ -76,7 +87,7 @@ public class APIPlugin extends AbstractPlugin {
 			apiLevelHolder.setName(ANDROID_API_LEVEL);
 			int apiVersion = getAPIversion();
 			if (apiVersion > 0) {
-				apiLevelHolder.setValue(""+apiVersion);
+				apiLevelHolder.setValue("" + apiVersion);
 				apiLevelHolder.setStatus(Constants.NODE_STATUS_OK);
 				apiLevelHolder.setValueType(Constants.NODE_VALUE_TYPE_INT);
 			} else {

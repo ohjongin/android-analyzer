@@ -24,14 +24,15 @@ import org.androidanalyzer.plugins.AbstractPlugin;
  */
 public class MemoryPlugin extends AbstractPlugin {
 
-  public static final String NAME = "Memory Plugin";
-  public static final String PLUGIN_VERSION = "1.0.0";
-  public static final String PARENT_NODE_NAME = "Memory";
+	private static final String NAME = "Memory Plugin";
+  private static final String PLUGIN_VERSION = "1.0.0";
+  private static final String PLUGIN_VENDOR = "ProSyst Software GmbH";
+  private static final String PARENT_NODE_NAME = "Memory";
 
-  public static final String RAM = "RAM";
-  public static final String INTERNAL_STORAGE = "Internal Storage";
-  public static final String EXTERNAL_STORAGE_MEDIA_TYPE = "Media type";
-  public static final String EXTERNAL_STORAGE_MAXIMUM_SIZE = "Maximum size";
+  private static final String RAM = "RAM";
+  private static final String INTERNAL_STORAGE = "Internal Storage";
+  private static final String EXTERNAL_STORAGE_MEDIA_TYPE = "Media type";
+  private static final String EXTERNAL_STORAGE_MAXIMUM_SIZE = "Maximum size";
 
   private static final String MEM_INFO_FILE = "/proc/meminfo";
   private static final String TAG = "Analyzer-MemoryPlugin";
@@ -154,6 +155,16 @@ public class MemoryPlugin extends AbstractPlugin {
     return 10000;
   }
 
+  /*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.androidanalyzer.plugins.AbstractPlugin#getPluginVendor()
+	 */
+	@Override
+	public String getPluginVendor() {
+		return PLUGIN_VENDOR;
+	}
+	
   /*
    * (non-Javadoc)
    * @see org.androidanalyzer.plugins.memory.

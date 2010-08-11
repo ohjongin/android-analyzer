@@ -57,7 +57,7 @@ public class JSONFormatter {
         if (valueMetric != null)
           holder.put(Constants.NODE_VALUE_METRIC, valueMetric);
         holder.put(Constants.NODE_COMMENT, comment);
-        if (name.equals(Constants.ROOT_DATA)) {
+        if (name.equals(Constants.ROOT)) {
           JSONObject root = new JSONObject();
           holder = root.put(name, holder);
         }

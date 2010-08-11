@@ -1,109 +1,97 @@
 package org.androidanalyzer.plugins.dummyplugin;
 
-import java.util.ArrayList;
-
 import org.androidanalyzer.core.Data;
-import org.androidanalyzer.core.IAnalyzerPlugin;
-import org.androidanalyzer.core.IPluginRegistry;
 import org.androidanalyzer.plugins.AbstractPlugin;
-
-import android.app.Service;
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
-import android.os.IBinder;
-import android.os.RemoteException;
 
 /**
  * @author k.raev
  */
 public class DummyExternalPlugin extends AbstractPlugin {
 
-  private static final String NAME = "Dummy plugin External";
+	private static final String NAME = "Dummy plugin external";
+	private static final String DUMMY_DATA_NAME = "Dummy Data";
+	private static final String DUMMY_DATA_INFO_NAME = "Dummy Info";
+	private static final String DUMMY_DATA_INFO_VALUE = "No info here";
+	private static final String PLUGIN_VERSION = "1.0.0";
+	private static final String PLUGIN_VENDOR = "ProSyst Software GmbH";
 
-  /**
-   * @return
-   */
-  private Data returnDummyData() {
-    Data dummy = new Data();
-    try {
-      dummy.setName("DummyInfo External");
-      Data dummyInfo = new Data();
-      dummyInfo.setName("Info about nothing");
-      dummyInfo.setValue("no info here");
-      dummy.setValue(dummyInfo);
-      
-    } catch (Exception e) {
-      // TODO: handle exception
-    }
-    return dummy;
-  }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.androidanalyzer.plugins.AbstractPlugin#getPluginName ()k
+	 */
+	@Override
+	public String getPluginName() {
+		return NAME;
+	}
 
-  /*
-   * (non-Javadoc)
-   * @see
-   * org.androidanalyzer.plugins.AbstractPlugin#getPluginName
-   * ()k
-   */
-  @Override
-  public String getPluginName() {
-    return NAME;
-  }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.androidanalyzer.plugins.AbstractPlugin#getPluginTimeout ()
+	 */
+	@Override
+	public long getPluginTimeout() {
+		return 10000;
+	}
 
-  /*
-   * (non-Javadoc)
-   * @see
-   * org.androidanalyzer.plugins.AbstractPlugin#getPluginTimeout
-   * ()
-   */
-  @Override
-  public long getPluginTimeout() {
-    return 10000;
-  }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.androidanalyzer.plugins.AbstractPlugin#getPluginVersion ()
+	 */
+	@Override
+	public String getPluginVersion() {
+		return PLUGIN_VERSION;
+	}
 
-  /*
-   * (non-Javadoc)
-   * @see
-   * org.androidanalyzer.plugins.AbstractPlugin#getPluginVersion
-   * ()
-   */
-  @Override
-  public String getPluginVersion() {
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.androidanalyzer.plugins.AbstractPlugin#getPluginVendor()
+	 */
+	@Override
+	public String getPluginVendor() {
+		return PLUGIN_VENDOR;
+	}
 
-    return "1.0.0";
-  }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.androidanalyzer.plugins.AbstractPlugin# getPluginClassName()
+	 */
+	@Override
+	protected String getPluginClassName() {
+		return this.getClass().getName();
+	}
 
-  /*
-   * (non-Javadoc)
-   * @see org.androidanalyzer.plugins.AbstractPlugin#
-   * getPluginClassName()
-   */
-  @Override
-  protected String getPluginClassName() {
-    return this.getClass().getName();
-  }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.androidanalyzer.plugins.AbstractPlugin#getData()
+	 */
+	@Override
+	protected Data getData() {
+		Data dummy = new Data();
+		try {
+			dummy.setName(DUMMY_DATA_NAME);
+			Data dummyInfo = new Data();
+			dummyInfo.setName(DUMMY_DATA_INFO_NAME);
+			dummyInfo.setValue(DUMMY_DATA_INFO_VALUE);
+			dummy.setValue(dummyInfo);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return dummy;
+	}
 
-  /*
-   * (non-Javadoc)
-   * @see
-   * org.androidanalyzer.plugins.AbstractPlugin#getData()
-   */
-  @Override
-  protected Data getData() {
-    return returnDummyData();
-  }
-
-  /*
-   * (non-Javadoc)
-   * @see org.androidanalyzer.plugins.AbstractPlugin#
-   * stopDataCollection()
-   */
-  @Override
-  protected void stopDataCollection() {
-    // TODO Auto-generated method stub
-
-  }
-
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.androidanalyzer.plugins.AbstractPlugin# stopDataCollection()
+	 */
+	@Override
+	protected void stopDataCollection() {
+		this.stopSelf();
+	}
 }
