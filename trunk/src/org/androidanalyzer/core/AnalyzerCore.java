@@ -6,7 +6,6 @@ package org.androidanalyzer.core;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -18,7 +17,6 @@ import org.androidanalyzer.core.utils.Logger;
 import org.androidanalyzer.transport.Reporter;
 import org.androidanalyzer.transport.impl.json.HTTPJSONReporter;
 import org.androidanalyzer.transport.impl.json.JSONFormatter;
-import org.apache.http.entity.StringEntity;
 import org.json.JSONObject;
 
 import android.app.Service;
