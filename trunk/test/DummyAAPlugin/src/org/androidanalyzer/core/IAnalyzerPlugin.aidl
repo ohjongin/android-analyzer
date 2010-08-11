@@ -15,5 +15,10 @@ interface IAnalyzerPlugin {
     long getTimeout();
     
     void setDebugEnabled(boolean enabled);
-    
+	
+	String getClassName();
+	
+	String getVersion();
+
+	String getVendor();
 }

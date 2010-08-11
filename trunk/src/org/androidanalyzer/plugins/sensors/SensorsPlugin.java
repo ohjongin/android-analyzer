@@ -21,6 +21,8 @@ import android.hardware.SensorManager;
 public class SensorsPlugin extends AbstractPlugin {
 
 	private static final String NAME = "Sensors Plugin";
+  private static final String PLUGIN_VERSION = "1.0.0";
+  private static final String PLUGIN_VENDOR = "ProSyst Software GmbH";
 	private static final String TAG = "Analyzer-SensorsPlugin";
 	private static final String SENSORS = "Sensors";
 	/** Main sensors */
@@ -102,9 +104,19 @@ public class SensorsPlugin extends AbstractPlugin {
 	 */
 	@Override
 	public String getPluginVersion() {
-		return "1.0.0";
+		return PLUGIN_VERSION;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.androidanalyzer.plugins.AbstractPlugin#getPluginVendor()
+	 */
+	@Override
+	public String getPluginVendor() {
+		return PLUGIN_VENDOR;
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 

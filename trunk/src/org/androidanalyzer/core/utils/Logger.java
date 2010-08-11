@@ -12,6 +12,7 @@ public class Logger {
   private static boolean DEBUG = false;
   private static boolean WARNING = true;
   private static boolean ERROR = true;
+  private static boolean WRITEDATATOAFILE = false;
 
   /**
    * Dump debug message.
@@ -98,4 +99,20 @@ public class Logger {
     return DEBUG;
   }
 
+  
+  /**
+   * Enables/Disables writing of the data to a device_data.dat file
+   */
+  public static void setWriteToFile(boolean flag) {
+  	WRITEDATATOAFILE = flag;
+  }
+
+  /**
+   * Returns status of the write to a file
+   * 
+   * @return true if file writing enabled ,false if disabled
+   */
+  public static boolean getWriteToFile() {
+    return WRITEDATATOAFILE;
+  }
 }

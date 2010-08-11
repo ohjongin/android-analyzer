@@ -3,6 +3,10 @@
  */
 package org.androidanalyzer.core;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -13,6 +17,9 @@ import org.androidanalyzer.Constants;
 import org.androidanalyzer.core.utils.Logger;
 import org.androidanalyzer.transport.Reporter;
 import org.androidanalyzer.transport.impl.json.HTTPJSONReporter;
+import org.androidanalyzer.transport.impl.json.JSONFormatter;
+import org.apache.http.entity.StringEntity;
+import org.json.JSONObject;
 
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -33,10 +40,9 @@ import android.telephony.TelephonyManager;
  */
 public class AnalyzerCore {
 
-  /**
-   * String for Plugin Discovery broadcast intent
-   */
-  private static final String TAG = "Analyzer-Core";
+
+	private static final String VERSION = "1.0.0";
+	private static final String TAG = "Analyzer-Core";
   private static final int TIME_TO_WAIT_FOR_PLUGIN_CONNECTION = 3000;
   private static final int DEFAULT_MAX_TIME_TO_WAIT_FOR_PLUGIN_ANALYSIS_COMPLETION = 60000;
   private static final int DEFAULT_MIN_TIME_TO_WAIT_FOR_PLUGIN_ANALYSIS_COMPLETION = 10000;
@@ -48,12 +54,15 @@ public class AnalyzerCore {
   private Executor exec;
 
   private ArrayList<String> pluginCache = new ArrayList<String>();
-  private Data report;
   private PluginServiceConnection runningPluginConn = null;
   private boolean stopAnalyzing = false;
   private boolean pluginAnalyzing = false;
+  private Data root = null;
+  private Data reportPlugins = null;
+  private Data reportMetadata = null;
   private Data tempReport = null;
   private UninstallBReceiver unRecv = null;
+  
 
   /**
    * Initializes the Core
@@ -108,6 +117,8 @@ public class AnalyzerCore {
    */
   public Data startAnalyzing() {
     Hashtable progressValues = null;
+		int pluginCounter = 1;
+		Data plugins = null;
     if (uiCallb != null)
       progressValues = new Hashtable(5);
     cleanReport();
@@ -160,8 +171,22 @@ public class AnalyzerCore {
               Logger.ERROR(TAG, "Could not Sleep thread in Core!");
             }
           }
-          ctx.unbindService(runningPluginConn);
-          if (tempReport != null) {
+          if (plugins == null) {
+						plugins = new Data();
+						try {
+							plugins.setName(Constants.METADATA_PLUGINS);
+						} catch (Exception e) {
+							Logger.ERROR(TAG, "Could not set Metadata!", e);
+						}
+					}
+					Data currentPlugin = getPluginMetaData(runningPluginConn.plugin, pluginCounter++);
+					try {
+						plugins.setValue(currentPlugin);
+					} catch (Exception e) {
+						Logger.ERROR(TAG, "Could not set Metadata!", e);
+					}
+					ctx.unbindService(runningPluginConn);
+					if (tempReport != null) {
             addDataToReport(tempReport);
           } else {
             Logger.DEBUG(TAG, "tempReport : " + tempReport);
@@ -178,19 +203,85 @@ public class AnalyzerCore {
           break;
         }
       }
+			if (reportMetadata == null) {
+				reportMetadata = new Data();
+				try {
+					reportMetadata.setName(Constants.ROOT_METADATA);
+				} catch (Exception e) {
+					Logger.ERROR(TAG, "Could not set Metadata name!", e);
+				}
+			}
+			if (plugins != null) {
+				try {
+					reportMetadata.setValue(plugins);
+				} catch (Exception e) {
+					Logger.ERROR(TAG, "Could not set Metadata!", e);
+				}
+			}
       runningPluginConn = null;
     }
+    
+    /* Create Metadata - Device ID*/
     TelephonyManager TelephonyMgr = (TelephonyManager) ctx.getSystemService(Context.TELEPHONY_SERVICE);
     String deviceIMEI = TelephonyMgr.getDeviceId();
-    if (deviceIMEI != null && report != null) {
+    Data device = new Data();
+    try {
+			device.setName(Constants.METADATA_DEVICE);
+		} catch (Exception e) {
+			Logger.ERROR(TAG, "Could not set Metadata!", e);
+		}
+    if (deviceIMEI != null && reportPlugins != null) {
       String md5 = Reporter.mD5H(deviceIMEI.getBytes());
-      report.setString(Constants.MD5_IMEI, md5);
+      //report.setString(Constants.MD5_IMEI, md5);
+      Data imei = new Data();
+			try {
+				imei.setName(Constants.METADATA_DEVICE_ID);
+				imei.setValue(md5);
+				device.setValue(imei);
+				reportMetadata.setValue(device);
+			} catch (Exception e) {
+				Logger.ERROR(TAG, "Could not set Metadata!", e);
+			}
     } else {
       Logger.ERROR(TAG, "IMEI Check Failed");
     }
+    /* Create Metadata - Analyzer Version*/
+		try {
+			Data analyzerVersion = new Data();
+			analyzerVersion.setName(Constants.METADATA_ANALYZER);
+			Data version = new Data();
+			version.setName(Constants.METADATA_ANALYZER_VERSION);
+			version.setValue(VERSION);
+			analyzerVersion.setValue(version);
+			reportMetadata.setValue(analyzerVersion);
+		} catch (Exception e) {
+			Logger.ERROR(TAG, "Could not set Metadata!", e);
+		}
+    
+		/* Create Metadata - Report ID*/
+		try {
+			Data report = new Data();
+			report.setName(Constants.METADATA_REPORT);
+			Data reportID = new Data();
+			reportID.setName(Constants.METADATA_REPORT_ID);
+			reportID.setValue("");
+			report.setValue(reportID);
+			reportMetadata.setValue(report);
+		} catch (Exception e) {
+			Logger.ERROR(TAG, "Could not set Metadata!", e);			
+		}		
     Logger.DEBUG(TAG, "Core finished Analysis!");
-    Logger.DEBUG(TAG, "Report : " + report);
-    return report;
+    Logger.DEBUG(TAG, "Report : " + reportPlugins);
+		try {
+			if (root == null)
+				root = new Data();
+			root.setName(Constants.ROOT);
+			root.setValue(reportPlugins);
+			root.setValue(reportMetadata);
+		} catch (Exception e) {
+			Logger.ERROR(TAG, "Could not create final report!", e);
+		}
+    return root;
   }
 
   /**
@@ -214,15 +305,17 @@ public class AnalyzerCore {
    * 
    * @throws Exception
    */
-  public Object sendReport(Data data, URL host) throws Exception {
-    if (data != null && host != null) {
-      // TODO make it with the Reporter interface in the
-      // future
-      HTTPJSONReporter reporter = new HTTPJSONReporter();
-      return reporter.send(data, host);
-    }
-    return null;
-  }
+	public Object sendReport(Data data, URL host) throws Exception {
+		if (data != null && host != null) {
+			if (Logger.getWriteToFile()) {
+				return writeToFile(data);
+			} else {
+				HTTPJSONReporter reporter = new HTTPJSONReporter();
+				return reporter.send(data, host);
+			}
+		}
+		return null;
+	}
 
   /**
    * Adds data to main Report in Core
@@ -234,10 +327,10 @@ public class AnalyzerCore {
 
     if (data != null) {
       Logger.DEBUG(TAG, "addDataToReport for plugin : " + data.getName());
-      if (report == null)
+      if (reportPlugins == null)
         createReport();
 
-      Object temp = report.getValue();
+      Object temp = reportPlugins.getValue();
       ArrayList<Data> list = null;
       if (temp instanceof ArrayList<?>) {
         list = (ArrayList<Data>) temp;
@@ -252,7 +345,7 @@ public class AnalyzerCore {
       }
       if (data.getName() != null && data.getValue() != null)
         try {
-          report.setValue(data);
+          reportPlugins.setValue(data);
         } catch (Exception e) {
           Logger.ERROR(TAG, "Analyzer Core : could not attach to report data : " + data.getName(), e);
         }
@@ -266,9 +359,9 @@ public class AnalyzerCore {
    * creates main report in Core
    */
   private void createReport() {
-    report = new Data();
+    reportPlugins = new Data();
     try {
-      report.setName(Constants.ROOT_DATA);
+      reportPlugins.setName(Constants.ROOT_DATA);
     } catch (Exception e) {
       Logger.ERROR(TAG, "Analyzer Core could not create report!");
     }
@@ -278,7 +371,10 @@ public class AnalyzerCore {
    * Cleans main Core report
    */
   private void cleanReport() {
-    report = null;
+    root = null;
+    reportPlugins = null;
+    reportMetadata = null;
+    tempReport = null;
   }
 
   /**
@@ -515,4 +611,58 @@ public class AnalyzerCore {
     }
 
   }
+  
+	private Data getPluginMetaData(IAnalyzerPlugin plugin, int counter) {
+		Data currentPlugin = new Data();
+		Data currentPluginName = new Data();
+		Data currentPluginClassName = new Data();
+		Data currentPluginVersion = new Data();
+		Data currentPluginVendor = new Data();
+		try {
+			currentPlugin.setName(Constants.METADATA_PLUGIN_ + counter);
+
+			currentPluginName.setName(Constants.METADATA_PLUGIN_HUMAN_NAME);
+			currentPluginName.setValue(plugin.getName());
+			currentPlugin.setValue(currentPluginName);
+
+			currentPluginClassName.setName(Constants.METADATA_PLUGIN_CLASS_NAME);
+			currentPluginClassName.setValue(plugin.getClassName());
+			currentPlugin.setValue(currentPluginClassName);
+
+			currentPluginVersion.setName(Constants.METADATA_PLUGIN_VERSION);
+			currentPluginVersion.setValue(plugin.getVersion());
+			currentPlugin.setValue(currentPluginVersion);
+
+			currentPluginVendor.setName(Constants.METADATA_PLUGIN_VENDOR);
+			currentPluginVendor.setValue(plugin.getVendor());
+			currentPlugin.setValue(currentPluginVendor);
+		} catch (Exception e) {
+			Logger.ERROR(TAG, "Could not set current plugin data!", e);
+		}
+		return currentPlugin;
+	}
+
+	
+	private String writeToFile(Data data) {
+		FileOutputStream fOut = null;
+		OutputStreamWriter osw = null;
+		JSONObject jObject = JSONFormatter.format(data);
+		Logger.DEBUG(TAG, "[send] jObject: " + jObject);
+		try {
+			fOut = ctx.openFileOutput("device_info.dat", ctx.MODE_PRIVATE);
+			osw = new OutputStreamWriter(fOut);
+			osw.write(jObject.toString());
+			osw.flush();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				osw.close();
+				fOut.close();
+			} catch (IOException e) {
+				Logger.ERROR(TAG, "Writing to a device_data file failed!");
+			}
+		}
+		return Constants.WRITE_TO_FILE;
+	}
 }

@@ -31,17 +31,18 @@ import android.hardware.Camera.Size;
 public class CameraPlugin extends AbstractPlugin {
 
   private static final String TAG = "Analyzer-CameraPlugin";
-  public static final String NAME = "Camera Plugin";
-
-  public static final String PARENT_NODE_NAME = "Camera";
-  public static final String PARENT_NODE_NAME_IMAGE = "Image";
-  public static final String PARENT_NODE_NAME_VIDEO = "Video";
-  public static final String PARENT_NODE_NAME_FORMAT = "Format";
-  public static final String PARENT_NODE_NAME_RESOLUTION = "Resolution";
-  public static final String PARENT_NODE_NAME_FORMATS = "Formats";
-  public static final String PARENT_NODE_NAME_VIDEO_ENCODING = "Video Encoding";
-  public static final String PARENT_NODE_NAME_AUDIO_ENCODING = "Audio Encoding";
-  public static final String PARENT_NODE_NAME_RESOLUTIONS = "Resolutions";
+  private static final String NAME = "Camera Plugin";
+  private static final String PLUGIN_VERSION = "1.0.0";
+  private static final String PLUGIN_VENDOR = "ProSyst Software GmbH";
+  private static final String PARENT_NODE_NAME = "Camera";
+  private static final String PARENT_NODE_NAME_IMAGE = "Image";
+  private static final String PARENT_NODE_NAME_VIDEO = "Video";
+  private static final String PARENT_NODE_NAME_FORMAT = "Format";
+  private static final String PARENT_NODE_NAME_RESOLUTION = "Resolution";
+  private static final String PARENT_NODE_NAME_FORMATS = "Formats";
+  private static final String PARENT_NODE_NAME_VIDEO_ENCODING = "Video Encoding";
+  private static final String PARENT_NODE_NAME_AUDIO_ENCODING = "Audio Encoding";
+  private static final String PARENT_NODE_NAME_RESOLUTIONS = "Resolutions";
 
   private static final String NUMBER_OF_CAMERAS = "Number of cameras";
   private static final String LOCATION = "Location";
@@ -222,8 +223,19 @@ public class CameraPlugin extends AbstractPlugin {
    */
   @Override
   public String getPluginVersion() {
-    return "1.0.0";
+    return PLUGIN_VERSION;
   }
+  
+  /*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.androidanalyzer.plugins.AbstractPlugin#getPluginVendor()
+	 */
+	@Override
+	public String getPluginVendor() {
+		// TODO Auto-generated method stub
+		return PLUGIN_VENDOR;
+	}
 
   /*
    * (non-Javadoc)

@@ -21,6 +21,8 @@ import android.view.WindowManager;
  */
 public class DisplayPlugin extends AbstractPlugin {
 	private static final String NAME = "Display Plugin";
+  private static final String PLUGIN_VERSION = "1.0.0";
+  private static final String PLUGIN_VENDOR = "ProSyst Software GmbH";
 	private static final String TAG = "Analyzer-DisplayPlugin";
 	private static final String LOCATION = "Location";
 	private static final String SIZE = "Size";
@@ -64,9 +66,19 @@ public class DisplayPlugin extends AbstractPlugin {
 	 */
 	@Override
 	public String getPluginVersion() {
-		return "1.0.0";
+		return PLUGIN_VERSION;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.androidanalyzer.plugins.AbstractPlugin#getPluginVendor()
+	 */
+	@Override
+	public String getPluginVendor() {
+		return PLUGIN_VENDOR;
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 

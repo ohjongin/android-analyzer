@@ -60,7 +60,6 @@ public class HTTPJSONReporter extends Reporter {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-
 		byte[] bytes = doCompress(se);
 		Logger.DEBUG(TAG, "[send] bytes: " + bytes.length);
 		String hex = mD5H(bytes);
@@ -116,5 +115,4 @@ public class HTTPJSONReporter extends Reporter {
 			return result;
 		}
 	}
-
 }
