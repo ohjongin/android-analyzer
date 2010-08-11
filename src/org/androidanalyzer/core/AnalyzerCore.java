@@ -644,13 +644,13 @@ public class AnalyzerCore {
 
 	
 	private String writeToFile(Data data) {
-		FileOutputStream fOut = null;
+		FileOutputStream fos = null;
 		OutputStreamWriter osw = null;
 		JSONObject jObject = JSONFormatter.format(data);
 		Logger.DEBUG(TAG, "[send] jObject: " + jObject);
 		try {
-			fOut = ctx.openFileOutput("device_info.dat", ctx.MODE_PRIVATE);
-			osw = new OutputStreamWriter(fOut);
+			fos = ctx.openFileOutput("device_info.dat", ctx.MODE_PRIVATE);
+			osw = new OutputStreamWriter(fos);
 			osw.write(jObject.toString());
 			osw.flush();
 		} catch (Exception e) {
@@ -658,9 +658,9 @@ public class AnalyzerCore {
 		} finally {
 			try {
 				osw.close();
-				fOut.close();
+				fos.close();
 			} catch (IOException e) {
-				Logger.ERROR(TAG, "Writing to a device_data file failed!");
+				Logger.ERROR(TAG, "Failed to close streams!");
 			}
 		}
 		return Constants.WRITE_TO_FILE;
