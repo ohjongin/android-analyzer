@@ -50,7 +50,7 @@ public class Constants {
 	public static final String ROOT_DATA = "Data";
 	public static final String ROOT_METADATA = "Metadata";
 	public static final String MD5_IMEI = "md5.imei";
-	
+
 	public static final String METADATA_ANALYZER = "Analyzer";
 	public static final String METADATA_ANALYZER_VERSION = "Version";
 	public static final String METADATA_PLUGINS = "Plugins";
@@ -64,6 +64,6 @@ public class Constants {
 	public static final String METADATA_DEVICE_ID = "ID";
 	public static final String METADATA_REPORT = "Report";
 	public static final String METADATA_REPORT_ID = "ID";
-	
+	// File device_info.dat is located in data/data/org.androidanalyzer/files
 	public static final String WRITE_TO_FILE = "[to a device_info.dat file]";
 }
