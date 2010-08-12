@@ -21,4 +21,6 @@ interface IAnalyzerPlugin {
 	String getVersion();
 
 	String getVendor();
+	
+	String getStatus();
 }

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.androidanalyzer.plugins.cpu;
 
 import java.io.BufferedReader;
@@ -37,6 +34,7 @@ public class CPUPlugin extends AbstractPlugin {
 
   private static final String ARCH_ARM = "arm";
   private static final String FREQ_METRIC = "MHz";
+  private String status = Constants.METADATA_PLUGIN_STATUS_PASSED;
 
   /*
    * (non-Javadoc)
@@ -45,15 +43,15 @@ public class CPUPlugin extends AbstractPlugin {
    * getData()
    */
   @Override
-  public Data getData() {
+  public Data getData(){
     Logger.DEBUG(TAG, "getData in CPU Plugin");
     ArrayList<Data> children = new ArrayList<Data>(4);
     Data parent = new Data();
     try {
       parent.setName(PARENT_NODE_NAME);
     } catch (Exception e) {
-      Logger.ERROR(TAG, "Could not set Parent node node!", e);
-      return null;
+      Logger.ERROR(TAG, "Could not set parent node!", e);
+			status = "Could not set CPU parent node!";
     }
 
     try {
@@ -72,6 +70,7 @@ public class CPUPlugin extends AbstractPlugin {
       children.add(manifacturer);
     } catch (Exception e) {
       Logger.ERROR(TAG, "Could not set Manifacturer node!", e);
+			status = "Could not set Manifacturer node!";
     }
 
     String os_arch = System.getProperty(OS_ARCH);
@@ -91,6 +90,7 @@ public class CPUPlugin extends AbstractPlugin {
       children.add(insSet);
     } catch (Exception e) {
       Logger.ERROR(TAG, "Could not set Instruction Set", e);
+			status = "Could not set Instruction Set";
     }
 
     /* CPU Name */
@@ -109,6 +109,7 @@ public class CPUPlugin extends AbstractPlugin {
       children.add(name);
     } catch (Exception e) {
       Logger.ERROR(TAG, "Could not set CPU Name", e);
+			status = "Could not set CPU Name";
     }
 
     /* CPU frequency */
@@ -137,6 +138,7 @@ public class CPUPlugin extends AbstractPlugin {
       children.add(frequency);
     } catch (Exception e) {
       Logger.ERROR(TAG, "Could not set CPU Frequency!", e);
+			status = "Could not set CPU Frequency!";
     }
 
     addToParent(parent, children);
@@ -186,6 +188,17 @@ public class CPUPlugin extends AbstractPlugin {
     return 10000;
   }
 
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.androidanalyzer.plugins.AbstractPlugin#getPluginStatus()
+	 */
+	@Override
+	protected String getPluginStatus() {
+		return status;
+	}
+  
   /*
    * (non-Javadoc)
    * @see
@@ -339,5 +352,4 @@ public class CPUPlugin extends AbstractPlugin {
 
     return null;
   }
-
 }

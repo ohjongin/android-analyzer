@@ -20,11 +20,13 @@ import android.view.WindowManager;
  * @version <1.0.0>
  */
 public class DisplayPlugin extends AbstractPlugin {
+	
 	private static final String NAME = "Display Plugin";
   private static final String PLUGIN_VERSION = "1.0.0";
   private static final String PLUGIN_VENDOR = "ProSyst Software GmbH";
 	private static final String TAG = "Analyzer-DisplayPlugin";
 	private static final String LOCATION = "Location";
+	private static final String DISPLAY = "Display";
 	private static final String SIZE = "Size";
 	private static final String DSPL_SIZE_METRIC = "inch";
 	private static final String DSPL_METRIC = "pixels";
@@ -38,6 +40,7 @@ public class DisplayPlugin extends AbstractPlugin {
 	private static final String REFRESH_RATE = "Refresh rate";
 	private static final String REFRESH_RATE_METRIC = "fps";
 	private static final String DISPLAY_NAME = "Display-";
+	private String status = Constants.METADATA_PLUGIN_STATUS_PASSED;
 
 	/*
 	 * (non-Javadoc)
@@ -82,6 +85,16 @@ public class DisplayPlugin extends AbstractPlugin {
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see org.androidanalyzer.plugins.AbstractPlugin#getPluginStatus()
+	 */
+	@Override
+	protected String getPluginStatus() {
+		return status;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.androidanalyzer.plugins.PluginCommunicator#getData()
 	 */
 	@Override
@@ -90,7 +103,7 @@ public class DisplayPlugin extends AbstractPlugin {
 		Data parent = new Data();
 		ArrayList<Data> masterChildren = new ArrayList<Data>(2);
 		try {
-			parent.setName("Display");
+			parent.setName(DISPLAY);
 			Display[] displays = getDisplays();
 			ArrayList<Data> displayChildren = new ArrayList<Data>(2);
 			for (Display display : displays) {
@@ -99,7 +112,8 @@ public class DisplayPlugin extends AbstractPlugin {
 				masterChildren.add(mDisplay);
 			}
 		} catch (Exception e) {
-			Logger.ERROR(TAG, "Could not set Parent node!", e);
+			Logger.ERROR(TAG, "Could not set Display parent node!", e);
+			status = "Could not set Display parent node!";
 			return null;
 		}
 		parent = addToParent(parent, masterChildren);
@@ -157,6 +171,7 @@ public class DisplayPlugin extends AbstractPlugin {
 			displayChildren.add(locationHolder);
 		} catch (Exception e) {
 			Logger.ERROR(TAG, "Could not set Display Location node!", e);
+			status = "Could not set Display Location node!";
 		}
 
 		try {
@@ -174,6 +189,7 @@ public class DisplayPlugin extends AbstractPlugin {
 			displayChildren.add(sizeHolder);
 		} catch (Exception e) {
 			Logger.ERROR(TAG, "Could not set Display Size node!", e);
+			status = "Could not set Display Size node!";
 		}
 
 		try {
@@ -186,6 +202,7 @@ public class DisplayPlugin extends AbstractPlugin {
 			displayChildren.add(xResolutionHolder);
 		} catch (Exception e) {
 			Logger.ERROR(TAG, "Could not set Display Horizontal Resolution node!", e);
+			status = "Could not set Display Horizontal Resolution node!";
 		}
 
 		try {
@@ -198,6 +215,7 @@ public class DisplayPlugin extends AbstractPlugin {
 			displayChildren.add(yResolutionHolder);
 		} catch (Exception e) {
 			Logger.ERROR(TAG, "Could not set Display Vertical Resolution node!", e);
+			status = "Could not set Display Vertical Resolution node!";
 		}
 		try {
 			logicalDensityHolder.setName(DENSITY);
@@ -209,6 +227,7 @@ public class DisplayPlugin extends AbstractPlugin {
 			displayChildren.add(logicalDensityHolder);
 		} catch (Exception e) {
 			Logger.ERROR(TAG, "Could not set Display Denstity node!", e);
+			status = "Could not set Display Denstity node!"; 
 		}
 
 		try {
@@ -219,6 +238,7 @@ public class DisplayPlugin extends AbstractPlugin {
 			displayChildren.add(touchHolder);
 		} catch (Exception e) {
 			Logger.ERROR(TAG, "Could not set Display Touch Support node!", e);
+			status = "Could not set Display Touch Support node!";
 		}
 
 		try {
@@ -230,6 +250,7 @@ public class DisplayPlugin extends AbstractPlugin {
 			displayChildren.add(colorDepthHolder);
 		} catch (Exception e) {
 			Logger.ERROR(TAG, "Could not set Display Color Depth node!", e);
+			status = "Could not set Display Color Depth node!";
 		}
 
 		try {
@@ -242,6 +263,7 @@ public class DisplayPlugin extends AbstractPlugin {
 			displayChildren.add(refreshRateHolder);
 		} catch (Exception e) {
 			Logger.ERROR(TAG, "Could not set Display Refresh rate node!", e);
+			status = "Could not set Display Refresh rate node!";
 		}
 		/*
 		 * TODO: There is no APIs to get values for: Location, Display size, Display
@@ -252,8 +274,10 @@ public class DisplayPlugin extends AbstractPlugin {
 			displayHolder.setName(DISPLAY_NAME + display.getDisplayId());
 		} catch (Exception e) {
 			Logger.ERROR(TAG, "Could not set Display node!", e);
+			status = "Could not set Display node!";
 		}
 		return displayHolder;
 
 	}
+
 }

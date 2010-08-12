@@ -23,6 +23,7 @@ public class APIPlugin extends AbstractPlugin {
 	private static final String GOOGLE = "Google";
 	private static final String GMAPS = "com.google.android.maps";
 	private static final String TAG = "Analyzer-APIPlugin";
+	private String status = Constants.METADATA_PLUGIN_STATUS_PASSED;
 
 	/*
 	 * (non-Javadoc)
@@ -63,14 +64,24 @@ public class APIPlugin extends AbstractPlugin {
 	public String getPluginVendor() {
 		return PLUGIN_VENDOR;
 	}
-
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.androidanalyzer.plugins.AbstractPlugin#getPluginStatus()
+	 */
+	@Override
+	protected String getPluginStatus() {
+		return status;
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see org.androidanalyzer.plugins.PluginCommunicator#getData()
 	 */
 	@Override
-	protected Data getData() {
+	protected Data getData(){
 		Logger.DEBUG(TAG, "getData in API Plugin");
 		Data parent = new Data();
 		ArrayList<Data> masterChildren = new ArrayList<Data>(2);
@@ -78,7 +89,8 @@ public class APIPlugin extends AbstractPlugin {
 		try {
 			parent.setName(API);
 		} catch (Exception e) {
-			Logger.ERROR(TAG, "Could not set Parent node!", e);
+			Logger.ERROR(TAG, "Could not set API parent node!", e);
+			status = "Could not set API parent node!";
 			return null;
 		}
 		Data apiLevelHolder = new Data();
@@ -100,6 +112,7 @@ public class APIPlugin extends AbstractPlugin {
 			masterChildren.add(apiLevelHolder);
 		} catch (Exception e) {
 			Logger.ERROR(TAG, "Could not set API Level node!", e);
+			status = "Could not set API Level node!";
 		}
 
 		/* Google */
@@ -132,6 +145,7 @@ public class APIPlugin extends AbstractPlugin {
 			masterChildren.add(googleHolder);
 		} catch (Exception e) {
 			Logger.ERROR(TAG, "Could not set Google node!", e);
+			status = "Could not set Google node!";
 		}
 		parent = addToParent(parent, masterChildren);
 		return parent;

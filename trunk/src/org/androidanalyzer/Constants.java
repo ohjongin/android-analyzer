@@ -60,6 +60,8 @@ public class Constants {
 	public static final String METADATA_PLUGIN_VERSION = "Version";
 	public static final String METADATA_PLUGIN_VENDOR = "Vendor";
 	public static final String METADATA_PLUGIN_STATUS = "Status";
+	public static final String METADATA_PLUGIN_STATUS_DESCRIPTION = "Description";
+	public static final String METADATA_PLUGIN_STATUS_PASSED = "Passed";
 	public static final String METADATA_DEVICE = "Device";
 	public static final String METADATA_DEVICE_ID = "ID";
 	public static final String METADATA_REPORT = "Report";

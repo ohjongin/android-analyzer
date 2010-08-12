@@ -54,6 +54,7 @@ public class RadioInterfacesPlugin extends AbstractPlugin {
 	private static final String B900 = "900";
 	private static final String B1800 = "1800";
 	private static final String B1900 = "1900";
+	private String status = Constants.METADATA_PLUGIN_STATUS_PASSED;
 
 	/*
 	 * (non-Javadoc)
@@ -62,13 +63,14 @@ public class RadioInterfacesPlugin extends AbstractPlugin {
 	 */
 	@Override
 	protected Data getData() {
-		Logger.DEBUG(TAG, "getData in Radio Interfaces Plugin");
+		Logger.DEBUG(TAG, "getData in Radio interfaces Plugin");
 		Data parent = new Data();
 		ArrayList<Data> masterChildren = new ArrayList<Data>();
 		try {
 			parent.setName(RADIOINTERFACES);
 		} catch (Exception e) {
-			Logger.ERROR(TAG, "Could not set Parent node!", e);
+			Logger.ERROR(TAG, "Could not set Radio interfaces parent node!", e);
+			status = "Could not set Radio interfaces parent node!";
 			return null;
 		}
 		TelephonyManager mTeleManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
@@ -84,7 +86,8 @@ public class RadioInterfacesPlugin extends AbstractPlugin {
 				radioSupported.setValueType(Constants.NODE_VALUE_TYPE_BOOLEAN);
 				masterChildren.add(radioSupported);
 			} catch (Exception e) {
-				Logger.DEBUG(TAG, "Could not create supported node for radio Interfaces !");
+				Logger.ERROR(TAG, "Could not create supported node for Radio interfaces!", e);
+				status = "Could not create supported node for Radio interfaces!";
 			}
 
 			Data phoneType = new Data();
@@ -100,7 +103,8 @@ public class RadioInterfacesPlugin extends AbstractPlugin {
 				}
 				masterChildren.add(phoneType);
 			} catch (Exception e) {
-				Logger.DEBUG(TAG, "Could not create supported node for radio Interfaces !");
+				Logger.ERROR(TAG, "Could not create supported node for Radio interfaces!", e);
+				status = "Could not create supported node for Radio interfaces";
 			}
 
 			// if (mTeleManager.getPhoneType() ==
@@ -133,7 +137,8 @@ public class RadioInterfacesPlugin extends AbstractPlugin {
 				currentNetwork.setValue(networkType);
 				masterChildren.add(currentNetwork);
 			} catch (Exception e) {
-				Logger.DEBUG(TAG, "Could not create supported node for radio Interfaces !");
+				Logger.ERROR(TAG, "Could not create supported node for Radio interfaces!" ,e);
+				status = "Could not create supported node for Radio interfaces!";
 			}
 
 		}
@@ -184,22 +189,32 @@ public class RadioInterfacesPlugin extends AbstractPlugin {
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see org.androidanalyzer.plugins.AbstractPlugin#getPluginVendor()
+	 */
+	@Override
+	public String getPluginVendor() {
+		return PLUGIN_VENDOR;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.androidanalyzer.plugins.AbstractPlugin#getPluginStatus()
+	 */
+	@Override
+	protected String getPluginStatus() {
+		return status;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.androidanalyzer.plugins.AbstractPlugin# stopDataCollection()
 	 */
 	@Override
 	protected void stopDataCollection() {
 		Logger.DEBUG(TAG, "Service is stopped!");
 		this.stopSelf();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.androidanalyzer.plugins.AbstractPlugin#getPluginVendor()
-	 */
-	@Override
-	public String getPluginVendor() {
-		return PLUGIN_VENDOR;
 	}
 
 	private String getNetworkTypeReadableName(int networkType) {
