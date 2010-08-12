@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.androidanalyzer.plugins.memory;
 
 import java.io.BufferedReader;
@@ -47,6 +44,7 @@ public class MemoryPlugin extends AbstractPlugin {
 
   private static final CharSequence FLASH_FILE_SYSTEM = "yaffs";
   private static final CharSequence UBI_FILE_SYSTEM = "ubifs";
+  private String status = Constants.METADATA_PLUGIN_STATUS_PASSED;
 
   /*
    * (non-Javadoc)
@@ -60,7 +58,8 @@ public class MemoryPlugin extends AbstractPlugin {
     try {
       parent.setName(PARENT_NODE_NAME);
     } catch (Exception e) {
-      Logger.ERROR(TAG, "Could not set Parent name!", e);
+			Logger.ERROR(TAG, "Could not set Memory parent node!", e);
+			status = "Could not set Memory parent node!";
       return null;
     }
 
@@ -82,6 +81,7 @@ public class MemoryPlugin extends AbstractPlugin {
       children.add(ramD);
     } catch (Exception e) {
       Logger.ERROR(TAG, "Could not create RAM Node!", e);
+			status = "Could not create RAM Node!";
     }
 
     try {
@@ -100,6 +100,7 @@ public class MemoryPlugin extends AbstractPlugin {
       children.add(intStorageD);
     } catch (Exception e) {
       Logger.ERROR(TAG, "Could not create Internal Storage Node!", e);
+      status = "Could not create Internal Storage Node!";
     }
 
     try {
@@ -116,6 +117,7 @@ public class MemoryPlugin extends AbstractPlugin {
       children.add(extStorMediaType);
     } catch (Exception e) {
       Logger.ERROR(TAG, "Could not create Ext Storage Type Node!", e);
+      status = "Could not create Ext Storage Type Node!";
     }
     // Data extStorMaxSize = new Data();
 
@@ -186,6 +188,16 @@ public class MemoryPlugin extends AbstractPlugin {
 
   }
 
+  /*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.androidanalyzer.plugins.AbstractPlugin#getPluginStatus()
+	 */
+	@Override
+	protected String getPluginStatus() {
+		return status;
+	}
+	
   /**
    * @return
    */
@@ -364,5 +376,4 @@ public class MemoryPlugin extends AbstractPlugin {
     }
     return null;
   }
-
 }

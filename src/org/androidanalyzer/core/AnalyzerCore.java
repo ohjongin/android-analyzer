@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.androidanalyzer.core;
 
 import java.io.FileOutputStream;
@@ -583,9 +580,7 @@ public class AnalyzerCore {
         }
         pluginAnalyzing = false;
       }
-
     }
-
   }
 
   class UninstallBReceiver extends BroadcastReceiver {
@@ -616,6 +611,7 @@ public class AnalyzerCore {
 		Data currentPluginClassName = new Data();
 		Data currentPluginVersion = new Data();
 		Data currentPluginVendor = new Data();
+		Data currentPluginStatus = new Data();
 		try {
 			currentPlugin.setName(Constants.METADATA_PLUGIN_ + counter);
 
@@ -634,6 +630,18 @@ public class AnalyzerCore {
 			currentPluginVendor.setName(Constants.METADATA_PLUGIN_VENDOR);
 			currentPluginVendor.setValue(plugin.getVendor());
 			currentPlugin.setValue(currentPluginVendor);
+			
+			currentPluginStatus.setName(Constants.METADATA_PLUGIN_STATUS);
+			String status = plugin.getStatus();
+			if (status.equals(Constants.METADATA_PLUGIN_STATUS_PASSED)) {
+				currentPluginStatus.setValue(plugin.getStatus());
+			} else {
+				Data currentPluginStatusDescription = new Data();
+				currentPluginStatusDescription.setName(Constants.METADATA_PLUGIN_STATUS_DESCRIPTION);
+				currentPluginStatusDescription.setValue(plugin.getStatus());
+				currentPluginStatus.setValue(currentPluginStatusDescription);
+			}
+			currentPlugin.setValue(currentPluginStatus);
 		} catch (Exception e) {
 			Logger.ERROR(TAG, "Could not set current plugin data!", e);
 		}

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.androidanalyzer.plugins.camera;
 
 import java.io.FileInputStream;
@@ -134,6 +131,7 @@ public class CameraPlugin extends AbstractPlugin {
   private Camera.Parameters[] camParams = null;
   private boolean readSysPropsFromFile = false;
   private Properties buildProps = null;
+  private String status = Constants.METADATA_PLUGIN_STATUS_PASSED;
 
   /*
    * (non-Javadoc)
@@ -148,8 +146,8 @@ public class CameraPlugin extends AbstractPlugin {
     try {
       parent.setName(PARENT_NODE_NAME);
     } catch (Exception e) {
-      Logger.DEBUG(TAG, "Could not set Parent node node !");
-      Logger.DEBUG(TAG, "Err : " + e.getMessage());
+      Logger.ERROR(TAG, "Could not set Camera parent node!", e);
+      status = "Could not set Camera parent node!";
       return null;
     }
 
@@ -172,7 +170,8 @@ public class CameraPlugin extends AbstractPlugin {
           parent.setStatus(Constants.NODE_STATUS_FAILED);
           parent.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
         } catch (Exception e) {
-          Logger.ERROR(TAG, "Could not set values for parent Node !", e);
+          Logger.ERROR(TAG, "Could not set values for parent Node!", e);
+          status = "Could not set value for Camera parent node!";
         }
       }
     } else {
@@ -180,7 +179,8 @@ public class CameraPlugin extends AbstractPlugin {
         parent.setStatus(Constants.NODE_STATUS_FAILED);
         parent.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
       } catch (Exception e) {
-        Logger.ERROR(TAG, "Could not set values for parent Node !", e);
+        Logger.ERROR(TAG, "Could not set values for parent Node!", e);
+        status = "Could not set value for Camera parent node!";
       }
 
     }
@@ -237,6 +237,17 @@ public class CameraPlugin extends AbstractPlugin {
 		return PLUGIN_VENDOR;
 	}
 
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.androidanalyzer.plugins.AbstractPlugin#getPluginStatus()
+	 */
+	@Override
+	protected String getPluginStatus() {
+		return status;
+	}
+	
   /*
    * (non-Javadoc)
    * @see org.androidanalyzer.plugins.camera.
@@ -419,7 +430,7 @@ public class CameraPlugin extends AbstractPlugin {
       }
     } catch (Exception e) {
       parent = null;
-      Logger.DEBUG(TAG, "Could not create Video Encoding Node !", e);
+      Logger.ERROR(TAG, "Could not create Video Encoding node!", e);
     }
     return parent;
   }

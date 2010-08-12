@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.androidanalyzer.plugins.location;
 
 import java.util.ArrayList;
@@ -36,6 +33,7 @@ public class LocationPlugin extends AbstractPlugin {
   private static final Object GPS_PROVIDER = "gps";
 
   private static final String ASSISTED_GPS_ENABLED = "assisted_gps_enabled";
+  private String status = Constants.METADATA_PLUGIN_STATUS_PASSED;
 
   /*
    * (non-Javadoc)
@@ -50,8 +48,8 @@ public class LocationPlugin extends AbstractPlugin {
     try {
       parent.setName(PARENT_NODE_NAME);
     } catch (Exception e) {
-      Logger.DEBUG(TAG, "Could not set Parent node node !");
-      Logger.DEBUG(TAG, "Err : " + e.getMessage());
+      Logger.ERROR(TAG, "Could not set Location parent node!", e);
+      status = "Could not set Location parent node!";
       return null;
     }
 
@@ -73,8 +71,8 @@ public class LocationPlugin extends AbstractPlugin {
       gps.setValue(gpsSupported);
       children.add(gps);
     } catch (Exception e) {
-      Logger.DEBUG(TAG, "Could not set GPS node !");
-      Logger.DEBUG(TAG, "Err : " + e.getMessage());
+      Logger.ERROR(TAG, "Could not set GPS node!", e);
+      status = "Could not set GPS node!";
     }
 
     /* Network Based Positioning */
@@ -91,8 +89,8 @@ public class LocationPlugin extends AbstractPlugin {
       }
       children.add(netBased);
     } catch (Exception e) {
-      Logger.DEBUG(TAG, "Could not set Network Based location node");
-      Logger.DEBUG(TAG, "Err : " + e.getMessage());
+      Logger.ERROR(TAG, "Could not set Network Based location node", e);
+      status = "Could not set Network Based location node";
     }
 
     /* Assisted GPS */
@@ -111,8 +109,8 @@ public class LocationPlugin extends AbstractPlugin {
         gps.setValue(agps);
       }
     } catch (Exception e) {
-      Logger.DEBUG(TAG, "Could not set AGPS node");
-      Logger.DEBUG(TAG, "Err : " + e.getMessage());
+      Logger.ERROR(TAG, "Could not set AGPS node", e);
+      status = "Could not set AGPS node";
     }
 
     addToParent(parent, children);
@@ -182,6 +180,16 @@ public class LocationPlugin extends AbstractPlugin {
     this.stopSelf();
   }
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.androidanalyzer.plugins.AbstractPlugin#getPluginStatus()
+	 */
+	@Override
+	protected String getPluginStatus() {
+		return status;
+	}
+	
   /**
    * @return
    */
@@ -233,7 +241,4 @@ public class LocationPlugin extends AbstractPlugin {
     }
     return Constants.NODE_VALUE_NO;
   }
-
-
-
 }

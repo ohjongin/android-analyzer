@@ -43,6 +43,7 @@ public class SensorsPlugin extends AbstractPlugin {
 	private static final String TYPE = "Type";
 	private static final String VENDOR = "Vendor";
 	private static final String VERSION = "Version";
+	private String status = Constants.METADATA_PLUGIN_STATUS_PASSED;
 
 	/*
 	 * (non-Javadoc)
@@ -57,7 +58,8 @@ public class SensorsPlugin extends AbstractPlugin {
 		try {
 			parent.setName(SENSORS);
 		} catch (Exception e) {
-			Logger.ERROR(TAG, "Could not set Parent node!", e);
+			Logger.ERROR(TAG, "Could not set Sensor parent node!", e);
+			status = "Could not set Sensor parent node!";
 			return null;
 		}
 		SensorManager sensorMgr = (SensorManager) this.getSystemService(Context.SENSOR_SERVICE);
@@ -120,6 +122,16 @@ public class SensorsPlugin extends AbstractPlugin {
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see org.androidanalyzer.plugins.AbstractPlugin#getPluginStatus()
+	 */
+	@Override
+	protected String getPluginStatus() {
+		return status;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.androidanalyzer.plugins.AbstractPlugin#stopDataCollection()
 	 */
 	@Override
@@ -139,6 +151,7 @@ public class SensorsPlugin extends AbstractPlugin {
 				masterChildren.add(accelerometer);
 			} catch (Exception e) {
 				Logger.ERROR(TAG, "Failed to set accelerometer sensor", e);
+				status = "Failed to set accelerometer sensor";
 			}
 		}
 
@@ -152,6 +165,7 @@ public class SensorsPlugin extends AbstractPlugin {
 				masterChildren.add(proximity);
 			} catch (Exception e) {
 				Logger.ERROR(TAG, "Failed to set proximity sensor", e);
+				status = "Failed to set proximity sensor";
 			}
 		}
 
@@ -165,6 +179,7 @@ public class SensorsPlugin extends AbstractPlugin {
 				masterChildren.add(giroscope);
 			} catch (Exception e) {
 				Logger.ERROR(TAG, "Failed to set giroscope sensor", e);
+				status = "Failed to set giroscope sensor";
 			}
 		}
 
@@ -178,6 +193,7 @@ public class SensorsPlugin extends AbstractPlugin {
 				masterChildren.add(light);
 			} catch (Exception e) {
 				Logger.ERROR(TAG, "Failed to set light sensor", e);
+				status = "Failed to set light sensor";
 			}
 		}
 
@@ -191,6 +207,7 @@ public class SensorsPlugin extends AbstractPlugin {
 				masterChildren.add(orientation);
 			} catch (Exception e) {
 				Logger.ERROR(TAG, "Failed to set orientation sensor", e);
+				status = "Failed to set orientation sensor";
 			}
 		}
 
@@ -204,6 +221,7 @@ public class SensorsPlugin extends AbstractPlugin {
 				masterChildren.add(pressure);
 			} catch (Exception e) {
 				Logger.ERROR(TAG, "Failed to set pressure sensor", e);
+				status = "Failed to set pressure sensor";
 			}
 		}
 	
@@ -217,6 +235,7 @@ public class SensorsPlugin extends AbstractPlugin {
 				Logger.DEBUG(TAG, "Temperature");
 			} catch (Exception e) {
 				Logger.ERROR(TAG, "Failed to set temperature sensor", e);
+				status = "Failed to set temperature sensor";
 			}
 		}
 
@@ -230,6 +249,7 @@ public class SensorsPlugin extends AbstractPlugin {
 				masterChildren.add(magnetic);
 			} catch (Exception e) {
 				Logger.ERROR(TAG, "Failed to set magnetic sensor", e);
+				status = "Failed to set magnetic sensor";
 			}
 		}
 
