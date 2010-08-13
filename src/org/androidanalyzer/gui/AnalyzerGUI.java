@@ -44,7 +44,6 @@ public class AnalyzerGUI extends Activity implements UICallback, OnClickListener
 	private Button buttonSend;
 	private Button buttonSave;
 	private EditText mUserText;
-	private AlertDialog alert;
 	private AlertDialog.Builder builder;
 	private AnalyzerCore core;
 	public ProgressDialog progressDialog;
@@ -251,41 +250,44 @@ public class AnalyzerGUI extends Activity implements UICallback, OnClickListener
 	private Dialog createAlertDialog(String msg, int typeDialog) {
 		Logger.DEBUG(TAG, "Create alert dialog");
 		builder = builder == null ? new AlertDialog.Builder(this) : builder;
+		Logger.DEBUG(TAG, "Dialog type is: " + typeDialog);
+		Logger.DEBUG(TAG, "Message: " + msg);
 		switch (typeDialog) {
 		case ALERT_DLG_NEGATIVE:
+			Logger.DEBUG(TAG, "Create negative dialog");
 			builder.setTitle(getString(R.string.alert_dialog_warning_title));
 			builder.setIcon(R.drawable.warning_icon_yellow);
 			builder.setMessage(msg).setCancelable(false)
 					.setPositiveButton(getString(R.string.alert_dialog_ok), new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int id) {
-							dialog.cancel();
+							dialog.dismiss();
 						}
 					});
-			alert = alert == null ? builder.create() : alert;
-			return alert;
+			return builder.create();
 		case ALERT_DLG_POSITIVE_SENT:
+			Logger.DEBUG(TAG, "Create positive sent dialog");
 			builder.setTitle(getString(R.string.alert_dialog_pos_title));
 			builder.setIcon(R.drawable.ok_icon);
 			builder.setMessage(getString(R.string.alert_dialog_pos_ss) + " " + msg).setCancelable(false)
 					.setPositiveButton(getString(R.string.alert_dialog_ok), new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int id) {
-							dialog.cancel();
+							dialog.dismiss();
 						}
 					});
-			alert = alert == null ? builder.create() : alert;
-			return alert;
+			return builder.create();
 		case ALERT_DLG_POSITIVE_SAVED:
+			Logger.DEBUG(TAG, "Create positive saved dialog");
 			builder.setTitle(getString(R.string.alert_dialog_pos_title));
 			builder.setIcon(R.drawable.ok_icon);
 			builder.setMessage(getString(R.string.alert_dialog_pos_ssd) + " " + getString(R.string.alert_dialog_pos_file_loc) + msg)
 					.setCancelable(false).setPositiveButton(getString(R.string.alert_dialog_ok), new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int id) {
-							dialog.cancel();
+							dialog.dismiss();
 						}
 					});
-			alert = alert == null ? builder.create() : alert;
-			return alert;
+			return builder.create();
 		default:
+			Logger.DEBUG(TAG, "Skip creating alert dialog");
 			return null;
 		}
 	}
