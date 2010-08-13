@@ -110,7 +110,7 @@ public class AnalyzerCore {
 	 */
 	public Data startAnalyzing() {
 		Hashtable progressValues = null;
-		int pluginCounter = 1;
+		int pluginCounter = 0;
 		Data plugins = null;
 		if (uiCallb != null)
 			progressValues = new Hashtable(5);
