@@ -2,6 +2,7 @@ package org.androidanalyzer.gui;
 
 import java.net.URI;
 
+import org.androidanalyzer.Constants;
 import org.androidanalyzer.R;
 import org.androidanalyzer.core.utils.Logger;
 import org.androidanalyzer.transport.Reporter;
@@ -25,8 +26,6 @@ import android.widget.EditText;
  * @version <1.0.0>
  */
 public class SettingsGUI extends Activity implements OnClickListener {
-  public static String DEBUG = "DEBUG";
-  public static String HOST = "HOST";
 
   private static final String TAG = "Analyzer-Settings-GUI";
   private static final String PREFS_NAME = "org.androidanalyzer.gui.SettingsGUI";
@@ -46,15 +45,15 @@ public class SettingsGUI extends Activity implements OnClickListener {
     setContentView(R.layout.settings);
     debug = (CheckBox) findViewById(R.id.Debug);
     hostEditText = (EditText) findViewById(R.id.Host);
-    String lHost = loadSettings(this, HOST);
+    String lHost = loadSettings(this, Constants.HOST);
     if (lHost == null) {
       String dHost = Reporter.getHost();
       hostEditText.setText(dHost);
-      saveSettings(this, HOST, dHost);
+      saveSettings(this, Constants.HOST, dHost);
     } else {
       hostEditText.setText(lHost);
     }
-    String str_check = loadSettings(this, DEBUG);
+    String str_check = loadSettings(this, Constants.DEBUG);
     if (str_check != null && str_check.equals("true")) {
       debug.setChecked(true);
       Logger.setDebug(true);
@@ -78,11 +77,11 @@ public class SettingsGUI extends Activity implements OnClickListener {
       if (((CheckBox) v).isChecked()) {
         Logger.DEBUG(TAG, "Debug is enabled");
         Logger.setDebug(true);
-        saveSettings(this, DEBUG, "true");
+        saveSettings(this, Constants.DEBUG, "true");
       } else {
         Logger.DEBUG(TAG, "Debug is disabled");
         Logger.setDebug(false);
-        saveSettings(this, DEBUG, "false");
+        saveSettings(this, Constants.DEBUG, "false");
       }
     }
     if (v == applyButton) {
@@ -98,7 +97,7 @@ public class SettingsGUI extends Activity implements OnClickListener {
           Logger.WARNING(TAG, "URI is invalid", e);
           createAlertDialog().show();
         }
-        saveSettings(this, HOST, mHost);
+        saveSettings(this, Constants.HOST, mHost);
         Reporter.setHost(hostEditText.getText().toString());
       }
     }

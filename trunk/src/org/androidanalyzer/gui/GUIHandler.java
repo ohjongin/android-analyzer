@@ -56,6 +56,7 @@ public class GUIHandler extends Handler {
 			setMax = false;
 			analyzerGUI.setLayouts(Constants.LAYOUT_SEND);
 			analyzerGUI.createSendButton();
+			analyzerGUI.createSaveButton();
 			analyzerGUI.setData((Data) bundle.get(Constants.HANDLER_SEND));
 		}
 	}
