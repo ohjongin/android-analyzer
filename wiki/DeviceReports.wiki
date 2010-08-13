@@ -3,26 +3,27 @@ Each device report consists of many nodes and sub-nodes of data, that will be se
 
 This is a [http://android-analyzer.googlecode.com/svn/trunk/docs/Sample%20Device%20Data%20Report.htm sample report] structure that will be generated. *Note that the values presented in the sample file are random* and are presented just to give a clue about what a device report actually is. Once we generate our first real reports we will add some more real-world samples as well.
 
-|| *Node* || *Node* || *Node* || *Node* || *Node/Value* || *Value* || *Metric* || 
-|| Root || || || || || || ||
-|| || Data || || || || || ||
-|| || || < Node > || || || || ||
-|| || || ...... || || || || ||
-|| || || < Node > || || || || ||
-|| || Metadata || || || || || ||
-|| || || Analyzer || || || || ||
-|| || || || Version || String || || ||
-|| || || Plugins || || || || ||
-|| || || || Plugin_0 || || || ||
-|| || || || || Human name || String || ||
-|| || || || || Class name || String || ||
-|| || || || || Version || String  || ||
-|| || || || || Vendor || String  || ||
-|| || || || || Status || String  || ||
-|| || || Device || || || || ||
-|| || || || ID || String  || || ||
-|| || || Report || || || || ||
-|| || || || ID || String  || || ||
+|| *Node* || *Node* || *Node* || *Node* || *Node* || *Node* || *Value* || *Metric* || *Retrieval Method* ||
+|| Root || || || || || || || || ||
+|| || Data || || || || || || || ||
+|| || || < Node > || || || || || || ||
+|| || || ...... || || || || || || ||
+|| || || < Node > || || || || || || ||
+|| || Metadata || || || || || || || ||
+|| || || Analyzer || || || || || || ||
+|| || || || Version || || || String  || || ||
+|| || || Plugins || || || || || || ||
+|| || || || Plugin_0 || || || || || ||
+|| || || || || Human name || || String  || || ||
+|| || || || || Class name || || String  || || ||
+|| || || || || Version || || String   || || ||
+|| || || || || Vendor || || String   || || ||
+|| || || || || Status || || String || || If status is "Failed" then Description node is available ||
+|| || || || || || Description || String || || ||
+|| || || Device || || || || || || ||
+|| || || || ID || || ||String || MD5H || TelephonyManager.getDeviceId().getBytes() Hash code ||
+|| || || Date|| || || || String ||Timestamp || Format is: yyyy/MM/dd HH:mm:ss ||
+
 
 For further detail about *< Node >* structure please see [Plugins Plugins] section.
 
