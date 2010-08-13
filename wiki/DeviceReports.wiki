@@ -21,7 +21,7 @@ This is a [http://android-analyzer.googlecode.com/svn/trunk/docs/Sample%20Device
 || || || || || Status || || String || || If status is "Failed" then Description node is available ||
 || || || || || || Description || String || || ||
 || || || Device || || || || || || ||
-|| || || || ID || || ||String || MD5H || TelephonyManager.getDeviceId().getBytes() Hash code ||
+|| || || || ID || || ||String || MD5H || Calculate hash code of TelephonyManager.getDeviceId().getBytes() ||
 || || || Date|| || || || String ||Timestamp || Format is: yyyy/MM/dd HH:mm:ss ||
 
 
