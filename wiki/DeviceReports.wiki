@@ -8,12 +8,12 @@ This is a [http://android-analyzer.googlecode.com/svn/trunk/docs/Sample%20Device
 || || Data || || || || || || || ||
 || || || {{{<}}}Node{{{>}}} || || || || || || ||
 || || || ...... || || || || || || ||
-|| || || <Node> || || || || || || ||
+|| || || {{{<}}}Node{{{>}}} || || || || || || ||
 || || Metadata || || || || || || || ||
 || || || Analyzer || || || || || || ||
 || || || || Version || || || String  || || ||
 || || || Plugins || || || || || || ||
-|| || || || Plugin-{{{x}}} || || || || || ||
+|| || || || Plugin-{{{<x>}}}|| || || || || ||
 || || || || || Human name || || String  || || ||
 || || || || || Class name || || String  || || ||
 || || || || || Version || || String   || || ||
