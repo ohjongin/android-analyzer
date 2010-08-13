@@ -6,14 +6,14 @@ This is a [http://android-analyzer.googlecode.com/svn/trunk/docs/Sample%20Device
 || *Node* || *Node* || *Node* || *Node* || *Node* || *Node* || *Value* || *Metric* || *Retrieval Method* ||
 || Root || || || || || || || || ||
 || || Data || || || || || || || ||
-|| || || < Node > || || || || || || ||
+|| || || {{{<}}}Node{{{>}}} || || || || || || ||
 || || || ...... || || || || || || ||
-|| || || < Node > || || || || || || ||
+|| || || <Node> || || || || || || ||
 || || Metadata || || || || || || || ||
 || || || Analyzer || || || || || || ||
 || || || || Version || || || String  || || ||
 || || || Plugins || || || || || || ||
-|| || || || Plugin_0 || || || || || ||
+|| || || || Plugin-{{{x}}} || || || || || ||
 || || || || || Human name || || String  || || ||
 || || || || || Class name || || String  || || ||
 || || || || || Version || || String   || || ||
