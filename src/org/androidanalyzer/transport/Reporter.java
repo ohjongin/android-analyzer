@@ -14,7 +14,7 @@ import org.androidanalyzer.core.Data;
  */
 
 public abstract class Reporter {
-	private static String HOST = null; // "http://172.22.55.24:3128/DataServlet";
+	private static String HOST = null;
 	private static String DEFAULT_HOST = "http://172.22.55.24:3128/DataServlet";
 
 	/**
