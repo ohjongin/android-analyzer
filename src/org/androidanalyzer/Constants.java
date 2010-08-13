@@ -54,7 +54,7 @@ public class Constants {
 	public static final String METADATA_ANALYZER = "Analyzer";
 	public static final String METADATA_ANALYZER_VERSION = "Version";
 	public static final String METADATA_PLUGINS = "Plugins";
-	public static final String METADATA_PLUGIN_ = "Plugin_";
+	public static final String METADATA_PLUGIN_ = "Plugin-";
 	public static final String METADATA_PLUGIN_HUMAN_NAME = "Human name";
 	public static final String METADATA_PLUGIN_CLASS_NAME = "Class name";
 	public static final String METADATA_PLUGIN_VERSION = "Version";
