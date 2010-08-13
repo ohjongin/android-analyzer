@@ -25,7 +25,7 @@ This is a [http://android-analyzer.googlecode.com/svn/trunk/docs/Sample%20Device
 || || || Date|| || || || String ||Timestamp || Format is: yyyy/MM/dd HH:mm:ss ||
 
 
-For further detail about *< Node >* structure please see [Plugins Plugins] section.
+For further details about *< Node >* structure please see [Plugins Plugins] section.
 
 = Report File Format =
 Android Analyzer's architecture is report format-agnostic, so that 3rd-party reporting implementation can be developed. However, the default format and transport supported is JSON over HTTP.
