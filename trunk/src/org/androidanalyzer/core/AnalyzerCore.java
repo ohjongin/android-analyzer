@@ -230,6 +230,7 @@ public class AnalyzerCore {
 			try {
 				imei.setName(Constants.METADATA_DEVICE_ID);
 				imei.setValue(md5);
+				imei.setValueMetric(Constants.METADATA_DEVICE_ID_METRIC);
 				device.setValue(imei);
 				reportMetadata.setValue(device);
 			} catch (Exception e) {
@@ -259,6 +260,7 @@ public class AnalyzerCore {
 			Date currentTime = new Date();
 			String dateString = formatter.format(currentTime);
 			date.setValue(dateString);
+			date.setValueMetric(Constants.METADATA_DATE_METRIC);
 			reportMetadata.setValue(date);
 		} catch (Exception e) {
 			Logger.ERROR(TAG, "Could not set Metadata!", e);

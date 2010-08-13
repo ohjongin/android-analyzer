@@ -64,8 +64,9 @@ public class Constants {
 	public static final String METADATA_PLUGIN_STATUS_PASSED = "Passed";
 	public static final String METADATA_DEVICE = "Device";
 	public static final String METADATA_DEVICE_ID = "ID";
+	public static final String METADATA_DEVICE_ID_METRIC = "MD5H";
 	public static final String METADATA_DATE = "Date";
-	public static final String METADATA_REPORT_ID = "ID";
+	public static final String METADATA_DATE_METRIC = "Timestamp";
 	// File is located in data/data/org.androidanalyzer/files
 	public static final String FILE_NAME = "aa-report";
 	
