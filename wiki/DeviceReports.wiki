@@ -11,13 +11,13 @@ This is a [http://android-analyzer.googlecode.com/svn/trunk/docs/Sample%20Device
 || || || {{{<}}}Node{{{>}}} || || || || || || ||
 || || Metadata || || || || || || || ||
 || || || Analyzer || || || || || || ||
-|| || || || Version || || || String  || || ||
+|| || || || Version || || || String  || ||Format is: Major.Minor.Micro ||
 || || || Plugins || || || || || || ||
 || || || || Plugin-{{{<x>}}}|| || || || || ||
-|| || || || || Human name || || String  || || ||
-|| || || || || Class name || || String  || || ||
-|| || || || || Version || || String   || || ||
-|| || || || || Vendor || || String   || || ||
+|| || || || || Human name || || String  || || Free text ||
+|| || || || || Class name || || String  || || this.getClass().getName() ||
+|| || || || || Version || || String   || || Format is: Major.Minor.Micro ||
+|| || || || || Vendor || || String   || || Free text ||
 || || || || || Status || || String || || If status is "Failed" then Description node is available ||
 || || || || || || Description || String || || ||
 || || || Device || || || || || || ||
