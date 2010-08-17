@@ -329,10 +329,14 @@ public class AnalyzerCore {
 			fName = Constants.FILE_NAME + "-" + dateString+".txt";
 			File root = Environment.getExternalStorageDirectory();
 			if (root != null && root.canWrite()) {
+				Logger.DEBUG(TAG, "SD card is available");
 				File sdfile = new File(root, fName);
 				fos = new FileOutputStream(sdfile);
+				fName = " sdcard/" + fName;
 			} else {
+				Logger.DEBUG(TAG, "SD card is not available");
 				fos = ctx.openFileOutput(fName, ctx.MODE_PRIVATE);
+				fName = " data/data/org.androidanalyzer/files/" + fName;
 			}
 			osw = new OutputStreamWriter(fos);
 			osw.write(jObject.toString());
