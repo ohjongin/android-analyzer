@@ -1,6 +1,9 @@
 package org.androidanalyzer.core;
 
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.URL;
@@ -25,6 +28,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.os.Environment;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.telephony.TelephonyManager;
@@ -319,11 +323,17 @@ public class AnalyzerCore {
 		JSONObject jObject = JSONFormatter.format(data);
 		Logger.DEBUG(TAG, "[send] jObject: " + jObject);
 		try {
-			SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd-HH:mm:ss");
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd-HH_mm_ss");
 			Date currentTime = new Date();
 			String dateString = formatter.format(currentTime);
-			fName = Constants.FILE_NAME + "-" + dateString;
-			fos = ctx.openFileOutput(fName, ctx.MODE_PRIVATE);
+			fName = Constants.FILE_NAME + "-" + dateString+".txt";
+			File root = Environment.getExternalStorageDirectory();
+			if (root != null && root.canWrite()) {
+				File sdfile = new File(root, fName);
+				fos = new FileOutputStream(sdfile);
+			} else {
+				fos = ctx.openFileOutput(fName, ctx.MODE_PRIVATE);
+			}
 			osw = new OutputStreamWriter(fos);
 			osw.write(jObject.toString());
 			osw.flush();
@@ -339,6 +349,7 @@ public class AnalyzerCore {
 		}
 		return fName;
 	}
+	
 
 	/**
 	 * Adds data to main Report in Core
