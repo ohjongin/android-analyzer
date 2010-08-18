@@ -9,11 +9,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import org.androidanalyzer.Constants;
 import org.androidanalyzer.core.utils.Logger;
+import org.androidanalyzer.plugins.AbstractPlugin;
 import org.androidanalyzer.transport.Reporter;
 import org.androidanalyzer.transport.impl.json.HTTPJSONReporter;
 import org.androidanalyzer.transport.impl.json.JSONFormatter;
@@ -44,7 +46,7 @@ public class AnalyzerCore {
 	private static final int DEFAULT_MAX_TIME_TO_WAIT_FOR_PLUGIN_ANALYSIS_COMPLETION = 60000;
 	private static final int DEFAULT_MIN_TIME_TO_WAIT_FOR_PLUGIN_ANALYSIS_COMPLETION = 10000;
 	private static AnalyzerCore core;
-	
+
 	/* Context to be used for communication with the plugins */
 	private Context ctx;
 	/* UI callback for communication with the UI */
@@ -131,7 +133,6 @@ public class AnalyzerCore {
 		if (pluginCache != null) {
 			for (String plugin : pluginCache) {
 				runningPluginConn = connectToPlugin(plugin);
-
 				if (runningPluginConn != null && runningPluginConn.plugin != null) {
 					try {
 						runningPluginConn.plugin.setDebugEnabled(Logger.getDebug());
@@ -175,12 +176,11 @@ public class AnalyzerCore {
 					Date currentTime = new Date();
 					String dateString = formatter.format(currentTime);
 					try {
-						clName = runningPluginConn.plugin.getClassName();
 						status = runningPluginConn.plugin.getStatus();
 					} catch (RemoteException e1) {
 						Logger.ERROR(TAG, "Failed to get for PluginInfo", e1);
 					}
-					pluginStatus.constructPluginStatus(clName, status, dateString);
+					pluginStatus.constructPluginStatus(plugin, status, dateString);
 					if (plugins == null) {
 						plugins = new Data();
 						try {
@@ -293,6 +293,9 @@ public class AnalyzerCore {
 		} catch (Exception e) {
 			Logger.ERROR(TAG, "Could not create final report!", e);
 		}
+		for (String plugin : pluginCache) {
+			Logger.DEBUG(TAG, "Clas name: " + plugin);
+		}
 		return root;
 	}
 
@@ -339,7 +342,7 @@ public class AnalyzerCore {
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd-HH_mm_ss");
 			Date currentTime = new Date();
 			String dateString = formatter.format(currentTime);
-			fName = Constants.FILE_NAME + "-" + dateString+".txt";
+			fName = Constants.FILE_NAME + "-" + dateString + ".txt";
 			File root = Environment.getExternalStorageDirectory();
 			if (root != null && root.canWrite()) {
 				Logger.DEBUG(TAG, "SD card is available");
@@ -371,7 +374,10 @@ public class AnalyzerCore {
 		return pluginStatus;
 	}
 
-	
+	public ArrayList<String> getPlugins() {
+		return pluginCache;
+	}
+
 	/**
 	 * Adds data to main Report in Core
 	 * 
