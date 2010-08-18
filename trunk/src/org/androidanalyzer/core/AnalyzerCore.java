@@ -62,6 +62,12 @@ public class AnalyzerCore {
 	private Data reportMetadata = null;
 	private Data tempReport = null;
 	private UninstallBReceiver unRecv = null;
+	
+	public static AnalyzerCore getInstance() {
+	  if (core == null) 
+	    core = new AnalyzerCore();
+	  return core;
+	}
 	private PluginStatus pluginStatus = null;
 
 	/**
@@ -71,7 +77,7 @@ public class AnalyzerCore {
 	 *          Android Context for plugin communication
 	 */
 	public void init(Context ctx) {
-		AnalyzerCore.core = this;
+//		AnalyzerCore.core = this;
 		this.ctx = ctx;
 		this.uiCallb = null;
 		Intent regPluginsIntent = new Intent();

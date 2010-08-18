@@ -155,6 +155,11 @@ public abstract class AbstractPlugin extends Service {
 			return getPluginStatus();
 		}
 
+    @Override
+    public String getDescription() throws RemoteException {
+      return getPluginDescription();
+    }
+
 	}
 
 	private BroadcastReceiver breceiver = new BroadcastReceiver() {
@@ -332,5 +337,11 @@ public abstract class AbstractPlugin extends Service {
 	 *         otherwise is PASSED
 	 */
 	abstract protected String getPluginStatus();
+	
+	/**
+	 * Return plugin description
+	 * @return pluginDescription. Human-readable name explaining purpose of this plugin.
+	 */
+	abstract public String getPluginDescription();
 
 }

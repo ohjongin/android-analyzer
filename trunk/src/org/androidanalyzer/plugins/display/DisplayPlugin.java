@@ -40,6 +40,7 @@ public class DisplayPlugin extends AbstractPlugin {
 	private static final String REFRESH_RATE = "Refresh rate";
 	private static final String REFRESH_RATE_METRIC = "fps";
 	private static final String DISPLAY_NAME = "Display-";
+	private static final String DESCRIPTION = "Collects data on available displays and their capabilities";
 	private String status = Constants.METADATA_PLUGIN_STATUS_PASSED;
 
 	/*
@@ -279,5 +280,10 @@ public class DisplayPlugin extends AbstractPlugin {
 		return displayHolder;
 
 	}
+
+  @Override
+  public String getPluginDescription() {
+    return DESCRIPTION;
+  }
 
 }
