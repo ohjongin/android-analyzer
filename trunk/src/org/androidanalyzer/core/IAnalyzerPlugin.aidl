@@ -7,6 +7,8 @@ import org.androidanalyzer.core.Data;
 interface IAnalyzerPlugin {
 	
 	String getName();
+	
+	String getDescription();
     
     Data startAnalysis();
     
