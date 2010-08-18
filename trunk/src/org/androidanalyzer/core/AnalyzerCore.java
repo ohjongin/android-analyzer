@@ -19,6 +19,7 @@ import org.androidanalyzer.transport.impl.json.HTTPJSONReporter;
 import org.androidanalyzer.transport.impl.json.JSONFormatter;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -26,10 +27,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.os.Environment;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.telephony.TelephonyManager;
+import android.webkit.Plugin;
 
 /**
  * Core class for managing plugins and performing analysis on the device.
@@ -43,11 +46,12 @@ public class AnalyzerCore {
 	private static final int TIME_TO_WAIT_FOR_PLUGIN_CONNECTION = 3000;
 	private static final int DEFAULT_MAX_TIME_TO_WAIT_FOR_PLUGIN_ANALYSIS_COMPLETION = 60000;
 	private static final int DEFAULT_MIN_TIME_TO_WAIT_FOR_PLUGIN_ANALYSIS_COMPLETION = 10000;
+	private static AnalyzerCore core;
+	
 	/* Context to be used for communication with the plugins */
 	private Context ctx;
 	/* UI callback for communication with the UI */
 	private UICallback uiCallb;
-	private static AnalyzerCore core;
 	private Executor exec;
 
 	private ArrayList<String> pluginCache = new ArrayList<String>();
@@ -59,6 +63,7 @@ public class AnalyzerCore {
 	private Data reportMetadata = null;
 	private Data tempReport = null;
 	private UninstallBReceiver unRecv = null;
+	private PluginStatus pluginStatus = null;
 
 	/**
 	 * Initializes the Core
@@ -114,6 +119,8 @@ public class AnalyzerCore {
 		Hashtable progressValues = null;
 		int pluginCounter = 0;
 		Data plugins = null;
+		String clName = null;
+		String status = null;
 		if (uiCallb != null)
 			progressValues = new Hashtable(5);
 		cleanReport();
@@ -123,6 +130,7 @@ public class AnalyzerCore {
 			progressValues.put(UICallback.NUMBER_OF_PLUGINS, pluginCache.size());
 			uiCallb.updateAnalysisProgress(progressValues);
 		}
+		pluginStatus = new PluginStatus(ctx);
 		if (pluginCache != null) {
 			for (String plugin : pluginCache) {
 				runningPluginConn = connectToPlugin(plugin);
@@ -166,6 +174,16 @@ public class AnalyzerCore {
 							Logger.ERROR(TAG, "Could not Sleep thread in Core!");
 						}
 					}
+					SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd-HH_mm_ss");
+					Date currentTime = new Date();
+					String dateString = formatter.format(currentTime);
+					try {
+						clName = runningPluginConn.plugin.getClassName();
+						status = runningPluginConn.plugin.getStatus();
+					} catch (RemoteException e1) {
+						Logger.ERROR(TAG, "Failed to get for PluginInfo", e1);
+					}
+					pluginStatus.constructPluginStatus(clName, status, dateString);
 					if (plugins == null) {
 						plugins = new Data();
 						try {
@@ -351,8 +369,12 @@ public class AnalyzerCore {
 		}
 		return fName;
 	}
-	
 
+	public PluginStatus getPluginInfo() {
+		return pluginStatus;
+	}
+
+	
 	/**
 	 * Adds data to main Report in Core
 	 * 
@@ -411,6 +433,7 @@ public class AnalyzerCore {
 		reportPlugins = null;
 		reportMetadata = null;
 		tempReport = null;
+		pluginStatus = null;
 	}
 
 	/**
