@@ -43,6 +43,7 @@ public class SensorsPlugin extends AbstractPlugin {
 	private static final String TYPE = "Type";
 	private static final String VENDOR = "Vendor";
 	private static final String VERSION = "Version";
+  private static final String DESCRIPTION = "Collects data on available device sensors";
 	private String status = Constants.METADATA_PLUGIN_STATUS_PASSED;
 
 	/*
@@ -332,4 +333,9 @@ public class SensorsPlugin extends AbstractPlugin {
 		}
 		return masterChildren;
 	}
+
+  @Override
+  public String getPluginDescription() {
+    return DESCRIPTION;
+  }
 }

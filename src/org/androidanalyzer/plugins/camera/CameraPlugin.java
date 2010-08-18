@@ -132,6 +132,8 @@ public class CameraPlugin extends AbstractPlugin {
   private boolean readSysPropsFromFile = false;
   private Properties buildProps = null;
   private String status = Constants.METADATA_PLUGIN_STATUS_PASSED;
+  
+  private static final String DESCRIPTION = "Collects data on available cameras and their capabilities";
 
   /*
    * (non-Javadoc)
@@ -1358,5 +1360,10 @@ public class CameraPlugin extends AbstractPlugin {
       break;
     }
     return formatStr;
+  }
+
+  @Override
+  public String getPluginDescription() {
+    return DESCRIPTION;
   }
 }

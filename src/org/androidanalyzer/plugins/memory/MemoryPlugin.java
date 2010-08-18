@@ -44,6 +44,7 @@ public class MemoryPlugin extends AbstractPlugin {
 
   private static final CharSequence FLASH_FILE_SYSTEM = "yaffs";
   private static final CharSequence UBI_FILE_SYSTEM = "ubifs";
+  private static final String DESCRIPTION = "Collects data on memory capabilities, like ROM, RAM, removable storage, etc";
   private String status = Constants.METADATA_PLUGIN_STATUS_PASSED;
 
   /*
@@ -375,5 +376,10 @@ public class MemoryPlugin extends AbstractPlugin {
       return ramValue.toString();
     }
     return null;
+  }
+
+  @Override
+  public String getPluginDescription() {
+    return DESCRIPTION;
   }
 }

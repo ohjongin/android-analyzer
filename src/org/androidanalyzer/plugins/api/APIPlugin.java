@@ -23,6 +23,7 @@ public class APIPlugin extends AbstractPlugin {
 	private static final String GOOGLE = "Google";
 	private static final String GMAPS = "com.google.android.maps";
 	private static final String TAG = "Analyzer-APIPlugin";
+	private static final String DESCRIPTION = "Collects data on available Android and Google APIs and their versions";
 	private String status = Constants.METADATA_PLUGIN_STATUS_PASSED;
 
 	/*
@@ -171,4 +172,9 @@ public class APIPlugin extends AbstractPlugin {
 		Logger.DEBUG(TAG, "Service is stopped!");
 		this.stopSelf();
 	}
+
+  @Override
+  public String getPluginDescription() {
+    return DESCRIPTION;
+  }
 }

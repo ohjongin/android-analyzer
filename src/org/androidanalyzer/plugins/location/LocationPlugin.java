@@ -33,6 +33,7 @@ public class LocationPlugin extends AbstractPlugin {
   private static final Object GPS_PROVIDER = "gps";
 
   private static final String ASSISTED_GPS_ENABLED = "assisted_gps_enabled";
+  private static final String DESCRIPTION = "Collects data on available positioning methods";
   private String status = Constants.METADATA_PLUGIN_STATUS_PASSED;
 
   /*
@@ -240,5 +241,10 @@ public class LocationPlugin extends AbstractPlugin {
       }
     }
     return Constants.NODE_VALUE_NO;
+  }
+
+  @Override
+  public String getPluginDescription() {
+    return DESCRIPTION;
   }
 }

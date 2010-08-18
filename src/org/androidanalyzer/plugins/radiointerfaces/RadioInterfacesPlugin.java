@@ -54,6 +54,7 @@ public class RadioInterfacesPlugin extends AbstractPlugin {
 	private static final String B900 = "900";
 	private static final String B1800 = "1800";
 	private static final String B1900 = "1900";
+  private static final String DESCRIPTION = "Collects data on the radio interface and capabilities";
 	private String status = Constants.METADATA_PLUGIN_STATUS_PASSED;
 
 	/*
@@ -340,4 +341,9 @@ public class RadioInterfacesPlugin extends AbstractPlugin {
 		fourGHolder = addToParent(fourGHolder, twoChildren);
 		return fourGHolder;
 	}
+
+  @Override
+  public String getPluginDescription() {
+    return DESCRIPTION;
+  }
 }

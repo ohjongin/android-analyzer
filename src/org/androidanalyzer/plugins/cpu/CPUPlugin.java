@@ -34,6 +34,8 @@ public class CPUPlugin extends AbstractPlugin {
 
   private static final String ARCH_ARM = "arm";
   private static final String FREQ_METRIC = "MHz";
+  
+  private static final String DESCRIPTION = "Collects information on the device\'s main CPU";
   private String status = Constants.METADATA_PLUGIN_STATUS_PASSED;
 
   /*
@@ -351,5 +353,10 @@ public class CPUPlugin extends AbstractPlugin {
     }
 
     return null;
+  }
+
+  @Override
+  public String getPluginDescription() {
+    return DESCRIPTION;
   }
 }
