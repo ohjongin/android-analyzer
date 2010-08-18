@@ -9,13 +9,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import org.androidanalyzer.Constants;
 import org.androidanalyzer.core.utils.Logger;
-import org.androidanalyzer.plugins.AbstractPlugin;
 import org.androidanalyzer.transport.Reporter;
 import org.androidanalyzer.transport.impl.json.HTTPJSONReporter;
 import org.androidanalyzer.transport.impl.json.JSONFormatter;
@@ -124,7 +122,6 @@ public class AnalyzerCore {
 		Hashtable progressValues = null;
 		int pluginCounter = 0;
 		Data plugins = null;
-		String clName = null;
 		String status = null;
 		if (uiCallb != null)
 			progressValues = new Hashtable(5);
@@ -380,10 +377,6 @@ public class AnalyzerCore {
 		return pluginStatus;
 	}
 
-	public ArrayList<String> getPlugins() {
-		return pluginCache;
-	}
-
 	/**
 	 * Adds data to main Report in Core
 	 * 
@@ -590,6 +583,7 @@ public class AnalyzerCore {
 		@Override
 		public void onServiceConnected(ComponentName name, IBinder service) {
 			plugin = (IAnalyzerPlugin.Stub.asInterface((IBinder) service));
+			uiCallb.notifyPluginRegistered(plugin);
 			Logger.DEBUG(TAG, "Core Connected to plugin : " + name);
 		}
 
