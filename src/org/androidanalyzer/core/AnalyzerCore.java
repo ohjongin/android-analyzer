@@ -19,7 +19,6 @@ import org.androidanalyzer.transport.impl.json.HTTPJSONReporter;
 import org.androidanalyzer.transport.impl.json.JSONFormatter;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -27,12 +26,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.content.SharedPreferences;
 import android.os.Environment;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.telephony.TelephonyManager;
-import android.webkit.Plugin;
 
 /**
  * Core class for managing plugins and performing analysis on the device.
