@@ -7,7 +7,7 @@
   android:layout_height="?android:attr/listPreferredItemHeight">
   <ImageView
   	android:id="@+id/plugin_status_icon"
-  	android:src="@drawable/success_icon"
+  	android:src="@drawable/ok_icon_3"
   	android:layout_width="wrap_content"
     android:layout_height="fill_parent"
     
