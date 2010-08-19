@@ -60,13 +60,16 @@ class AnalyzerListAdapter extends BaseAdapter implements ListAdapter {
       String pluginName = pluginStatus.getPluginName();
       int status = pluginStatus.getStatus();
       long lastrun = pluginStatus.getLastRun();
-      Calendar calendar = Calendar.getInstance();
-      calendar.setTimeInMillis(lastrun);
-      Date dt = calendar.getTime();
-      String date = formatDate.format(dt);
-      String time = formatTime.format(dt);      
-      String lastRun = ctx.getString(R.string.time_format);
-      lastRun = String.format(lastRun, date, time);
+      String lastRun;
+      if (lastrun != -1) {
+        Date dt = new Date(lastrun);
+        String date = formatDate.format(dt);
+        String time = formatTime.format(dt);      
+        lastRun = ctx.getString(R.string.time_format);
+        lastRun = String.format(lastRun, date, time);
+      } else {
+        lastRun = ctx.getString(R.string.plugin_not_run);
+      }
 			ImageView image = (ImageView)rowLayout.findViewById(R.id.plugin_status_icon);
 			
 			image.setImageResource(status);
