@@ -19,7 +19,7 @@ public class AnalyzingProcess implements Runnable {
 	private Handler dataHandler;
 	private AnalyzerCore core;
 
-	public AnalyzingProcess(GUIHandler dataHandler, AnalyzerCore core) {
+	public AnalyzingProcess(Handler dataHandler, AnalyzerCore core) {
 		this.dataHandler = dataHandler;
 		this.core = core;
 	}
