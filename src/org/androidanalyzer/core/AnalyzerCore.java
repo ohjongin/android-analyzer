@@ -3,7 +3,7 @@ package org.androidanalyzer.core;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
+
 import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -29,11 +29,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.content.res.Resources;
-import android.content.res.Resources.NotFoundException;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Environment;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.os.SystemClock;
 import android.telephony.TelephonyManager;
 
 /**
@@ -65,8 +66,7 @@ public class AnalyzerCore {
 	private Data reportMetadata = null;
 	private Data tempReport = null;
 	private UninstallBReceiver unRecv = null;
-	private PluginStatus pluginStatus = null;
-
+	
 	public static AnalyzerCore getInstance() {
 		if (core == null)
 			core = new AnalyzerCore();
@@ -138,7 +138,7 @@ public class AnalyzerCore {
 			progressValues.put(UICallback.NUMBER_OF_PLUGINS, pluginCache.size());
 			uiCallb.updateAnalysisProgress(progressValues);
 		}
-		pluginStatus = new PluginStatus(ctx);
+		String pluginName = null;
 		if (pluginCache != null) {
 			for (String plugin : pluginCache) {
 				runningPluginConn = connectToPlugin(plugin);
@@ -181,15 +181,17 @@ public class AnalyzerCore {
 							Logger.ERROR(TAG, "Could not Sleep thread in Core!");
 						}
 					}
-					SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd-HH_mm_ss");
-					Date currentTime = new Date();
-					String dateString = formatter.format(currentTime);
+//					SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd-HH_mm_ss");
+//					Date currentTime = new Date();
+//					String dateString = formatter.format(currentTime);
 					try {
 						status = runningPluginConn.plugin.getStatus();
+            pluginName = runningPluginConn.plugin.getName();
 					} catch (RemoteException e1) {
 						Logger.ERROR(TAG, "Failed to get for PluginInfo", e1);
 					}
-					pluginStatus.constructPluginStatus(plugin, status, dateString);
+					updatePluginStatus(pluginName, plugin, status, SystemClock.elapsedRealtime());
+//					pluginStatus.constructPluginStatus(plugin, status, dateString);
 					if (plugins == null) {
 						plugins = new Data();
 						try {
@@ -379,10 +381,6 @@ public class AnalyzerCore {
 		return fName;
 	}
 
-	public PluginStatus getPluginInfo() {
-		return pluginStatus;
-	}
-
 	/**
 	 * Adds data to main Report in Core
 	 * 
@@ -441,7 +439,6 @@ public class AnalyzerCore {
 		reportPlugins = null;
 		reportMetadata = null;
 		tempReport = null;
-		pluginStatus = null;
 	}
 
 	/**
@@ -743,5 +740,23 @@ public class AnalyzerCore {
 		} catch (IOException e) {
 			Logger.ERROR(TAG, "Failed to open aa property file");
 		}
+	}
+	
+	private void updatePluginStatus(String pluginName, String pluginClass, String status, long time) {
+	  SharedPreferences prefs = ctx.getSharedPreferences("org.androidanalyzer.plugin.status", 0);
+	  String record = prefs.getString(pluginClass, null);
+	  PluginStatus pluginStatus;
+	  if (record == null) {	    
+	    pluginStatus = new PluginStatus(pluginName, pluginClass, -1, time);
+	  } else {
+	    pluginStatus = PluginStatus.decodeStatus(record);
+	  }
+	  int currentRun = Constants.METADATA_PLUGIN_STATUS_PASSED.equals(status) ? PluginStatus.STATUS_PASSED : PluginStatus.STATUS_FAILED;
+	  pluginStatus.setStatus(currentRun);
+	  pluginStatus.setLastRun(time);
+	  String encode = PluginStatus.encodeStatus(pluginStatus);
+	  Editor edit = prefs.edit();
+	  edit.putString(pluginClass, encode);
+	  edit.commit();
 	}
 }
