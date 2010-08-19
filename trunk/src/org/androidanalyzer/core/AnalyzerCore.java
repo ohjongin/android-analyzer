@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
 import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -37,7 +36,6 @@ import android.content.res.Resources.NotFoundException;
 import android.os.Environment;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.os.SystemClock;
 import android.telephony.TelephonyManager;
 
 /**
@@ -193,7 +191,7 @@ public class AnalyzerCore {
 					} catch (RemoteException e1) {
 						Logger.ERROR(TAG, "Failed to get for PluginInfo", e1);
 					}
-					updatePluginStatus(pluginName, plugin, status, SystemClock.elapsedRealtime());
+					updatePluginStatus(pluginName, plugin, status);
 //					pluginStatus.constructPluginStatus(plugin, status, dateString);
 					if (plugins == null) {
 						plugins = new Data();
@@ -745,18 +743,18 @@ public class AnalyzerCore {
 		}
 	}
 	
-	private void updatePluginStatus(String pluginName, String pluginClass, String status, long time) {
+	private void updatePluginStatus(String pluginName, String pluginClass, String status) {
 	  SharedPreferences prefs = ctx.getSharedPreferences("org.androidanalyzer.plugin.status", 0);
 	  String record = prefs.getString(pluginClass, null);
 	  PluginStatus pluginStatus;
 	  if (record == null) {	    
-	    pluginStatus = new PluginStatus(pluginName, pluginClass, -1, time);
+	    pluginStatus = new PluginStatus(pluginName, pluginClass, -1, 0);
 	  } else {
 	    pluginStatus = PluginStatus.decodeStatus(record);
 	  }
 	  int currentRun = Constants.METADATA_PLUGIN_STATUS_PASSED.equals(status) ? PluginStatus.STATUS_PASSED : PluginStatus.STATUS_FAILED;
 	  pluginStatus.setStatus(currentRun);
-	  pluginStatus.setLastRun(time);
+	  pluginStatus.setLastRun(new Date().getTime());
 	  String encode = PluginStatus.encodeStatus(pluginStatus);
 	  Editor edit = prefs.edit();
 	  edit.putString(pluginClass, encode);
