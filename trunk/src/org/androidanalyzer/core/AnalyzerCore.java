@@ -60,13 +60,14 @@ public class AnalyzerCore {
 	private Data reportMetadata = null;
 	private Data tempReport = null;
 	private UninstallBReceiver unRecv = null;
+  private PluginStatus pluginStatus = null;
 	
 	public static AnalyzerCore getInstance() {
 	  if (core == null) 
 	    core = new AnalyzerCore();
 	  return core;
 	}
-	private PluginStatus pluginStatus = null;
+	
 
 	/**
 	 * Initializes the Core
