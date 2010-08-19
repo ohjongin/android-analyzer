@@ -3,16 +3,19 @@ package org.androidanalyzer.core;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
+import java.util.Properties;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import org.androidanalyzer.Constants;
+import org.androidanalyzer.R;
 import org.androidanalyzer.core.utils.Logger;
 import org.androidanalyzer.transport.Reporter;
 import org.androidanalyzer.transport.impl.json.HTTPJSONReporter;
@@ -26,6 +29,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.res.Resources;
+import android.content.res.Resources.NotFoundException;
 import android.os.Environment;
 import android.os.IBinder;
 import android.os.RemoteException;
@@ -40,9 +45,9 @@ public class AnalyzerCore {
 
 	private static final String VERSION = "1.0.0";
 	private static final String TAG = "Analyzer-Core";
-	private static final int TIME_TO_WAIT_FOR_PLUGIN_CONNECTION = 3000;
-	private static final int DEFAULT_MAX_TIME_TO_WAIT_FOR_PLUGIN_ANALYSIS_COMPLETION = 60000;
-	private static final int DEFAULT_MIN_TIME_TO_WAIT_FOR_PLUGIN_ANALYSIS_COMPLETION = 10000;
+	private static int TIME_TO_WAIT_FOR_PLUGIN_CONNECTION;
+	private static int DEFAULT_MAX_TIME_TO_WAIT_FOR_PLUGIN_ANALYSIS_COMPLETION;
+	private static int DEFAULT_MIN_TIME_TO_WAIT_FOR_PLUGIN_ANALYSIS_COMPLETION;
 	private static AnalyzerCore core;
 
 	/* Context to be used for communication with the plugins */
@@ -60,14 +65,13 @@ public class AnalyzerCore {
 	private Data reportMetadata = null;
 	private Data tempReport = null;
 	private UninstallBReceiver unRecv = null;
-  private PluginStatus pluginStatus = null;
-	
+	private PluginStatus pluginStatus = null;
+
 	public static AnalyzerCore getInstance() {
-	  if (core == null) 
-	    core = new AnalyzerCore();
-	  return core;
+		if (core == null)
+			core = new AnalyzerCore();
+		return core;
 	}
-	
 
 	/**
 	 * Initializes the Core
@@ -76,9 +80,10 @@ public class AnalyzerCore {
 	 *          Android Context for plugin communication
 	 */
 	public void init(Context ctx) {
-//		AnalyzerCore.core = this;
+		// AnalyzerCore.core = this;
 		this.ctx = ctx;
 		this.uiCallb = null;
+		readProperties();
 		Intent regPluginsIntent = new Intent();
 		regPluginsIntent.setAction(Constants.PLUGINS_DISCOVERY_INTENT);
 		ctx.sendBroadcast(regPluginsIntent);
@@ -713,5 +718,30 @@ public class AnalyzerCore {
 			Logger.ERROR(TAG, "Could not set current plugin data!", e);
 		}
 		return currentPlugin;
+	}
+
+	private void readProperties() {
+		Resources resources = ctx.getResources();
+		try {
+			InputStream rawResource = resources.openRawResource(R.raw.aa);
+			Properties properties = new Properties();
+			properties.load(rawResource);
+			Logger.DEBUG(TAG, "The properties are now loaded");
+			Logger.DEBUG(TAG, "properties: " + properties);
+			TIME_TO_WAIT_FOR_PLUGIN_CONNECTION = (Integer.parseInt((String) properties.get("plugin.connection")));
+			Logger.DEBUG(TAG, "plugin.connection: " + TIME_TO_WAIT_FOR_PLUGIN_CONNECTION);
+			DEFAULT_MAX_TIME_TO_WAIT_FOR_PLUGIN_ANALYSIS_COMPLETION = (Integer.parseInt((String) properties
+					.get("max.time.analysis.completion")));
+			Logger.DEBUG(TAG, "max.time.analysis.completion: " + DEFAULT_MAX_TIME_TO_WAIT_FOR_PLUGIN_ANALYSIS_COMPLETION);
+			DEFAULT_MIN_TIME_TO_WAIT_FOR_PLUGIN_ANALYSIS_COMPLETION = (Integer.parseInt((String) properties
+					.get("min.time.analysis.completion")));
+			Logger.DEBUG(TAG, "min.time.analysis.completion: " + DEFAULT_MIN_TIME_TO_WAIT_FOR_PLUGIN_ANALYSIS_COMPLETION);
+		} catch (NumberFormatException nfe) {
+			Logger.ERROR(TAG, "Value is not integer: " + nfe);
+		} catch (NotFoundException e) {
+			Logger.ERROR(TAG, "Did not find raw resource: " + e);
+		} catch (IOException e) {
+			Logger.ERROR(TAG, "Failed to open aa property file");
+		}
 	}
 }
