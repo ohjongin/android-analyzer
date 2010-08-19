@@ -204,20 +204,24 @@ public class AnalyzerList extends Activity implements UICallback {
       System.out.println("Plugin registered: "+pluginClass);
       SharedPreferences prefs = getSharedPreferences(PREFS_NAME, 0);
       String status = prefs.getString(pluginClass, null);
-      PluginStatus decoded;
+      PluginStatus decoded = null;
       if (status == null) {
         String name = iAnalyzerPlugin.getName();
         decoded = new PluginStatus(name, pluginClass, PluginStatus.STATUS_NOT_RUN, -1);
         String encoded = PluginStatus.encodeStatus(decoded);
-        Editor edit = prefs.edit();
-        edit.putString(pluginClass, encoded);
-        edit.commit();
+        if (encoded != null) {
+          Editor edit = prefs.edit();
+          edit.putString(pluginClass, encoded);
+          edit.commit();
+        }
       } else {
         decoded = PluginStatus.decodeStatus(status);
       }
-      plugins.add(decoded);
-      adapter.listItems = plugins;
-      list.setAdapter(adapter);
+      if (decoded != null) {
+        plugins.add(decoded);
+        adapter.listItems = plugins;
+        list.setAdapter(adapter);
+      }
     } catch (RemoteException e) {
       Logger.ERROR(TAG, "Error handling plugin registered: "+e.getMessage());
     }
@@ -232,7 +236,8 @@ public class AnalyzerList extends Activity implements UICallback {
       String status = prefs.getString(pluginClass, null);
       if (status != null) {
         PluginStatus decoded = PluginStatus.decodeStatus(status);
-        plugins.remove(decoded);
+        if (decoded != null)
+          plugins.remove(decoded);
       }
     } catch (RemoteException e) {
       Logger.ERROR(TAG, "Error handling plugin unregistered: "+e.getMessage());

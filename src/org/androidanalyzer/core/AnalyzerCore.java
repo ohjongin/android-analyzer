@@ -746,18 +746,21 @@ public class AnalyzerCore {
 	private void updatePluginStatus(String pluginName, String pluginClass, String status) {
 	  SharedPreferences prefs = ctx.getSharedPreferences("org.androidanalyzer.plugin.status", 0);
 	  String record = prefs.getString(pluginClass, null);
-	  PluginStatus pluginStatus;
-	  if (record == null) {	    
-	    pluginStatus = new PluginStatus(pluginName, pluginClass, -1, 0);
-	  } else {
+	  PluginStatus pluginStatus = null;
+	  if (record != null) {	    
 	    pluginStatus = PluginStatus.decodeStatus(record);
+	  }
+	  if (pluginStatus == null) {
+      pluginStatus = new PluginStatus(pluginName, pluginClass, -1, 0);	    
 	  }
 	  int currentRun = Constants.METADATA_PLUGIN_STATUS_PASSED.equals(status) ? PluginStatus.STATUS_PASSED : PluginStatus.STATUS_FAILED;
 	  pluginStatus.setStatus(currentRun);
 	  pluginStatus.setLastRun(new Date().getTime());
 	  String encode = PluginStatus.encodeStatus(pluginStatus);
-	  Editor edit = prefs.edit();
-	  edit.putString(pluginClass, encode);
-	  edit.commit();
+	  if (encode != null) {
+  	  Editor edit = prefs.edit();
+  	  edit.putString(pluginClass, encode);
+  	  edit.commit();
+	  }
 	}
 }

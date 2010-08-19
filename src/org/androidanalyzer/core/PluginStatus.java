@@ -3,6 +3,7 @@ package org.androidanalyzer.core;
 import java.util.StringTokenizer;
 
 import org.androidanalyzer.R;
+import org.androidanalyzer.core.utils.Logger;
 
 public class PluginStatus {
   
@@ -13,24 +14,34 @@ public class PluginStatus {
   private static final String DELIM = ":";
   
   public static String encodeStatus(PluginStatus pluginStatus) {
-    StringBuffer sb = new StringBuffer(pluginStatus.getPluginClass());
-    sb.append(DELIM).append(pluginStatus.getPluginName());
-    sb.append(DELIM).append(pluginStatus.getStatus());
-    sb.append(DELIM).append(pluginStatus.getLastRun());
-    sb.append(DELIM).append(pluginStatus.isEnabled());
-    return sb.toString();
+    try {
+      StringBuffer sb = new StringBuffer(pluginStatus.getPluginClass());
+      sb.append(DELIM).append(pluginStatus.getPluginName());
+      sb.append(DELIM).append(pluginStatus.getStatus());
+      sb.append(DELIM).append(pluginStatus.getLastRun());
+      sb.append(DELIM).append(pluginStatus.isEnabled());
+      return sb.toString();
+    } catch (Throwable t) {
+      Logger.ERROR("PluginStatus", t.getMessage());
+    }
+    return null;
   }
   
   public static final PluginStatus decodeStatus(String pluginStatus) {
-    StringTokenizer sTok = new StringTokenizer(pluginStatus, DELIM, false);
-    String pluginClass = sTok.nextToken();
-    String pluginName = sTok.nextToken();
-    int status = Integer.valueOf(sTok.nextToken());
-    long lastRun = Long.valueOf(sTok.nextToken());
-    boolean enabled = Boolean.valueOf(sTok.nextToken());
-    PluginStatus decoded = new PluginStatus(pluginName, pluginClass, status, lastRun);
-    decoded.setEnabled(enabled);
-    return decoded;
+    try {
+      StringTokenizer sTok = new StringTokenizer(pluginStatus, DELIM, false);
+      String pluginClass = sTok.nextToken();
+      String pluginName = sTok.nextToken();
+      int status = Integer.valueOf(sTok.nextToken());
+      long lastRun = Long.valueOf(sTok.nextToken());
+      boolean enabled = Boolean.valueOf(sTok.nextToken());
+      PluginStatus decoded = new PluginStatus(pluginName, pluginClass, status, lastRun);
+      decoded.setEnabled(enabled);
+      return decoded;
+    } catch (Throwable t) {
+      Logger.ERROR("PluginStatus", t.getMessage());
+    }
+    return null;
   }
   
   private String pluginName;
