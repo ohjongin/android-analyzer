@@ -1,31 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-
-	<CheckBox android:id="@+id/Debug"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Debug enabled" 
-	/>
-	<TextView
-        android:id="@+id/HostAddress"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Host address:"
-	/>
-	<EditText android:id ="@+id/Host"
-	 android:text="Host"
-	 android:layout_width="fill_parent"
-	 android:layout_height="wrap_content"
-	/>
-	
-	<Button android:text="Apply" 
-		android:id="@+id/Apply" 
-		android:layout_width="wrap_content" 
-		android:layout_height="wrap_content">
-	</Button>
-		
-</LinearLayout>
+	<include android:id="@+id/button_panel" layout="@layout/button_panel"/>
+	<RelativeLayout
+		android:id="@+id/settings_panel"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:layout_above="@+id/button_panel">
+		<CheckBox android:id="@+id/Debug"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="Debug enabled"
+	        android:layout_marginLeft="10dip" 
+		/>
+		<TextView
+	        android:id="@+id/HostAddress"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/Debug"
+	        android:text="Host address:"
+	        android:layout_marginLeft="10dip" 
+		/>
+		<EditText android:id ="@+id/Host"
+		 android:hint="Host"
+		 android:layout_below="@+id/HostAddress"
+		 android:layout_width="fill_parent"
+		 android:layout_height="wrap_content"
+	     android:layout_marginLeft="10dip" 
+	     android:layout_marginRight="10dip" 
+		/>
+	</RelativeLayout>		
+</RelativeLayout>
