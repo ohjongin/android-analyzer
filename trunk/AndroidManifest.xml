@@ -3,24 +3,18 @@
       android:versionCode="1"
       android:versionName="1.0" package="org.androidanalyzer">
     <application android:icon="@drawable/icon" android:label="@string/app_name">
-         <activity android:name=".gui.AnalyzerGUI"
+		 <service android:name=".core.AnalyzerCore$RegistryService">
+			 <intent-filter>
+                <action android:name="org.androidanalyzer.core.IPluginRegistry" />
+	         </intent-filter>
+         </service>
+         <activity android:name=".gui.AnalyzerList"
                   android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
          </activity>
-		 <activity android:name=".gui.SettingsGUI"
-                  android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
-         </activity>
-		 <service android:name=".core.AnalyzerCore$RegistryService">
-			 <intent-filter>
-                <action android:name="org.androidanalyzer.core.IPluginRegistry" />
-	         </intent-filter>
-         </service>
 
          <!-- **** CPU Plugin **** -->
          <receiver android:enabled="true"
@@ -143,7 +137,12 @@
         </service>
 		
        
-	</application>
+	<activity android:name=".gui.AnalyzerSettings"/>
+	<activity android:name=".gui.PluginConfiguration"/>
+	<activity android:name=".gui.AboutActivity"/>
+	<activity android:name=".gui.ReportActivity"/>
+	<activity android:name=".gui.SettingsActivity"/>	
+</application>
 
 	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
 	<uses-permission android:name="android.permission.CAMERA"></uses-permission>

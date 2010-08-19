@@ -3,6 +3,7 @@ package org.androidanalyzer.core;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import java.io.OutputStreamWriter;
 import java.net.URL;
@@ -31,6 +32,8 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.res.Resources;
+import android.content.res.Resources.NotFoundException;
 import android.os.Environment;
 import android.os.IBinder;
 import android.os.RemoteException;
