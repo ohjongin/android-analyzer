@@ -8,6 +8,7 @@
       * [APIPlugin API]
       * [CPUPlugin CPU]
       * [LocationPlugin Location]
+      * [LocationAccuracyPlugin Location Accuracy]
       * [SensorPlugin Sensor]
       * [CameraPlugin Camera]
     * [DeviceReports Device Reports]
