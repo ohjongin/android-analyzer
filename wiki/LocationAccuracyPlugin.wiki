@@ -1,13 +1,85 @@
-#summary One-sentence summary of this page.
+This plugin benchmarks the accuracy of the positioning technology.
 
-= Introduction =
+*Plugin Name:* Location Accuracy Plugin
 
-Add your content here.
+*Class Name:* {{{org.androidanalyzer.plugins.location.LocationAccuracyPlugin}}}
+
+The following table defines the structure of data being inserted in the report, and the APIs or methods used to retrieve the value.
+
+|| *Node* || *Node* || *Node* || *Value* || *Metric* ||*Retrieval Method* ||
+|| Location Accuracy  || || || || || ||
+||  || Test ID || || || || ||
+||  || App Version || || || || ||
+||  || Device || || || || ||
+||  ||  || Brand || || || ||
+||  ||  || Product || || || ||
+||  || Android Version || || || || ||
+||  || Start Time || || || || ||
+||  || End Time || || || || ||
+||  || Time To First Fix || || || seconds || ||
+||  || location Provider || || || seconds || ||
+||  || sample Size || || || seconds || ||
+||  || Horizontal Error || || || || ||
+||  ||  || Min(m) || || || ||
+||  ||  || Max(m) || || || ||
+||  ||  || Mean(m) || || || ||
+||  ||  || 50th Percentile || || meters || ||
+||  ||  || 68th Percentile || || meters || ||
+||  ||  || 95th Percentile || || meters || ||
+||  ||  || Standard Deviation(m) || || || ||
+||  || Vertical Error ||  || || || ||
+||  ||  || Min  || || meters || ||
+||  ||  || Max  || ||  meters || ||
+||  ||  || Mean  || || meters || ||
+||  ||  || Mean Absolute  || || || ||
+||  ||  || 50th Percentile || || meters || ||
+||  ||  || 68th Percentile || || meters || ||
+||  ||  || 95th Percentile || || meters || ||
+||  ||  || RMSE || || meters || ||
+||  ||  || Standard Deviation || || meters || ||
+||  ||  Estimated Horizontal Accuracy Error || || || || ||
+||  ||  || Min || || meters || ||
+||  ||  || Max || || meters || ||
+||  ||  || Mean || || meters || ||
+||  ||  || Mean Absolute  || || || ||
+||  ||  || 50th Percentile|| || meters || ||
+||  ||  || 68th Percentile|| || meters || ||
+||  ||  || 95th Percentile|| || meters || ||
+||  ||  || RMSE || || meters || ||
+||  ||  || Standard Deviation|| || meters || ||
+||  || Ground Truth ||   || || || ||
+||  ||  || Latitude  || || || ||
+||  ||  || Longitude  || || || ||
+||  ||  || Altitude  || || || ||
+||  || First Fix Time ||   || || || ||
+||  || Sampling Interval || || || milliseconds || ||
+||  || Sampling Distance || || || meters || ||
+||  || Average Time Between Fixes || || || seconds || ||
+||  || OverrideRefreshRate ||   || || || ||
+||  || KeepScreenOn ||   || || || ||
+||  || Time Injected ||   || || || ||
+||  ||  || Time Data  || || || ||
+||  ||  ||  XTRA Data  || || || ||
+||  || Time Cleared Assist Data ||   || || || ||
+||  || WiFi Status ||   || || || ||
 
 
-= Details =
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
