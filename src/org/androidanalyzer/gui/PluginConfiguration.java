@@ -1,71 +1,114 @@
 package org.androidanalyzer.gui;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.Map.Entry;
 
 import org.androidanalyzer.R;
-import org.androidanalyzer.plugins.AbstractPlugin;
-import org.androidanalyzer.plugins.api.APIPlugin;
-import org.androidanalyzer.plugins.camera.CameraPlugin;
-import org.androidanalyzer.plugins.cpu.CPUPlugin;
-import org.androidanalyzer.plugins.display.DisplayPlugin;
-import org.androidanalyzer.plugins.location.LocationPlugin;
-import org.androidanalyzer.plugins.memory.MemoryPlugin;
+import org.androidanalyzer.core.PluginStatus;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 
 public class PluginConfiguration extends Activity {
 
   AnalyzerConfigAdapter adapter;
-  Hashtable<String, Boolean> name2selected;
-  Hashtable<String, String> name2description;
-  
+  ArrayList<PluginStatus> plugins;
+  ListView list;
   
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.settings_list);
-    name2description = new Hashtable<String, String>();
-    name2selected = new Hashtable<String, Boolean>();
-    ListView list = (ListView)findViewById(R.id.config_list); 
-    adapter = new AnalyzerConfigAdapter(getApplicationContext(), preparePluginList(getApplicationContext(), false), this);
+    list = (ListView)findViewById(R.id.config_list);
+    plugins = preparePluginList(getApplicationContext());
+    adapter = new AnalyzerConfigAdapter(getApplicationContext(), plugins);
+    list.setAdapter(adapter);
+    Button saveB = (Button)findViewById(R.id.first_button);
+    saveB.setOnClickListener(new View.OnClickListener() {
+      
+      @Override
+      public void onClick(View v) {
+        savePluginState();
+      }
+    });
+    Button resetB = (Button)findViewById(R.id.second_button);
+    resetB.setOnClickListener(new View.OnClickListener() {
+      
+      @Override
+      public void onClick(View v) {
+        resetPluginState();
+      }
+    });
+  }
+  
+  private void resetPluginState() {
+    SharedPreferences prefs = getSharedPreferences("org.androidanalyzer.plugin.status", 0);
+    Editor edit = prefs.edit();
+    String encoded;
+    for (PluginStatus toReset : plugins) {
+      toReset.setEnabled(true);
+      encoded = PluginStatus.encodeStatus(toReset);
+      if (encoded != null)
+        edit.putString(toReset.getPluginClass(), encoded);
+    }
+    edit.commit();
+    adapter.listItems = plugins;
     list.setAdapter(adapter);
   }
   
-  ArrayList<AbstractPlugin> preparePluginList(Context ctx, boolean addDefault) {
-    ArrayList<AbstractPlugin> plugins = new ArrayList<AbstractPlugin>();
-    Calendar cal = Calendar.getInstance();
-    cal.set(2010, 7, 1, 16, 12);
-    Date time = cal.getTime();
-    AbstractPlugin plugin = new APIPlugin();
-    name2selected.put(plugin.getPluginName(), Boolean.FALSE);
-    name2description.put(plugin.getPluginName(), plugin.getPluginDescription());
-    plugins.add(plugin);
-    plugin = new CameraPlugin();
-    name2selected.put(plugin.getPluginName(), Boolean.TRUE);
-    name2description.put(plugin.getPluginName(), plugin.getPluginDescription());
-    plugins.add(plugin);
-    plugin = new CPUPlugin();
-    name2selected.put(plugin.getPluginName(), Boolean.TRUE);
-    name2description.put(plugin.getPluginName(), plugin.getPluginDescription());
-    plugins.add(plugin);
-    plugin = new DisplayPlugin();
-    name2selected.put(plugin.getPluginName(), Boolean.FALSE);
-    name2description.put(plugin.getPluginName(), plugin.getPluginDescription());
-    plugins.add(plugin);
-    plugin = new LocationPlugin();
-    name2selected.put(plugin.getPluginName(), Boolean.FALSE);
-    name2description.put(plugin.getPluginName(), plugin.getPluginDescription());
-    plugins.add(plugin);
-    plugin = new MemoryPlugin();
-    name2selected.put(plugin.getPluginName(), Boolean.TRUE);
-    name2description.put(plugin.getPluginName(), plugin.getPluginDescription());
-    plugins.add(plugin);
+  private void savePluginState() {
+    SharedPreferences prefs = getSharedPreferences("org.androidanalyzer.plugin.status", 0);
+    PluginStatus saved;
+    String record;
+    ArrayList<PluginStatus> toSave = new ArrayList<PluginStatus>();
+    boolean oldState, newState;
+    for (PluginStatus status : plugins) {
+      record = prefs.getString(status.getPluginClass(), null);      
+      if (record != null) {        
+        saved = PluginStatus.decodeStatus(record);
+        oldState = saved.isEnabled();
+        newState = status.isEnabled();        
+        if (oldState != newState) {
+          toSave.add(status);
+        }
+      }
+    }
+    if (toSave.size() > 0) {
+      Editor edit = prefs.edit();
+      String encoded;
+      for (PluginStatus toSaveStatus : toSave) {
+        encoded = PluginStatus.encodeStatus(toSaveStatus);
+        if (encoded != null)
+          edit.putString(toSaveStatus.getPluginClass(), PluginStatus.encodeStatus(toSaveStatus));
+      }
+      edit.commit();
+    }
+    
+  }
+  
+  ArrayList<PluginStatus> preparePluginList(Context ctx) {
+    ArrayList<PluginStatus> plugins = new ArrayList<PluginStatus>();
+    SharedPreferences prefs = ctx.getSharedPreferences("org.androidanalyzer.plugin.status", 0);
+    Map<String, ?> all = prefs.getAll();
+    Set<?> values = all.entrySet();
+    Iterator<?> it = values.iterator();
+    Entry<String, String> record;
+    PluginStatus decoded;
+    for (;it.hasNext();) {
+      record = (Entry<String, String>)it.next();
+      decoded = PluginStatus.decodeStatus(record.getValue());
+      if (decoded != null)
+        plugins.add(decoded);
+    }
     return plugins;
   }
   

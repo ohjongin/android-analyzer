@@ -20,6 +20,7 @@ public class PluginStatus {
       sb.append(DELIM).append(pluginStatus.getStatus());
       sb.append(DELIM).append(pluginStatus.getLastRun());
       sb.append(DELIM).append(pluginStatus.isEnabled());
+      sb.append(DELIM).append(pluginStatus.getPluginDescription());
       return sb.toString();
     } catch (Throwable t) {
       Logger.ERROR("PluginStatus", t.getMessage());
@@ -35,7 +36,8 @@ public class PluginStatus {
       int status = Integer.valueOf(sTok.nextToken());
       long lastRun = Long.valueOf(sTok.nextToken());
       boolean enabled = Boolean.valueOf(sTok.nextToken());
-      PluginStatus decoded = new PluginStatus(pluginName, pluginClass, status, lastRun);
+      String description = sTok.nextToken();
+      PluginStatus decoded = new PluginStatus(pluginName, pluginClass, status, lastRun, description);
       decoded.setEnabled(enabled);
       return decoded;
     } catch (Throwable t) {
@@ -46,6 +48,7 @@ public class PluginStatus {
   
   private String pluginName;
   private String pluginClass;
+  private String pluginDescription;
   private int status = STATUS_NOT_RUN;
   long lastRun = -1;
   boolean enabled = true;
@@ -90,11 +93,20 @@ public class PluginStatus {
     this.lastRun = lastRun;
   }
 
-  public PluginStatus(String pluginName, String pluginClass, int status, long lastRun) {
+  public void setPluginDescription(String pluginDescription) {
+    this.pluginDescription = pluginDescription;
+  }
+
+  public String getPluginDescription() {
+    return pluginDescription;
+  }
+
+  public PluginStatus(String pluginName, String pluginClass, int status, long lastRun, String description) {
     this.pluginName = pluginName;
     this.pluginClass = pluginClass;
     this.status = status;
     this.lastRun = lastRun;
+    this.pluginDescription = description;
   }
   
 

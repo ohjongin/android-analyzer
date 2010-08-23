@@ -8,6 +8,7 @@ import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.Properties;
@@ -36,6 +37,7 @@ import android.content.res.Resources.NotFoundException;
 import android.os.Environment;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.os.SystemClock;
 import android.telephony.TelephonyManager;
 
 /**
@@ -134,14 +136,31 @@ public class AnalyzerCore {
 			progressValues = new Hashtable(5);
 		cleanReport();
 		Logger.DEBUG(TAG, "pluginCache : " + pluginCache);
+		ArrayList<String> enabledPlugins = new ArrayList<String>();
+		if (pluginCache != null) {
+  		SharedPreferences prefs = ctx.getSharedPreferences("org.androidanalyzer.plugin.status", 0);
+  		String record;
+  		PluginStatus decoded;
+  		for (String pluginClass : pluginCache) {
+  		  record = prefs.getString(pluginClass, null);
+  		  if (record != null) {
+  		    decoded = PluginStatus.decodeStatus(record);
+  		    if (decoded != null && decoded.isEnabled()) {
+  		      enabledPlugins.add(pluginClass);
+  		    }
+  		  }
+  		}
+		}
+		int size = enabledPlugins.size();
 		/* Updating UI on Analysis start */
 		if (progressValues != null) {
-			progressValues.put(UICallback.NUMBER_OF_PLUGINS, pluginCache.size());
+			progressValues.put(UICallback.NUMBER_OF_PLUGINS, size);
 			uiCallb.updateAnalysisProgress(progressValues);
 		}
 		String pluginName = null;
-		if (pluginCache != null) {
-			for (String plugin : pluginCache) {
+		String description = "";
+		if (size > 0) {
+			for (String plugin : enabledPlugins) {
 				runningPluginConn = connectToPlugin(plugin);
 				if (runningPluginConn != null && runningPluginConn.plugin != null) {
 					try {
@@ -188,10 +207,11 @@ public class AnalyzerCore {
 					try {
 						status = runningPluginConn.plugin.getStatus();
             pluginName = runningPluginConn.plugin.getName();
+            description = runningPluginConn.plugin.getDescription();
 					} catch (RemoteException e1) {
 						Logger.ERROR(TAG, "Failed to get for PluginInfo", e1);
 					}
-					updatePluginStatus(pluginName, plugin, status);
+					updatePluginStatus(pluginName, plugin, status, description);
 //					pluginStatus.constructPluginStatus(plugin, status, dateString);
 					if (plugins == null) {
 						plugins = new Data();
@@ -507,6 +527,11 @@ public class AnalyzerCore {
 					pluginCache = new ArrayList<String>();
 				}
 				pluginCache.add(pluginClass);
+				try {
+				  checkNew(pluginClass);
+				} catch (Throwable t) {
+				  t.printStackTrace();
+				}
 			}
 			Logger.DEBUG(TAG, "registered plugin : " + pluginClass);
 		}
@@ -743,24 +768,38 @@ public class AnalyzerCore {
 		}
 	}
 	
-	private void updatePluginStatus(String pluginName, String pluginClass, String status) {
+	private void updatePluginStatus(String pluginName, String pluginClass, String status, String description) {
 	  SharedPreferences prefs = ctx.getSharedPreferences("org.androidanalyzer.plugin.status", 0);
 	  String record = prefs.getString(pluginClass, null);
 	  PluginStatus pluginStatus = null;
 	  if (record != null) {	    
 	    pluginStatus = PluginStatus.decodeStatus(record);
+	    pluginStatus.setPluginDescription(description);
+	    pluginStatus.setPluginName(pluginName);
 	  }
 	  if (pluginStatus == null) {
-      pluginStatus = new PluginStatus(pluginName, pluginClass, -1, 0);	    
+      pluginStatus = new PluginStatus(pluginName, pluginClass, -1, 0, description);	    
 	  }
 	  int currentRun = Constants.METADATA_PLUGIN_STATUS_PASSED.equals(status) ? PluginStatus.STATUS_PASSED : PluginStatus.STATUS_FAILED;
 	  pluginStatus.setStatus(currentRun);
-	  pluginStatus.setLastRun(new Date().getTime());
+	  pluginStatus.setLastRun(Calendar.getInstance().getTimeInMillis());
 	  String encode = PluginStatus.encodeStatus(pluginStatus);
 	  if (encode != null) {
   	  Editor edit = prefs.edit();
   	  edit.putString(pluginClass, encode);
   	  edit.commit();
+	  }
+	}
+	
+	private void checkNew(String pluginClass) {
+	  SharedPreferences prefs = ctx.getSharedPreferences("org.androidanalyzer.plugin.status", 0);
+	  String record = prefs.getString(pluginClass, null);
+	  if (record == null) {
+	    String pluginName = pluginClass.substring(pluginClass.lastIndexOf(".")+1);
+	    PluginStatus status = new PluginStatus(pluginName, pluginClass, PluginStatus.STATUS_NOT_RUN, -1, "");
+	    Editor edit = prefs.edit();
+	    edit.putString(pluginClass, PluginStatus.encodeStatus(status));
+	    edit.commit();
 	  }
 	}
 }

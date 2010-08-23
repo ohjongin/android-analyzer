@@ -27,7 +27,7 @@ class AnalyzerListAdapter extends BaseAdapter implements ListAdapter {
 	Context ctx;
 	AnalyzerList list;
   static SimpleDateFormat formatDate = new SimpleDateFormat("dd MMM yyyy");
-  static SimpleDateFormat formatTime = new SimpleDateFormat("HH:ss");
+  static SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");
 	
 	public AnalyzerListAdapter(Context ctx, ArrayList<PluginStatus> items, AnalyzerList list) {
 		this.ctx = ctx;
@@ -62,7 +62,9 @@ class AnalyzerListAdapter extends BaseAdapter implements ListAdapter {
       long lastrun = pluginStatus.getLastRun();
       String lastRun;
       if (lastrun != -1) {
-        Date dt = new Date(lastrun);
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(lastrun);
+        Date dt = cal.getTime();//new Date(lastrun);
         String date = formatDate.format(dt);
         String time = formatTime.format(dt);      
         lastRun = ctx.getString(R.string.time_format);
