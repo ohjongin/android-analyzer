@@ -6,7 +6,7 @@ This plugin benchmarks the accuracy of the positioning technology.
 
 The following table defines the structure of data being inserted in the report, and the APIs or methods used to retrieve the value.
 
-|| *Node* || *Node* || *Node* || *Value* || *Metric* ||*Retrieval Method* ||
+|| *Node* || *Node* || *Node* || *Value* || *Metric* || *Retrieval Method* ||
 || Location Accuracy  || || || || || ||
 ||  || Test ID || || || || ||
 ||  || App Version || || || || ||
@@ -17,16 +17,16 @@ The following table defines the structure of data being inserted in the report, 
 ||  || Start Time || || || || ||
 ||  || End Time || || || || ||
 ||  || Time To First Fix || || || seconds || ||
-||  || location Provider || || || seconds || ||
-||  || sample Size || || || seconds || ||
+||  || Location Provider || || || seconds || ||
+||  || Sample Size || || || seconds || ||
 ||  || Horizontal Error || || || || ||
-||  ||  || Min(m) || || || ||
-||  ||  || Max(m) || || || ||
-||  ||  || Mean(m) || || || ||
+||  ||  || Min || || meters || ||
+||  ||  || Max || || meters || ||
+||  ||  || Mean || || meters || ||
 ||  ||  || 50th Percentile || || meters || ||
 ||  ||  || 68th Percentile || || meters || ||
 ||  ||  || 95th Percentile || || meters || ||
-||  ||  || Standard Deviation(m) || || || ||
+||  ||  || Standard Deviation || || meters || ||
 ||  || Vertical Error ||  || || || ||
 ||  ||  || Min  || || meters || ||
 ||  ||  || Max  || ||  meters || ||
@@ -55,15 +55,13 @@ The following table defines the structure of data being inserted in the report, 
 ||  || Sampling Interval || || || milliseconds || ||
 ||  || Sampling Distance || || || meters || ||
 ||  || Average Time Between Fixes || || || seconds || ||
-||  || OverrideRefreshRate ||   || || || ||
-||  || KeepScreenOn ||   || || || ||
+||  || Override Refresh Rate ||   || || || ||
+||  || Keep Screen On ||   || || || ||
 ||  || Time Injected ||   || || || ||
 ||  ||  || Time Data  || || || ||
 ||  ||  ||  XTRA Data  || || || ||
 ||  || Time Cleared Assist Data ||   || || || ||
 ||  || WiFi Status ||   || || || ||
-
-
 
 
 
