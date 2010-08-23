@@ -55,15 +55,13 @@ The following table defines the structure of data being inserted in the report, 
 ||  || Sampling Interval || || _integer_ || milliseconds || Unknown, N/A ||
 ||  || Sampling Distance || || _double_ || meters || Unknown, N/A ||
 ||  || Average Time Between Fixes || || _double_ || seconds || Unknown, N/A ||
-||  || Override Refresh Rate || ||  _double_ || || Unknown, N/A ||
-||  || Keep Screen On || || || || Unknown, N/A ||
+||  || Override Refresh Rate || ||  _boolean_ (Y, N) || || Unknown, N/A ||
+||  || Keep Screen On || || _boolean_ (Y, N)  || || Unknown, N/A ||
 ||  || Time Injected || || || || ||
 ||  ||  || Time Data  || || || Unknown, N/A ||
 ||  ||  || XTRA Data  || || || Unknown, N/A ||
 ||  || Time Cleared Assist Data || || || || Unknown, N/A ||
 ||  || {{{WiFi}}} Status || || _string_ || || Unknown, N/A ||
-
-
 
 
 
