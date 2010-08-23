@@ -136,6 +136,30 @@
 	         </intent-filter>
         </service>
 		
+		  <!-- **** Location Accuracy Plugin **** -->
+<!--        
+		<receiver android:enabled="true"
+	          android:exported="true"
+	          android:label="location accuracy plugin receiver"
+	          android:name=".plugins.locationaccuracy.BReceiver" >
+	           <intent-filter>
+	                <action android:name="org.androidanalyzer.plugins.discovery" />
+	            </intent-filter>
+	    </receiver>
+		<receiver android:enabled="true"
+	          android:exported="true"
+	          android:label="gps benchmark plugin receiver"
+	          android:name=".plugins.locationaccuracy.GPSBenchmarkBReceiver" >
+	           <intent-filter>
+	                <action android:name="org.androidanalyzer.plugins.gpsbenchmark" />
+	            </intent-filter>
+	    </receiver>
+	    <service android:name=".plugins.locationaccuracy.LocationAccuracyPlugin" android:process=":aanalyzer_plugins">
+	    	<intent-filter>												 
+                <action android:name="org.androidanalyzer.plugins.locationaccuracy.LocationAccuracyPlugin"  />
+	         </intent-filter>
+        </service>
+-->	
        
 	<activity android:name=".gui.AnalyzerSettings"/>
 	<activity android:name=".gui.PluginConfiguration"/>
