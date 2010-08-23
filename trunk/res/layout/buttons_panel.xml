@@ -12,13 +12,13 @@
 	android:layout_width="wrap_content"
 	android:layout_height="wrap_content"
 	android:minEms="6"
-	android:text="Save"
+	android:text="@string/save_button_txt"
   />
   <Button android:id="@+id/second_button"
 	android:layout_width="wrap_content"
 	android:layout_height="wrap_content"
 	android:layout_toRightOf="@+id/first_button"
 	android:minEms="6"
-	android:text="Reset"
+	android:text="@string/reset_button_txt"
   />
 </RelativeLayout>

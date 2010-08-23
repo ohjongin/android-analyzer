@@ -2,6 +2,10 @@ package org.androidanalyzer.gui;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.Map.Entry;
 
 import org.androidanalyzer.Constants;
 import org.androidanalyzer.R;
@@ -35,8 +39,7 @@ public class AnalyzerList extends Activity implements UICallback {
   private static final String PREFS_NAME = "org.androidanalyzer.plugin.status";
   AnalyzerListAdapter adapter;
   ListView list;
-	Hashtable<String, Boolean> name2status;
-	Hashtable<String, String> name2lastRun;
+	Hashtable<String, PluginStatus> name2status;
   ArrayList<PluginStatus> plugins;
   
   ProgressDialog progressDialog;
@@ -53,10 +56,9 @@ public class AnalyzerList extends Activity implements UICallback {
     core.setUICallback(this);
     setContentView(R.layout.main_list);
     list = (ListView)findViewById(R.id.plugins_list);
-    name2status = new Hashtable<String, Boolean>();
-    name2lastRun = new Hashtable<String, String>();
+    name2status = new Hashtable<String, PluginStatus>();
     Context toUse = getApplicationContext();
-    plugins = new ArrayList<PluginStatus>();
+    plugins = preparePluginList(toUse);
     adapter = new AnalyzerListAdapter(toUse, plugins, this);
     list.setAdapter(adapter);
     boolean debugEnabled = PreferencesManager.loadBooleanPreference(this, Constants.DEBUG);
@@ -86,38 +88,24 @@ public class AnalyzerList extends Activity implements UICallback {
   }
   
 
-//  ArrayList<AbstractPlugin> preparePluginList(Context ctx) {
-//    	ArrayList<AbstractPlugin> plugins = new ArrayList<AbstractPlugin>();
-//    	Calendar cal = Calendar.getInstance();
-//    	cal.set(2010, 7, 1, 16, 12);
-//    	Date time = cal.getTime();
-//    	String lastRun = "Last run "+formatDate.format(time) + " at "+formatTime.format(time);
-//    	AbstractPlugin plugin = new APIPlugin();
-//    	name2status.put(plugin.getPluginName(), Boolean.FALSE);
-//    	name2lastRun.put(plugin.getPluginName(), lastRun);
-//    	plugins.add(plugin);
-//    	plugin = new CameraPlugin();
-//      name2status.put(plugin.getPluginName(), Boolean.TRUE);
-//      name2lastRun.put(plugin.getPluginName(), lastRun);
-//    	plugins.add(plugin);
-//    	plugin = new CPUPlugin();
-//      name2status.put(plugin.getPluginName(), Boolean.TRUE);
-//      name2lastRun.put(plugin.getPluginName(), lastRun);
-//    	plugins.add(plugin);
-//    	plugin = new DisplayPlugin();
-//      name2status.put(plugin.getPluginName(), Boolean.FALSE);
-//      name2lastRun.put(plugin.getPluginName(), "Not Run");
-//    	plugins.add(plugin);
-//    	plugin = new LocationPlugin();
-//      name2status.put(plugin.getPluginName(), Boolean.FALSE);
-//      name2lastRun.put(plugin.getPluginName(), lastRun);
-//    	plugins.add(plugin);
-//    	plugin = new MemoryPlugin();
-//      name2status.put(plugin.getPluginName(), Boolean.TRUE);
-//      name2lastRun.put(plugin.getPluginName(), lastRun);
-//    	plugins.add(plugin);
-//    	return plugins;
-//    }
+  ArrayList<PluginStatus> preparePluginList(Context ctx) {
+    	ArrayList<PluginStatus> plugins = new ArrayList<PluginStatus>();
+    	SharedPreferences prefs = ctx.getSharedPreferences(PREFS_NAME, 0);
+    	Map<String, ?> all = prefs.getAll();
+    	Set<?> values = all.entrySet();
+      Iterator<?> it = values.iterator();
+      Entry<String, String> record;
+      PluginStatus decoded;
+      for (;it.hasNext();) {
+        record = (Entry<String, String>)it.next();
+        decoded = PluginStatus.decodeStatus(record.getValue());        
+        if (decoded != null) {
+          plugins.add(decoded);
+          name2status.put(decoded.getPluginClass(), decoded);
+        }
+      }
+    	return plugins;
+    }
 	
   /*
    * (non-Javadoc)
@@ -178,9 +166,7 @@ public class AnalyzerList extends Activity implements UICallback {
   }
   
   void updateProgress(int total, int current, String pluginName) {
-    System.out.println("UPDATE PROGRESS: "+total+" CURRENT: "+current);
-    if (total != -1)
-      progressDialog.setMax(total);
+    progressDialog.setMax(total);
     progressDialog.setProgress(0);
     progressDialog.incrementProgressBy(current);
     progressDialog.setMessage(getString(R.string.progress_dialog_msg)+pluginName);
@@ -201,24 +187,31 @@ public class AnalyzerList extends Activity implements UICallback {
   public void notifyPluginRegistered(IAnalyzerPlugin iAnalyzerPlugin) {
     try {
       String pluginClass = iAnalyzerPlugin.getClassName();
-      System.out.println("Plugin registered: "+pluginClass);
       SharedPreferences prefs = getSharedPreferences(PREFS_NAME, 0);
       String status = prefs.getString(pluginClass, null);
+      String description = iAnalyzerPlugin.getDescription();
       PluginStatus decoded = null;
+      String name = iAnalyzerPlugin.getName();
       if (status == null) {
-        String name = iAnalyzerPlugin.getName();
-        decoded = new PluginStatus(name, pluginClass, PluginStatus.STATUS_NOT_RUN, -1);
+        decoded = new PluginStatus(name, pluginClass, PluginStatus.STATUS_NOT_RUN, -1, description);
+      } else {
+        decoded = PluginStatus.decodeStatus(status);
+        decoded.setPluginName(name);
+        decoded.setPluginDescription(description);
+      }
+      if (decoded != null) {
         String encoded = PluginStatus.encodeStatus(decoded);
         if (encoded != null) {
           Editor edit = prefs.edit();
           edit.putString(pluginClass, encoded);
           edit.commit();
         }
-      } else {
-        decoded = PluginStatus.decodeStatus(status);
-      }
-      if (decoded != null) {
+        PluginStatus old = name2status.get(pluginClass);
+        if (old != null) {
+          plugins.remove(old);
+       }
         plugins.add(decoded);
+        name2status.put(pluginClass, decoded);
         adapter.listItems = plugins;
         list.setAdapter(adapter);
       }
@@ -236,8 +229,10 @@ public class AnalyzerList extends Activity implements UICallback {
       String status = prefs.getString(pluginClass, null);
       if (status != null) {
         PluginStatus decoded = PluginStatus.decodeStatus(status);
-        if (decoded != null)
+        if (decoded != null) {
           plugins.remove(decoded);
+          name2status.remove(pluginClass);
+        }
       }
     } catch (RemoteException e) {
       Logger.ERROR(TAG, "Error handling plugin unregistered: "+e.getMessage());
