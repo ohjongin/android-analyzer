@@ -8,17 +8,17 @@ The following table defines the structure of data being inserted in the report, 
 
 || *Node* || *Node* || *Node* || *Value* || *Metric* || *Retrieval Method* ||
 || Location Accuracy  || || || || || ||
-||  || Test ID || || || || Unknown, N/A ||
-||  || App Version || || || || Unknown, N/A ||
+||  || Test ID || || _integer_ (eg. 1) || || Unknown, N/A ||
+||  || App Version || || _string_ (eg. 0.9.119) || || Unknown, N/A ||
 ||  || Device || || || || ||
-||  ||  || Brand || || || Unknown, N/A  ||
-||  ||  || Product || || || Unknown, N/A ||
-||  || Android Version || || || || Unknown, N/A ||
-||  || Start Time || || || || Unknown, N/A ||
-||  || End Time || || || || Unknown, N/A ||
-||  || Time To First Fix || || || seconds || Unknown, N/A ||
-||  || Location Provider || || || seconds || Unknown, N/A ||
-||  || Sample Size || || || seconds || Unknown, N/A ||
+||  ||  || Brand || _string_ || || Unknown, N/A  ||
+||  ||  || Product || _string_ || || Unknown, N/A ||
+||  || Android Version || || _string_ || || Unknown, N/A ||
+||  || Start Time || || _string_ || MM/dd/yyyy HH:mm || Unknown, N/A ||
+||  || End Time || || _string_ || MM/dd/yyyy HH:mm || Unknown, N/A ||
+||  || Time To First Fix || || _double_ || seconds || Unknown, N/A ||
+||  || Location Provider || || _string_ || seconds || Unknown, N/A ||
+||  || Sample Size || || _integer_ || seconds || Unknown, N/A ||
 ||  || Horizontal Error || || || || ||
 ||  ||  || Min || || meters || Unknown, N/A ||
 ||  ||  || Max || || meters || Unknown, N/A ||
@@ -62,8 +62,6 @@ The following table defines the structure of data being inserted in the report, 
 ||  ||  || XTRA Data  || || || Unknown, N/A ||
 ||  || Time Cleared Assist Data || || || || Unknown, N/A ||
 ||  || {{{WiFi}}} Status || || || || Unknown, N/A ||
-
-
 
 
 
