@@ -8,62 +8,60 @@ The following table defines the structure of data being inserted in the report, 
 
 || *Node* || *Node* || *Node* || *Value* || *Metric* || *Retrieval Method* ||
 || Location Accuracy  || || || || || ||
-||  || Test ID || || || || ||
-||  || App Version || || || || ||
+||  || Test ID || || || || Unknown, N/A ||
+||  || App Version || || || || Unknown, N/A ||
 ||  || Device || || || || ||
-||  ||  || Brand || || || ||
-||  ||  || Product || || || ||
-||  || Android Version || || || || ||
-||  || Start Time || || || || ||
-||  || End Time || || || || ||
-||  || Time To First Fix || || || seconds || ||
-||  || Location Provider || || || seconds || ||
-||  || Sample Size || || || seconds || ||
+||  ||  || Brand || || || Unknown, N/A  ||
+||  ||  || Product || || || Unknown, N/A ||
+||  || Android Version || || || || Unknown, N/A ||
+||  || Start Time || || || || Unknown, N/A ||
+||  || End Time || || || || Unknown, N/A ||
+||  || Time To First Fix || || || seconds || Unknown, N/A ||
+||  || Location Provider || || || seconds || Unknown, N/A ||
+||  || Sample Size || || || seconds || Unknown, N/A ||
 ||  || Horizontal Error || || || || ||
-||  ||  || Min || || meters || ||
-||  ||  || Max || || meters || ||
-||  ||  || Mean || || meters || ||
-||  ||  || 50th Percentile || || meters || ||
-||  ||  || 68th Percentile || || meters || ||
-||  ||  || 95th Percentile || || meters || ||
-||  ||  || Standard Deviation || || meters || ||
+||  ||  || Min || || meters || Unknown, N/A ||
+||  ||  || Max || || meters || Unknown, N/A ||
+||  ||  || Mean || || meters || Unknown, N/A ||
+||  ||  || 50th Percentile || || meters || Unknown, N/A ||
+||  ||  || 68th Percentile || || meters || Unknown, N/A ||
+||  ||  || 95th Percentile || || meters || Unknown, N/A ||
+||  ||  || Standard Deviation || || meters || Unknown, N/A ||
 ||  || Vertical Error ||  || || || ||
-||  ||  || Min  || || meters || ||
-||  ||  || Max  || ||  meters || ||
-||  ||  || Mean  || || meters || ||
-||  ||  || Mean Absolute  || || || ||
-||  ||  || 50th Percentile || || meters || ||
-||  ||  || 68th Percentile || || meters || ||
-||  ||  || 95th Percentile || || meters || ||
-||  ||  || RMSE || || meters || ||
-||  ||  || Standard Deviation || || meters || ||
+||  ||  || Min || || meters || Unknown, N/A ||
+||  ||  || Max || ||  meters || Unknown, N/A ||
+||  ||  || Mean || || meters || Unknown, N/A ||
+||  ||  || Mean Absolute  || || || Unknown, N/A ||
+||  ||  || 50th Percentile || || meters || Unknown, N/A ||
+||  ||  || 68th Percentile || || meters || Unknown, N/A ||
+||  ||  || 95th Percentile || || meters || Unknown, N/A ||
+||  ||  || RMSE || || meters || Unknown, N/A ||
+||  ||  || Standard Deviation || || meters || Unknown, N/A ||
 ||  ||  Estimated Horizontal Accuracy Error || || || || ||
-||  ||  || Min || || meters || ||
-||  ||  || Max || || meters || ||
-||  ||  || Mean || || meters || ||
-||  ||  || Mean Absolute  || || || ||
-||  ||  || 50th Percentile|| || meters || ||
-||  ||  || 68th Percentile|| || meters || ||
-||  ||  || 95th Percentile|| || meters || ||
-||  ||  || RMSE || || meters || ||
-||  ||  || Standard Deviation|| || meters || ||
-||  || Ground Truth ||   || || || ||
-||  ||  || Latitude  || || || ||
-||  ||  || Longitude  || || || ||
-||  ||  || Altitude  || || || ||
-||  || First Fix Time ||   || || || ||
-||  || Sampling Interval || || || milliseconds || ||
-||  || Sampling Distance || || || meters || ||
-||  || Average Time Between Fixes || || || seconds || ||
-||  || Override Refresh Rate ||   || || || ||
-||  || Keep Screen On ||   || || || ||
-||  || Time Injected ||   || || || ||
-||  ||  || Time Data  || || || ||
-||  ||  ||  XTRA Data  || || || ||
-||  || Time Cleared Assist Data ||   || || || ||
-||  || {{{WiFi}}} Status ||   || || || ||
-
-
+||  ||  || Min || || meters || Unknown, N/A ||
+||  ||  || Max || || meters || Unknown, N/A ||
+||  ||  || Mean || || meters || Unknown, N/A ||
+||  ||  || Mean Absolute  || || || Unknown, N/A ||
+||  ||  || 50th Percentile|| || meters || Unknown, N/A ||
+||  ||  || 68th Percentile|| || meters || Unknown, N/A ||
+||  ||  || 95th Percentile|| || meters || Unknown, N/A ||
+||  ||  || RMSE || || meters || Unknown, N/A ||
+||  ||  || Standard Deviation|| || meters || Unknown, N/A ||
+||  || Ground Truth || || || || ||
+||  ||  || Latitude || || || Unknown, N/A ||
+||  ||  || Longitude || || || Unknown, N/A ||
+||  ||  || Altitude || || || Unknown, N/A ||
+||  || First Fix Time || || || || Unknown, N/A ||
+||  || Sampling Interval || || || milliseconds || Unknown, N/A ||
+||  || Sampling Distance || || || meters || Unknown, N/A ||
+||  || Average Time Between Fixes || || || seconds || Unknown, N/A ||
+||  || Override Refresh Rate || || || || Unknown, N/A ||
+||  || Keep Screen On || || || || Unknown, N/A ||
+||  || Time Injected || || || || ||
+||  ||  || Time Data  || || || Unknown, N/A ||
+||  ||  || XTRA Data  || || || Unknown, N/A ||
+||  || Time Cleared Assist Data || || || || Unknown, N/A ||
+||  || {{{WiFi}}} Status || || || || Unknown, N/A ||
 
 
 
