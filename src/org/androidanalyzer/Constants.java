@@ -51,6 +51,11 @@ public class Constants {
 	public static final String ROOT_METADATA = "Metadata";
 	public static final String MD5_IMEI = "md5.imei";
 
+	public static final String M_MANUFACTURER = "Manufacturer";
+	public static final String M_DEVICE_MODEL = "Device";
+	public static final String M_FIRMWARE_VERSION= "Firmware version";
+	public static final String M_OPERATOR = "Operator";
+	
 	public static final String METADATA_ANALYZER = "Analyzer";
 	public static final String METADATA_ANALYZER_VERSION = "Version";
 	public static final String METADATA_PLUGINS = "Plugins";

@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Field;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,10 +35,10 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
 import android.content.res.Resources.NotFoundException;
+import android.os.Build;
 import android.os.Environment;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.os.SystemClock;
 import android.telephony.TelephonyManager;
 
 /**
@@ -69,7 +70,7 @@ public class AnalyzerCore {
 	private Data reportMetadata = null;
 	private Data tempReport = null;
 	private UninstallBReceiver unRecv = null;
-	
+
 	public static AnalyzerCore getInstance() {
 		if (core == null)
 			core = new AnalyzerCore();
@@ -138,18 +139,18 @@ public class AnalyzerCore {
 		Logger.DEBUG(TAG, "pluginCache : " + pluginCache);
 		ArrayList<String> enabledPlugins = new ArrayList<String>();
 		if (pluginCache != null) {
-  		SharedPreferences prefs = ctx.getSharedPreferences("org.androidanalyzer.plugin.status", 0);
-  		String record;
-  		PluginStatus decoded;
-  		for (String pluginClass : pluginCache) {
-  		  record = prefs.getString(pluginClass, null);
-  		  if (record != null) {
-  		    decoded = PluginStatus.decodeStatus(record);
-  		    if (decoded != null && decoded.isEnabled()) {
-  		      enabledPlugins.add(pluginClass);
-  		    }
-  		  }
-  		}
+			SharedPreferences prefs = ctx.getSharedPreferences("org.androidanalyzer.plugin.status", 0);
+			String record;
+			PluginStatus decoded;
+			for (String pluginClass : pluginCache) {
+				record = prefs.getString(pluginClass, null);
+				if (record != null) {
+					decoded = PluginStatus.decodeStatus(record);
+					if (decoded != null && decoded.isEnabled()) {
+						enabledPlugins.add(pluginClass);
+					}
+				}
+			}
 		}
 		int size = enabledPlugins.size();
 		/* Updating UI on Analysis start */
@@ -201,18 +202,14 @@ public class AnalyzerCore {
 							Logger.ERROR(TAG, "Could not Sleep thread in Core!");
 						}
 					}
-//					SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd-HH_mm_ss");
-//					Date currentTime = new Date();
-//					String dateString = formatter.format(currentTime);
 					try {
 						status = runningPluginConn.plugin.getStatus();
-            pluginName = runningPluginConn.plugin.getName();
-            description = runningPluginConn.plugin.getDescription();
+						pluginName = runningPluginConn.plugin.getName();
+						description = runningPluginConn.plugin.getDescription();
 					} catch (RemoteException e1) {
 						Logger.ERROR(TAG, "Failed to get for PluginInfo", e1);
 					}
 					updatePluginStatus(pluginName, plugin, status, description);
-//					pluginStatus.constructPluginStatus(plugin, status, dateString);
 					if (plugins == null) {
 						plugins = new Data();
 						try {
@@ -262,10 +259,73 @@ public class AnalyzerCore {
 			}
 			runningPluginConn = null;
 		}
+		/* Create Mandatory data for the report */
+		TelephonyManager telephonyManager = (TelephonyManager) ctx.getSystemService(Context.TELEPHONY_SERVICE);
+		try {
+			try {
+				String value = null;
+				Data manufacturer = new Data();
+				manufacturer.setName(Constants.M_MANUFACTURER);
+				try {
+					// using reflection
+					Field manufacturerField = Build.class.getDeclaredField("MANUFACTURER");
+					manufacturerField.setAccessible(true);
+					Object myManufacturer = manufacturerField.get(null);
+					// value = android.os.Build.MANUFACTURER
+					value = String.valueOf(myManufacturer);
+				} catch (Exception ex) {
+					value = Build.PRODUCT;
+					Logger.WARNING(TAG, "Could not get Manufacturer!" + ex.toString());
+				}
+				Logger.DEBUG(TAG, "Manufacturer is " + value);
+				manufacturer.setValue(value);
+				Logger.DEBUG(TAG, "Brand: " + Build.BRAND);
+				Logger.DEBUG(TAG, "Device: " + Build.DEVICE);
+				Logger.DEBUG(TAG, " Manufacturer: " + manufacturer);
+				reportMetadata.setValue(manufacturer);
+			} catch (Exception e) {
+				Logger.ERROR(TAG, "Could not set Manufacturer data!", e);
+			}
+
+			try {
+				Data deviceModel = new Data();
+				deviceModel.setName(Constants.M_DEVICE_MODEL);
+				String model = Build.MODEL;
+				deviceModel.setValue(model);
+				Logger.DEBUG(TAG, "Model is " + model);
+				reportMetadata.setValue(deviceModel);
+			} catch (Exception e) {
+				Logger.ERROR(TAG, "Could not set Device Model data!", e);
+			}
+
+			try {
+				Data firmwareVersion = new Data();
+				firmwareVersion.setName(Constants.M_FIRMWARE_VERSION);
+				String model = Build.VERSION.RELEASE;
+				firmwareVersion.setValue(model);
+				Logger.DEBUG(TAG, "Firmware version is " + model);
+				reportMetadata.setValue(firmwareVersion);
+			} catch (Exception e) {
+				Logger.ERROR(TAG, "Could not set Firmware version data!", e);
+			}
+
+			try {
+				Data operatorName = new Data();
+				operatorName.setName(Constants.M_OPERATOR);
+				String name = telephonyManager.getNetworkOperatorName();
+				Logger.DEBUG(TAG, "Operator name is " + name);
+				operatorName.setValue(name);
+				reportMetadata.setValue(operatorName);
+			} catch (Exception e) {
+				Logger.ERROR(TAG, "Could not set Operator name data!", e);
+			}
+		} catch (Exception e) {
+			Logger.ERROR(TAG, "Could not set Mandatory data!", e);
+		}
 
 		/* Create Metadata - Device ID */
-		TelephonyManager TelephonyMgr = (TelephonyManager) ctx.getSystemService(Context.TELEPHONY_SERVICE);
-		String deviceIMEI = TelephonyMgr.getDeviceId();
+
+		String deviceIMEI = telephonyManager.getDeviceId();
 		Data device = new Data();
 		try {
 			device.setName(Constants.METADATA_DEVICE);
@@ -274,7 +334,6 @@ public class AnalyzerCore {
 		}
 		if (deviceIMEI != null && reportPlugins != null) {
 			String md5 = Reporter.mD5H(deviceIMEI.getBytes());
-			// report.setString(Constants.MD5_IMEI, md5);
 			Data imei = new Data();
 			try {
 				imei.setName(Constants.METADATA_DEVICE_ID);
@@ -288,6 +347,7 @@ public class AnalyzerCore {
 		} else {
 			Logger.ERROR(TAG, "IMEI Check Failed");
 		}
+
 		/* Create Metadata - Analyzer Version */
 		try {
 			Data analyzerVersion = new Data();
@@ -528,9 +588,9 @@ public class AnalyzerCore {
 				}
 				pluginCache.add(pluginClass);
 				try {
-				  checkNew(pluginClass);
+					checkNew(pluginClass);
 				} catch (Throwable t) {
-				  t.printStackTrace();
+					t.printStackTrace();
 				}
 			}
 			Logger.DEBUG(TAG, "registered plugin : " + pluginClass);
@@ -767,39 +827,40 @@ public class AnalyzerCore {
 			Logger.ERROR(TAG, "Failed to open aa property file");
 		}
 	}
-	
+
 	private void updatePluginStatus(String pluginName, String pluginClass, String status, String description) {
-	  SharedPreferences prefs = ctx.getSharedPreferences("org.androidanalyzer.plugin.status", 0);
-	  String record = prefs.getString(pluginClass, null);
-	  PluginStatus pluginStatus = null;
-	  if (record != null) {	    
-	    pluginStatus = PluginStatus.decodeStatus(record);
-	    pluginStatus.setPluginDescription(description);
-	    pluginStatus.setPluginName(pluginName);
-	  }
-	  if (pluginStatus == null) {
-      pluginStatus = new PluginStatus(pluginName, pluginClass, -1, 0, description);	    
-	  }
-	  int currentRun = Constants.METADATA_PLUGIN_STATUS_PASSED.equals(status) ? PluginStatus.STATUS_PASSED : PluginStatus.STATUS_FAILED;
-	  pluginStatus.setStatus(currentRun);
-	  pluginStatus.setLastRun(Calendar.getInstance().getTimeInMillis());
-	  String encode = PluginStatus.encodeStatus(pluginStatus);
-	  if (encode != null) {
-  	  Editor edit = prefs.edit();
-  	  edit.putString(pluginClass, encode);
-  	  edit.commit();
-	  }
+		SharedPreferences prefs = ctx.getSharedPreferences("org.androidanalyzer.plugin.status", 0);
+		String record = prefs.getString(pluginClass, null);
+		PluginStatus pluginStatus = null;
+		if (record != null) {
+			pluginStatus = PluginStatus.decodeStatus(record);
+			pluginStatus.setPluginDescription(description);
+			pluginStatus.setPluginName(pluginName);
+		}
+		if (pluginStatus == null) {
+			pluginStatus = new PluginStatus(pluginName, pluginClass, -1, 0, description);
+		}
+		int currentRun = Constants.METADATA_PLUGIN_STATUS_PASSED.equals(status) ? PluginStatus.STATUS_PASSED
+				: PluginStatus.STATUS_FAILED;
+		pluginStatus.setStatus(currentRun);
+		pluginStatus.setLastRun(Calendar.getInstance().getTimeInMillis());
+		String encode = PluginStatus.encodeStatus(pluginStatus);
+		if (encode != null) {
+			Editor edit = prefs.edit();
+			edit.putString(pluginClass, encode);
+			edit.commit();
+		}
 	}
-	
+
 	private void checkNew(String pluginClass) {
-	  SharedPreferences prefs = ctx.getSharedPreferences("org.androidanalyzer.plugin.status", 0);
-	  String record = prefs.getString(pluginClass, null);
-	  if (record == null) {
-	    String pluginName = pluginClass.substring(pluginClass.lastIndexOf(".")+1);
-	    PluginStatus status = new PluginStatus(pluginName, pluginClass, PluginStatus.STATUS_NOT_RUN, -1, "");
-	    Editor edit = prefs.edit();
-	    edit.putString(pluginClass, PluginStatus.encodeStatus(status));
-	    edit.commit();
-	  }
+		SharedPreferences prefs = ctx.getSharedPreferences("org.androidanalyzer.plugin.status", 0);
+		String record = prefs.getString(pluginClass, null);
+		if (record == null) {
+			String pluginName = pluginClass.substring(pluginClass.lastIndexOf(".") + 1);
+			PluginStatus status = new PluginStatus(pluginName, pluginClass, PluginStatus.STATUS_NOT_RUN, -1, "");
+			Editor edit = prefs.edit();
+			edit.putString(pluginClass, PluginStatus.encodeStatus(status));
+			edit.commit();
+		}
 	}
 }
