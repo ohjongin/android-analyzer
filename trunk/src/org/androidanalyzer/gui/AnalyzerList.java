@@ -98,6 +98,7 @@ public class AnalyzerList extends Activity implements UICallback {
       PluginStatus decoded;
       for (;it.hasNext();) {
         record = (Entry<String, String>)it.next();
+        System.out.println("Record: "+record);
         decoded = PluginStatus.decodeStatus(record.getValue());        
         if (decoded != null) {
           plugins.add(decoded);

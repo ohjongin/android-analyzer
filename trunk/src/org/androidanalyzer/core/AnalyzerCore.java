@@ -139,18 +139,18 @@ public class AnalyzerCore {
 		Logger.DEBUG(TAG, "pluginCache : " + pluginCache);
 		ArrayList<String> enabledPlugins = new ArrayList<String>();
 		if (pluginCache != null) {
-			SharedPreferences prefs = ctx.getSharedPreferences("org.androidanalyzer.plugin.status", 0);
-			String record;
-			PluginStatus decoded;
-			for (String pluginClass : pluginCache) {
-				record = prefs.getString(pluginClass, null);
-				if (record != null) {
-					decoded = PluginStatus.decodeStatus(record);
-					if (decoded != null && decoded.isEnabled()) {
-						enabledPlugins.add(pluginClass);
-					}
-				}
-			}
+  		SharedPreferences prefs = ctx.getSharedPreferences("org.androidanalyzer.plugin.status", 0);
+  		String record;
+  		PluginStatus decoded;
+  		for (String pluginClass : pluginCache) {
+  		  record = prefs.getString(pluginClass, null);
+  		  if (record != null) {
+  		    decoded = PluginStatus.decodeStatus(record);
+  		    if (decoded != null && decoded.isEnabled()) {
+  		      enabledPlugins.add(pluginClass);
+  		    }
+  		  }
+  		}
 		}
 		int size = enabledPlugins.size();
 		/* Updating UI on Analysis start */
@@ -853,14 +853,14 @@ public class AnalyzerCore {
 	}
 
 	private void checkNew(String pluginClass) {
-		SharedPreferences prefs = ctx.getSharedPreferences("org.androidanalyzer.plugin.status", 0);
-		String record = prefs.getString(pluginClass, null);
-		if (record == null) {
-			String pluginName = pluginClass.substring(pluginClass.lastIndexOf(".") + 1);
-			PluginStatus status = new PluginStatus(pluginName, pluginClass, PluginStatus.STATUS_NOT_RUN, -1, "");
-			Editor edit = prefs.edit();
-			edit.putString(pluginClass, PluginStatus.encodeStatus(status));
-			edit.commit();
-		}
+	  SharedPreferences prefs = ctx.getSharedPreferences("org.androidanalyzer.plugin.status", 0);
+	  String record = prefs.getString(pluginClass, null);
+	  if (record == null) {
+	    String pluginName = pluginClass.substring(pluginClass.lastIndexOf(".")+1);
+	    PluginStatus status = new PluginStatus(pluginName, pluginClass, PluginStatus.STATUS_NOT_RUN, -1, "%");
+	    Editor edit = prefs.edit();
+	    edit.putString(pluginClass, PluginStatus.encodeStatus(status));
+	    edit.commit();
+	  }
 	}
 }
