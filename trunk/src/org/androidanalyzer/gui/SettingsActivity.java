@@ -144,7 +144,7 @@ public class SettingsActivity extends Activity {
   private void showConnectionDialog(boolean success) {
     AlertDialog.Builder alert = new AlertDialog.Builder(this);
     alert.setTitle(success ? R.string.alert_dialog_success_title : R.string.alert_dialog_warning_title);
-    alert.setIcon(success ? R.drawable.success_icon : R.drawable.warning_icon_yellow);
+    alert.setIcon(success ? R.drawable.ok_icon : R.drawable.warning_icon_yellow);
     alert.setMessage(success ? R.string.alert_connection_ok : R.string.alert_connection_failed);
     alert.setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
       
