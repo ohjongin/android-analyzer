@@ -14,6 +14,10 @@ public class PluginStatus {
   private static final String DELIM = ":";
   
   public static String encodeStatus(PluginStatus pluginStatus) {
+    if (pluginStatus == null) {
+      Logger.DEBUG("PluginStatu", "pluginStatus is null!");
+      return null;
+    }
     try {
       StringBuffer sb = new StringBuffer(pluginStatus.getPluginClass());
       sb.append(DELIM).append(pluginStatus.getPluginName());
@@ -23,12 +27,16 @@ public class PluginStatus {
       sb.append(DELIM).append(pluginStatus.getPluginDescription());
       return sb.toString();
     } catch (Throwable t) {
-      Logger.ERROR("PluginStatus", t.getMessage());
+      Logger.ERROR("PluginStatus", t.getMessage(), t);
     }
     return null;
   }
   
   public static final PluginStatus decodeStatus(String pluginStatus) {
+    if (pluginStatus == null) {
+      Logger.DEBUG("PluginStatus", "pluginStatus is null!");
+      return null;
+    }
     try {
       StringTokenizer sTok = new StringTokenizer(pluginStatus, DELIM, false);
       String pluginClass = sTok.nextToken();
@@ -41,7 +49,7 @@ public class PluginStatus {
       decoded.setEnabled(enabled);
       return decoded;
     } catch (Throwable t) {
-      Logger.ERROR("PluginStatus", t.getMessage());
+      Logger.ERROR("PluginStatus", t.getMessage(), t);
     }
     return null;
   }
