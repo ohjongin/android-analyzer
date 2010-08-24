@@ -61,8 +61,9 @@ public class PluginConfiguration extends Activity {
         edit.putString(toReset.getPluginClass(), encoded);
     }
     edit.commit();
-    adapter.listItems = plugins;
-    list.setAdapter(adapter);
+    adapter.notifyDataSetChanged();
+//    adapter.listItems = plugins;
+//    list.setAdapter(adapter);
   }
   
   private void savePluginState() {

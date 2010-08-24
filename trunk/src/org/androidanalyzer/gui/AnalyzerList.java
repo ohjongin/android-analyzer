@@ -212,8 +212,9 @@ public class AnalyzerList extends Activity implements UICallback {
        }
         plugins.add(decoded);
         name2status.put(pluginClass, decoded);
-        adapter.listItems = plugins;
-        list.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+//        adapter.listItems = plugins;
+//        list.setAdapter(adapter);
       }
     } catch (RemoteException e) {
       Logger.ERROR(TAG, "Error handling plugin registered: "+e.getMessage());
