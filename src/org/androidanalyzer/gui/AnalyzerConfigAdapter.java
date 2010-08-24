@@ -64,7 +64,6 @@ class AnalyzerConfigAdapter extends BaseAdapter implements ListAdapter {
 			name.setText(pluginName);
 			TextView number = (TextView)rowLayout.findViewById(R.id.secondLine2);
 			String pDescription = pStatus.getPluginDescription();
-			System.out.println("PLUGIN DESCRIPTION: "+pDescription);
 			number.setText(pDescription);
 			return rowLayout;
 		}

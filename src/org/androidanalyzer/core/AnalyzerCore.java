@@ -281,7 +281,6 @@ public class AnalyzerCore {
 				manufacturer.setValue(value);
 				Logger.DEBUG(TAG, "Brand: " + Build.BRAND);
 				Logger.DEBUG(TAG, "Device: " + Build.DEVICE);
-				Logger.DEBUG(TAG, " Manufacturer: " + manufacturer);
 				reportMetadata.setValue(manufacturer);
 			} catch (Exception e) {
 				Logger.ERROR(TAG, "Could not set Manufacturer data!", e);
