@@ -1,7 +1,10 @@
 package org.androidanalyzer.gui;
 
+import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLConnection;
 
 import org.androidanalyzer.Constants;
 import org.androidanalyzer.R;
@@ -10,8 +13,12 @@ import org.androidanalyzer.transport.Reporter;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -30,6 +37,7 @@ public class SettingsActivity extends Activity {
 
   private static final String TAG = "Analyzer-Settings-GUI";
   private static final String PREFS_NAME = "org.androidanalyzer.gui.settings";
+  private static final int CONNECTION_TEST = 0;
 
   private CheckBox debug;
   private EditText hostField;
@@ -107,6 +115,15 @@ public class SettingsActivity extends Activity {
           applyButton.setEnabled(true);
       }
     });
+    Button testLink = (Button)findViewById(R.id.test_link_btn);
+    testLink.setOnClickListener(new View.OnClickListener() {
+      
+      @Override
+      public void onClick(View v) {
+        showDialog(CONNECTION_TEST);
+        new ProgressThread(pHandler).start();
+      }
+    });
   }
   
   private void showAlertDialog() {
@@ -122,5 +139,82 @@ public class SettingsActivity extends Activity {
       }
     });
     alert.show();
+  }
+  
+  private void showConnectionDialog(boolean success) {
+    AlertDialog.Builder alert = new AlertDialog.Builder(this);
+    alert.setTitle(success ? R.string.alert_dialog_success_title : R.string.alert_dialog_warning_title);
+    alert.setIcon(success ? R.drawable.success_icon : R.drawable.warning_icon_yellow);
+    alert.setMessage(success ? R.string.alert_connection_ok : R.string.alert_connection_failed);
+    alert.setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
+      
+      @Override
+      public void onClick(DialogInterface dialog, int which) {
+        dialog.dismiss();
+      }
+    });
+    alert.show();    
+  }
+  
+   
+  @Override
+  protected Dialog onCreateDialog(int id) {
+    switch (id) {
+      case CONNECTION_TEST:
+        ProgressDialog dialog = new ProgressDialog(this);
+        dialog.setMessage(getString(R.string.alert_connection_test_msg));
+        return dialog;
+    }
+    return null;
+  }
+
+
+
+  private Handler pHandler = new Handler() {
+
+    @Override
+    public void handleMessage(Message msg) {
+      Bundle data = msg.getData();
+      boolean done = data.getBoolean("done");
+      if (done) {
+        dismissDialog(CONNECTION_TEST);
+        boolean result = data.getBoolean("result");
+        showConnectionDialog(result);
+      }
+    }
+    
+  };
+  
+  private class ProgressThread extends Thread {
+    
+    Handler handler;
+    
+    public ProgressThread(Handler handler) {
+      this.handler = handler;
+    }
+
+    @Override
+    public void run() {
+      Message msg = new Message();
+      Bundle data = new Bundle();
+      data.putBoolean("done", true);
+      boolean result = false;
+      try {
+        URI test = new URI(host);
+        URL connect = test.toURL();
+        URLConnection c = connect.openConnection();
+        c.setDoOutput(true);
+        OutputStream os = c.getOutputStream();
+        os.write(1);
+        os.close();
+        result = true;
+      } catch (Throwable t) {
+        t.printStackTrace();
+      }
+      data.putBoolean("result", result);
+      msg.setData(data);
+      handler.sendMessage(msg);
+    }
+    
   }
 }
