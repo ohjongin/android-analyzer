@@ -52,8 +52,9 @@ The following table defines the structure of data being inserted in the report, 
 ||  ||  || Longitude || _double_ || || Unknown, N/A ||
 ||  ||  || Altitude || _double_ || || Unknown, N/A ||
 ||  || First Fix Time || || _string_ || MM/dd/yyyy HH:mm || Unknown, N/A ||
-||  || Sampling Interval || || _integer_ || milliseconds || Unknown, N/A ||
-||  || Sampling Distance || || _double_ || meters || Unknown, N/A ||
+||  || Sampling || || || || ||
+||  || || Interval  || _integer_ || milliseconds || Unknown, N/A ||
+||  || || Distance  || _double_ || meters || Unknown, N/A ||
 ||  || Average Time Between Fixes || || _double_ || seconds || Unknown, N/A ||
 ||  || Override Refresh Rate || ||  _boolean_ (Y, N) || || Unknown, N/A ||
 ||  || Keep Screen On || || _boolean_ (Y, N)  || || Unknown, N/A ||
@@ -62,8 +63,6 @@ The following table defines the structure of data being inserted in the report, 
 ||  ||  || XTRA Data  || || || Unknown, N/A ||
 ||  || Time Cleared Assist Data || || || || Unknown, N/A ||
 ||  || {{{WiFi}}} Status || || _string_ || || Unknown, N/A ||
-
-
 
 
 
