@@ -17,8 +17,8 @@ The following table defines the structure of data being inserted in the report, 
 ||  || Start Time || || _string_ || MM/dd/yyyy HH:mm || Unknown, N/A ||
 ||  || End Time || || _string_ || MM/dd/yyyy HH:mm || Unknown, N/A ||
 ||  || Time To First Fix || || _double_ || seconds || Unknown, N/A ||
-||  || Location Provider || || _string_ || seconds || Unknown, N/A ||
-||  || Sample Size || || _integer_ || seconds || Unknown, N/A ||
+||  || Location Provider || || _double_ || seconds || Unknown, N/A ||
+||  || Sample Size || || _double_ || seconds || Unknown, N/A ||
 ||  || Horizontal Error || || || || ||
 ||  ||  || Min || _double_ || meters || Unknown, N/A ||
 ||  ||  || Max || _double_ || meters || Unknown, N/A ||
@@ -63,8 +63,6 @@ The following table defines the structure of data being inserted in the report, 
 ||  ||  || XTRA Data  || || || Unknown, N/A ||
 ||  || Time Cleared Assist Data || || || || Unknown, N/A ||
 ||  || {{{WiFi}}} Status || || _string_ || || Unknown, N/A ||
-
-
 
 
 
