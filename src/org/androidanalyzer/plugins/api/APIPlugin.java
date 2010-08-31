@@ -65,7 +65,27 @@ public class APIPlugin extends AbstractPlugin {
 	public String getPluginVendor() {
 		return PLUGIN_VENDOR;
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.androidanalyzer.plugins.AbstractPlugin#getPluginDescription()
+	 */
+	@Override
+	public String getPluginDescription() {
+		return DESCRIPTION;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.androidanalyzer.plugins.AbstractPlugin#uiRequired()
+	 */
+	@Override
+	public boolean isPluginRequiredUI() {
+		return false;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -172,9 +192,4 @@ public class APIPlugin extends AbstractPlugin {
 		Logger.DEBUG(TAG, "Service is stopped!");
 		this.stopSelf();
 	}
-
-  @Override
-  public String getPluginDescription() {
-    return DESCRIPTION;
-  }
 }

@@ -160,6 +160,16 @@ public abstract class AbstractPlugin extends Service {
       return getPluginDescription();
     }
 
+		/*
+		 * (non-Javadoc)
+		 * @see org.androidanalyzer.core.IAnalyzerPlugin#isUIRequired()
+		 */
+    @Override
+		public boolean isUIRequired() throws RemoteException {
+			return false;
+		}
+
+
 	}
 
 	private BroadcastReceiver breceiver = new BroadcastReceiver() {
@@ -307,6 +317,18 @@ public abstract class AbstractPlugin extends Service {
 	 * @return pluginVendor
 	 */
 	abstract public String getPluginVendor();
+	
+	/**
+	 * Return plugin description
+	 * @return pluginDescription. Human-readable name explaining purpose of this plugin.
+	 */
+	abstract public String getPluginDescription();
+	
+	/**
+	 * Return if plugin required user interaction
+	 * @return boolean.
+	 */
+	abstract public boolean isPluginRequiredUI();
 
 	/**
 	 * Return plugin class name
@@ -329,7 +351,7 @@ public abstract class AbstractPlugin extends Service {
 	 * @return
 	 */
 	abstract protected void stopDataCollection();
-
+	
 	/**
 	 * Return plugin status. 
 	 * 
@@ -337,11 +359,4 @@ public abstract class AbstractPlugin extends Service {
 	 *         otherwise is PASSED
 	 */
 	abstract protected String getPluginStatus();
-	
-	/**
-	 * Return plugin description
-	 * @return pluginDescription. Human-readable name explaining purpose of this plugin.
-	 */
-	abstract public String getPluginDescription();
-
 }

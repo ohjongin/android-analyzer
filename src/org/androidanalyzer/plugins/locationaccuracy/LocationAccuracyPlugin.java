@@ -66,6 +66,26 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see org.androidanalyzer.plugins.AbstractPlugin#isPluginRequiredUI()
+	 */
+	@Override
+	public boolean isPluginRequiredUI() {
+		return false;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.androidanalyzer.plugins.AbstractPlugin#getPluginDescription()
+	 */
+	@Override
+	public String getPluginDescription() {
+		return PLUGIN_DESCRIPTION;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.androidanalyzer.plugins.AbstractPlugin#getPluginClassName()
 	 */
 	@Override
@@ -644,56 +664,42 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 		}
 
 		/* Ground Truth */
-	/*	try {
-			Data groundTruthError = new Data();
-			groundTruthError.setName(LocationAccuracyConstants.GROUND_TRUTH);
-			ArrayList<Data> groundTruthErrorChildren = new ArrayList<Data>();
-			try {
-				Data altitude = new Data();
-				altitude.setName(LocationAccuracyConstants.GROUND_TRUTH_ALTITUDE);
-				String value = LocationAccuracyPreferencesManager.loadStringPreference(this,
-						LocationAccuracyConstants.GROUND_TRUTH_ALTITUDE);
-				if (value != null && value.length() > 0) {
-					altitude.setValue(value);
-					altitude.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
-					groundTruthErrorChildren.add(altitude);
-				}
-			} catch (Exception e) {
-				Logger.ERROR(TAG, "Could not set Altitude node!", e);
-			}
-
-			try {
-				Data latitude = new Data();
-				latitude.setName(LocationAccuracyConstants.GROUND_TRUTH_LATITUDE);
-				String value = LocationAccuracyPreferencesManager.loadStringPreference(this,
-						LocationAccuracyConstants.GROUND_TRUTH_LATITUDE);
-				if (value != null && value.length() > 0) {
-					latitude.setValue(value);
-					latitude.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
-					groundTruthErrorChildren.add(latitude);
-				}
-			} catch (Exception e) {
-				Logger.ERROR(TAG, "Could not set Latitude node!", e);
-			}
-
-			try {
-				Data longtitude = new Data();
-				longtitude.setName(LocationAccuracyConstants.GROUND_TRUTH_LONGITUDE);
-				String value = LocationAccuracyPreferencesManager.loadStringPreference(this,
-						LocationAccuracyConstants.GROUND_TRUTH_LONGITUDE);
-				if (value != null && value.length() > 0) {
-					longtitude.setValue(value);
-					longtitude.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
-					groundTruthErrorChildren.add(longtitude);
-				}
-			} catch (Exception e) {
-				Logger.ERROR(TAG, "Could not set Longtitude node!", e);
-			}
-			groundTruthError = addToParent(groundTruthError, groundTruthErrorChildren);
-			masterChildren.add(groundTruthError);
-		} catch (Exception e) {
-			Logger.ERROR(TAG, "Could not set Ground Truth node!", e);
-		}*/
+		/*
+		 * try { Data groundTruthError = new Data();
+		 * groundTruthError.setName(LocationAccuracyConstants.GROUND_TRUTH);
+		 * ArrayList<Data> groundTruthErrorChildren = new ArrayList<Data>(); try {
+		 * Data altitude = new Data();
+		 * altitude.setName(LocationAccuracyConstants.GROUND_TRUTH_ALTITUDE); String
+		 * value = LocationAccuracyPreferencesManager.loadStringPreference(this,
+		 * LocationAccuracyConstants.GROUND_TRUTH_ALTITUDE); if (value != null &&
+		 * value.length() > 0) { altitude.setValue(value);
+		 * altitude.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
+		 * groundTruthErrorChildren.add(altitude); } } catch (Exception e) {
+		 * Logger.ERROR(TAG, "Could not set Altitude node!", e); }
+		 * 
+		 * try { Data latitude = new Data();
+		 * latitude.setName(LocationAccuracyConstants.GROUND_TRUTH_LATITUDE); String
+		 * value = LocationAccuracyPreferencesManager.loadStringPreference(this,
+		 * LocationAccuracyConstants.GROUND_TRUTH_LATITUDE); if (value != null &&
+		 * value.length() > 0) { latitude.setValue(value);
+		 * latitude.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
+		 * groundTruthErrorChildren.add(latitude); } } catch (Exception e) {
+		 * Logger.ERROR(TAG, "Could not set Latitude node!", e); }
+		 * 
+		 * try { Data longtitude = new Data();
+		 * longtitude.setName(LocationAccuracyConstants.GROUND_TRUTH_LONGITUDE);
+		 * String value =
+		 * LocationAccuracyPreferencesManager.loadStringPreference(this,
+		 * LocationAccuracyConstants.GROUND_TRUTH_LONGITUDE); if (value != null &&
+		 * value.length() > 0) { longtitude.setValue(value);
+		 * longtitude.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
+		 * groundTruthErrorChildren.add(longtitude); } } catch (Exception e) {
+		 * Logger.ERROR(TAG, "Could not set Longtitude node!", e); }
+		 * groundTruthError = addToParent(groundTruthError,
+		 * groundTruthErrorChildren); masterChildren.add(groundTruthError); } catch
+		 * (Exception e) { Logger.ERROR(TAG, "Could not set Ground Truth node!", e);
+		 * }
+		 */
 
 		/* First Fix Time */
 		try {
@@ -840,17 +846,15 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 		}
 
 		/* WiFi Status */
-		/*try {
-			Data wifiStatus = new Data();
-			wifiStatus.setName(LocationAccuracyConstants.WIFI_STATUS);
-			String value = LocationAccuracyPreferencesManager.loadStringPreference(this, LocationAccuracyConstants.WIFI_STATUS);
-			if (value != null && value.length() > 0) {
-				wifiStatus.setValue(value);
-				masterChildren.add(wifiStatus);
-			}
-		} catch (Exception e) {
-			Logger.ERROR(TAG, "Could not set WiFi Status Data node!", e);
-		}*/
+		/*
+		 * try { Data wifiStatus = new Data();
+		 * wifiStatus.setName(LocationAccuracyConstants.WIFI_STATUS); String value =
+		 * LocationAccuracyPreferencesManager.loadStringPreference(this,
+		 * LocationAccuracyConstants.WIFI_STATUS); if (value != null &&
+		 * value.length() > 0) { wifiStatus.setValue(value);
+		 * masterChildren.add(wifiStatus); } } catch (Exception e) {
+		 * Logger.ERROR(TAG, "Could not set WiFi Status Data node!", e); }
+		 */
 
 		parent = addToParent(parent, masterChildren);
 		return parent;
@@ -875,16 +879,6 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 	@Override
 	protected String getPluginStatus() {
 		return status;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.androidanalyzer.plugins.AbstractPlugin#getPluginDescription()
-	 */
-	@Override
-	public String getPluginDescription() {
-		return PLUGIN_DESCRIPTION;
 	}
 
 	private String getState(String param) {

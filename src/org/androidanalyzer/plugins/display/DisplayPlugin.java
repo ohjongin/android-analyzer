@@ -83,7 +83,27 @@ public class DisplayPlugin extends AbstractPlugin {
 	public String getPluginVendor() {
 		return PLUGIN_VENDOR;
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.androidanalyzer.plugins.AbstractPlugin#getPluginDescription()
+	 */
+	@Override
+	public String getPluginDescription() {
+		return DESCRIPTION;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.androidanalyzer.plugins.AbstractPlugin#isPluginRequiredUI()
+	 */
+	@Override
+	public boolean isPluginRequiredUI() {
+		return false;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -281,10 +301,4 @@ public class DisplayPlugin extends AbstractPlugin {
 		return displayHolder;
 
 	}
-
-  @Override
-  public String getPluginDescription() {
-    return DESCRIPTION;
-  }
-
 }
