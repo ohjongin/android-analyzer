@@ -35,7 +35,8 @@ public class DisplayPlugin extends AbstractPlugin {
 	private static final String TOUCH = "Touch support";
 	private static final String COLOR_DEPTH = "Color depth";
 	private static final String COLOR_DEPTH_METRIC = "bits";
-	private static final String DENSITY = "The logical density of the display";
+	//private static final String DENSITY = "The logical density of the display";
+	private static final String DENSITY = "Display density";
 	private static final String DENSITY_METRIC = "dpi";
 	private static final String REFRESH_RATE = "Refresh rate";
 	private static final String REFRESH_RATE_METRIC = "fps";
