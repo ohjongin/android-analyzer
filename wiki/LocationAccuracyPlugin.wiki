@@ -11,7 +11,7 @@ The following table defines the structure of data being inserted in the report, 
 ||  || Test ID || || _integer_ (eg. 1) || || Unknown, N/A ||
 ||  || App Version || || _string_ (eg. 0.9.119) || || Unknown, N/A ||
 ||  || Device || || || || ||
-||  ||  || Brand || _string_ || || Unknown, N/A  |z|
+||  ||  || Brand || _string_ || || Unknown, N/A  ||
 ||  ||  || Product || _string_ || || Unknown, N/A ||
 ||  || Android Version || || _string_ || || Unknown, N/A ||
 ||  || Start Time || || _string_ || MM/dd/yyyy HH:mm || Unknown, N/A ||
@@ -106,4 +106,3 @@ The following table defines a map between keys received from GPS Benchmark appli
 || TimeInjectedTimeData || Time Data || Time Injected node as a root ||
 || TimeInjectedXTRAData || XTRA Data || Time Injected node as a root ||
 || TimeClearedAssistData || Time Cleared Assist Data || No root node ||
-
