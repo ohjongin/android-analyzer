@@ -80,7 +80,7 @@ The following table defines a map between keys received from GPS Benchmark appli
 || HorizontalError50thPercentile(m) || 50th Percentile || Horizontal ||
 || HorizontalError68thPercentile(m) || 68th Percentile || Horizontal ||
 || HorizontalError95thPercentile(m) || 95th Percentile || Horizontal ||
-|| HorizontalErrorStandardDeviation(m)	Standard Deviation || Horizontal ||
+|| HorizontalErrorStandardDeviation(m) || Standard Deviation || Horizontal ||
 || VerticalErrorMin(m) || Min || Vertical ||
 || VerticalErrorMax(m) || Max || Vertical ||
 || VerticalErrorMean(m) || Mean || Vertical ||
