@@ -11,7 +11,7 @@ The following table defines the structure of data being inserted in the report, 
 ||  || Test ID || || _integer_ (eg. 1) || || Unknown, N/A ||
 ||  || App Version || || _string_ (eg. 0.9.119) || || Unknown, N/A ||
 ||  || Device || || || || ||
-||  ||  || Brand || _string_ || || Unknown, N/A  ||
+||  ||  || Brand || _string_ || || Unknown, N/A  |z|
 ||  ||  || Product || _string_ || || Unknown, N/A ||
 ||  || Android Version || || _string_ || || Unknown, N/A ||
 ||  || Start Time || || _string_ || MM/dd/yyyy HH:mm || Unknown, N/A ||
@@ -47,10 +47,6 @@ The following table defines the structure of data being inserted in the report, 
 ||  ||  || 95th Percentile|| _double_ || meters || Unknown, N/A ||
 ||  ||  || RMSE || _double_ || meters || Unknown, N/A ||
 ||  ||  || Standard Deviation|| _double_ || meters || Unknown, N/A ||
-||  || Ground Truth || || || || ||
-||  ||  || Latitude || _double_ || || Unknown, N/A ||
-||  ||  || Longitude || _double_ || || Unknown, N/A ||
-||  ||  || Altitude || _double_ || || Unknown, N/A ||
 ||  || First Fix Time || || _string_ || MM/dd/yyyy HH:mm || Unknown, N/A ||
 ||  || Sampling || || || || ||
 ||  || || Interval  || _double_ || milliseconds || Unknown, N/A ||
@@ -62,5 +58,54 @@ The following table defines the structure of data being inserted in the report, 
 ||  ||  || Time Data  || || || Unknown, N/A ||
 ||  ||  || XTRA Data  || || || Unknown, N/A ||
 ||  || Time Cleared Assist Data || || || || Unknown, N/A ||
-||  || {{{WiFi}}} Status || || _string_ || || Unknown, N/A ||
+
+
+The following table defines a map between keys received from GPS Benchmark application (left column) and how they saved in the report (left column)
+|| *Recieved Key* || *Saved key* || *Root name* ||
+|| testID || Test ID || No root node ||
+|| AppVersion || Application Version || No root node ||
+|| deviceBrand || Brand || Device node as a root ||
+|| deviceProduct || Product || Device node as a root ||
+|| AndroidVersion || Android Version || No root node ||
+|| startTime || Start Time || No root node ||
+|| endTime || End Time || No root node ||
+|| TimeToFirstFix(s) || Time To First Fix || No root node ||
+|| locationProvider || Location Provider || No root node ||
+|| sampleSize || Sample Size || No root node ||
+|| HorizontalErrorMin(m) || Min || Horizontal node as a root ||
+|| HorizontalErrorMax(m) || Max || Horizontal node as a root ||
+|| HorizontalErrorMean(m) || Mean || Horizontal node as a root ||
+|| HorizontalError50thPercentile(m) || 50th Percentile || Horizontal node as a root ||
+|| HorizontalError68thPercentile(m) || 68th Percentile || Horizontal node as a root ||
+|| HorizontalError95thPercentile(m) || 95th Percentile || Horizontal node as a root ||
+|| HorizontalErrorStandardDeviation(m)	Standard Deviation || Horizontal node as a root ||
+|| VerticalErrorMin(m) || Min || Vertical node as a root ||
+|| VerticalErrorMax(m) || Max || Vertical node as a root ||
+|| VerticalErrorMean(m) || Mean || Vertical node as a root ||
+|| VerticalErrorMeanAbsolute || Mean Absolute || Vertical node as a root ||
+|| VerticalError50thPercentile(m) || 50th Percentile || Vertical node as a root ||
+|| VerticalError68thPercentile(m) || 68th Percentile || Vertical node as a root ||
+|| VerticalError95thPercentile(m) || 95th Percentile || Vertical node as a root ||
+|| VerticalErrorRMSE(m) ||RMSE || Vertical node as a root ||
+|| VerticalErrorStandardDeviation(m) || Standard Deviation || Vertical node as a root ||
+|| EstimatedHorAccuracyErrorMin(m) || Min || Estimated Horizontal Accuracy Error node as a root ||
+|| EstimatedHorAccuracyErrorMax(m) || Max || Estimated Horizontal Accuracy Error node as a root ||
+|| EstimatedHorAccuracyErrorMean(m) || Mean || Estimated Horizontal Accuracy Error node as a root ||
+|| EstimatedHorAccuracyErrorMeanAbsolute || Mean Absolute || Estimated Horizontal Accuracy Error node as a root ||
+|| EstimatedHorAccuracyError50thPercentile(m) || 50th Percentile || Estimated Horizontal Accuracy Error node as a root ||
+|| EstimatedHorAccuracyError68thPercentile(m) || 68th Percentile || Estimated Horizontal Accuracy Error node as a root ||
+|| EstimatedHorAccuracyError95thPercentile(m) || 95th Percentile || Estimated Horizontal Accuracy Error node as a root ||
+|| EstimatedHorAccuracyErrorRMSE(m) || RMSE || Estimated Horizontal Accuracy Error node as a root ||
+|| EstimatedHorAccuracyErrorStandardDeviation(m) || Standard Deviation || Estimated Horizontal Accuracy Error node as a root ||
+|| FirstFixTime || 	First Fix Time || No root node ||
+|| SamplingInterval(ms) || 	Interval || Sampling node as a root ||
+|| SamplingDistance(m) || 	Distance || Sampling node as a root ||
+|| AverageTimeBetweenFixes(s) || Average Time Between Fixes || No root node ||
+|| OverrideRefreshRate || Override Refresh Rate || No root node ||
+|| KeepScreenOn || 	Keep Screen On || No root node ||
+|| TimeInjectedTimeData || Time Data || Time Injected node as a root ||
+|| TimeInjectedXTRAData || XTRA Data || Time Injected node as a root ||
+|| TimeClearedAssistData || Time Cleared Assist Data || No root node ||
+
+
 
