@@ -136,8 +136,7 @@
 	         </intent-filter>
         </service>
 		
-		  <!-- **** Location Accuracy Plugin **** -->
-<!--        
+		  <!-- **** Location Accuracy Plugin **** -->        
 		<receiver android:enabled="true"
 	          android:exported="true"
 	          android:label="location accuracy plugin receiver"
@@ -159,8 +158,7 @@
                 <action android:name="org.androidanalyzer.plugins.locationaccuracy.LocationAccuracyPlugin"  />
 	         </intent-filter>
         </service>
--->	
-       
+		
 	<activity android:name=".gui.AnalyzerSettings"/>
 	<activity android:name=".gui.PluginConfiguration"/>
 	<activity android:name=".gui.AboutActivity"/>
