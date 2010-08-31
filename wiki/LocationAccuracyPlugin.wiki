@@ -63,48 +63,48 @@ The following table defines the structure of data being inserted in the report, 
 
 
 The following table defines a map between keys received from GPS Benchmark application (right column) and how they saved in the report.
-|| *Recieved Key* || *Saved key* || *Root name* ||
-|| testID || Test ID || No root node ||
-|| AppVersion || Application Version || No root node ||
-|| deviceBrand || Brand || Device node as a root ||
-|| deviceProduct || Product || Device node as a root ||
-|| AndroidVersion || Android Version || No root node ||
-|| startTime || Start Time || No root node ||
-|| endTime || End Time || No root node ||
-|| TimeToFirstFix(s) || Time To First Fix || No root node ||
-|| locationProvider || Location Provider || No root node ||
-|| sampleSize || Sample Size || No root node ||
-|| HorizontalErrorMin(m) || Min || Horizontal node as a root ||
-|| HorizontalErrorMax(m) || Max || Horizontal node as a root ||
-|| HorizontalErrorMean(m) || Mean || Horizontal node as a root ||
-|| HorizontalError50thPercentile(m) || 50th Percentile || Horizontal node as a root ||
-|| HorizontalError68thPercentile(m) || 68th Percentile || Horizontal node as a root ||
-|| HorizontalError95thPercentile(m) || 95th Percentile || Horizontal node as a root ||
-|| HorizontalErrorStandardDeviation(m)	Standard Deviation || Horizontal node as a root ||
-|| VerticalErrorMin(m) || Min || Vertical node as a root ||
-|| VerticalErrorMax(m) || Max || Vertical node as a root ||
-|| VerticalErrorMean(m) || Mean || Vertical node as a root ||
-|| VerticalErrorMeanAbsolute || Mean Absolute || Vertical node as a root ||
-|| VerticalError50thPercentile(m) || 50th Percentile || Vertical node as a root ||
-|| VerticalError68thPercentile(m) || 68th Percentile || Vertical node as a root ||
-|| VerticalError95thPercentile(m) || 95th Percentile || Vertical node as a root ||
-|| VerticalErrorRMSE(m) ||RMSE || Vertical node as a root ||
-|| VerticalErrorStandardDeviation(m) || Standard Deviation || Vertical node as a root ||
-|| EstimatedHorAccuracyErrorMin(m) || Min || Estimated Horizontal Accuracy Error node as a root ||
-|| EstimatedHorAccuracyErrorMax(m) || Max || Estimated Horizontal Accuracy Error node as a root ||
-|| EstimatedHorAccuracyErrorMean(m) || Mean || Estimated Horizontal Accuracy Error node as a root ||
-|| EstimatedHorAccuracyErrorMeanAbsolute || Mean Absolute || Estimated Horizontal Accuracy Error node as a root ||
-|| EstimatedHorAccuracyError50thPercentile(m) || 50th Percentile || Estimated Horizontal Accuracy Error node as a root ||
-|| EstimatedHorAccuracyError68thPercentile(m) || 68th Percentile || Estimated Horizontal Accuracy Error node as a root ||
-|| EstimatedHorAccuracyError95thPercentile(m) || 95th Percentile || Estimated Horizontal Accuracy Error node as a root ||
-|| EstimatedHorAccuracyErrorRMSE(m) || RMSE || Estimated Horizontal Accuracy Error node as a root ||
-|| EstimatedHorAccuracyErrorStandardDeviation(m) || Standard Deviation || Estimated Horizontal Accuracy Error node as a root ||
-|| FirstFixTime || 	First Fix Time || No root node ||
-|| SamplingInterval(ms) || 	Interval || Sampling node as a root ||
-|| SamplingDistance(m) || 	Distance || Sampling node as a root ||
-|| AverageTimeBetweenFixes(s) || Average Time Between Fixes || No root node ||
-|| OverrideRefreshRate || Override Refresh Rate || No root node ||
-|| KeepScreenOn || 	Keep Screen On || No root node ||
-|| TimeInjectedTimeData || Time Data || Time Injected node as a root ||
-|| TimeInjectedXTRAData || XTRA Data || Time Injected node as a root ||
-|| TimeClearedAssistData || Time Cleared Assist Data || No root node ||
+|| *Recieved Key* || *Saved key* || *Parent key* ||
+|| testID || Test ID || No ||
+|| AppVersion || Application Version || No ||
+|| deviceBrand || Brand || Device ||
+|| deviceProduct || Product || Device ||
+|| AndroidVersion || Android Version || No ||
+|| startTime || Start Time || No ||
+|| endTime || End Time || No ||
+|| TimeToFirstFix(s) || Time To First Fix || No ||
+|| locationProvider || Location Provider || No ||
+|| sampleSize || Sample Size || No ||
+|| HorizontalErrorMin(m) || Min || Horizontal ||
+|| HorizontalErrorMax(m) || Max || Horizontal ||
+|| HorizontalErrorMean(m) || Mean || Horizontal ||
+|| HorizontalError50thPercentile(m) || 50th Percentile || Horizontal ||
+|| HorizontalError68thPercentile(m) || 68th Percentile || Horizontal ||
+|| HorizontalError95thPercentile(m) || 95th Percentile || Horizontal ||
+|| HorizontalErrorStandardDeviation(m)	Standard Deviation || Horizontal ||
+|| VerticalErrorMin(m) || Min || Vertical ||
+|| VerticalErrorMax(m) || Max || Vertical ||
+|| VerticalErrorMean(m) || Mean || Vertical ||
+|| VerticalErrorMeanAbsolute || Mean Absolute || Vertical ||
+|| VerticalError50thPercentile(m) || 50th Percentile || Vertical ||
+|| VerticalError68thPercentile(m) || 68th Percentile || Vertical ||
+|| VerticalError95thPercentile(m) || 95th Percentile || Vertical ||
+|| VerticalErrorRMSE(m) ||RMSE || Vertical ||
+|| VerticalErrorStandardDeviation(m) || Standard Deviation || Vertical ||
+|| EstimatedHorAccuracyErrorMin(m) || Min || Estimated Horizontal Accuracy Error ||
+|| EstimatedHorAccuracyErrorMax(m) || Max || Estimated Horizontal Accuracy Error ||
+|| EstimatedHorAccuracyErrorMean(m) || Mean || Estimated Horizontal Accuracy Error ||
+|| EstimatedHorAccuracyErrorMeanAbsolute || Mean Absolute || Estimated Horizontal Accuracy Error ||
+|| EstimatedHorAccuracyError50thPercentile(m) || 50th Percentile || Estimated Horizontal Accuracy Error ||
+|| EstimatedHorAccuracyError68thPercentile(m) || 68th Percentile || Estimated Horizontal Accuracy Error ||
+|| EstimatedHorAccuracyError95thPercentile(m) || 95th Percentile || Estimated Horizontal Accuracy Error ||
+|| EstimatedHorAccuracyErrorRMSE(m) || RMSE || Estimated Horizontal Accuracy Error ||
+|| EstimatedHorAccuracyErrorStandardDeviation(m) || Standard Deviation || Estimated Horizontal Accuracy Error ||
+|| FirstFixTime || 	First Fix Time || No ||
+|| SamplingInterval(ms) || 	Interval || Sampling ||
+|| SamplingDistance(m) || 	Distance || Sampling ||
+|| AverageTimeBetweenFixes(s) || Average Time Between Fixes || No ||
+|| OverrideRefreshRate || Override Refresh Rate || No ||
+|| KeepScreenOn || 	Keep Screen On || No ||
+|| TimeInjectedTimeData || Time Data || Time Injected ||
+|| TimeInjectedXTRAData || XTRA Data || Time Injected ||
+|| TimeClearedAssistData || Time Cleared Assist Data || No ||
