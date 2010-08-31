@@ -1,5 +1,6 @@
 package org.androidanalyzer.plugins.dummyplugin;
 
+import org.androidanalyzer.Constants;
 import org.androidanalyzer.core.Data;
 import org.androidanalyzer.plugins.AbstractPlugin;
 
@@ -14,6 +15,8 @@ public class DummyExternalPlugin extends AbstractPlugin {
 	private static final String DUMMY_DATA_INFO_VALUE = "No info here";
 	private static final String PLUGIN_VERSION = "1.0.0";
 	private static final String PLUGIN_VENDOR = "ProSyst Software GmbH";
+	private static final String DESCRIPTION = "Demonstrates how to create plugin and how it works";
+	private String status = Constants.METADATA_PLUGIN_STATUS_PASSED;
 
 	/*
 	 * (non-Javadoc)
@@ -58,6 +61,26 @@ public class DummyExternalPlugin extends AbstractPlugin {
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see org.androidanalyzer.plugins.AbstractPlugin#getPluginDescription()
+	 */
+	@Override
+	public String getPluginDescription() {
+		return DESCRIPTION;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.androidanalyzer.plugins.AbstractPlugin#isPluginRequiredUI()
+	 */
+	@Override
+	public boolean isPluginRequiredUI() {
+		return false;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.androidanalyzer.plugins.AbstractPlugin# getPluginClassName()
 	 */
 	@Override
@@ -93,5 +116,15 @@ public class DummyExternalPlugin extends AbstractPlugin {
 	@Override
 	protected void stopDataCollection() {
 		this.stopSelf();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.androidanalyzer.plugins.AbstractPlugin#getPluginStatus()
+	 */
+	@Override
+	protected String getPluginStatus() {
+		return status;
 	}
 }
