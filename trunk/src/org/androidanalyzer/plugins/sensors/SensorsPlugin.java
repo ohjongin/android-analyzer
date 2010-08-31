@@ -21,8 +21,8 @@ import android.hardware.SensorManager;
 public class SensorsPlugin extends AbstractPlugin {
 
 	private static final String NAME = "Sensors Plugin";
-  private static final String PLUGIN_VERSION = "1.0.0";
-  private static final String PLUGIN_VENDOR = "ProSyst Software GmbH";
+	private static final String PLUGIN_VERSION = "1.0.0";
+	private static final String PLUGIN_VENDOR = "ProSyst Software GmbH";
 	private static final String TAG = "Analyzer-SensorsPlugin";
 	private static final String SENSORS = "Sensors";
 	/** Main sensors */
@@ -43,42 +43,8 @@ public class SensorsPlugin extends AbstractPlugin {
 	private static final String TYPE = "Type";
 	private static final String VENDOR = "Vendor";
 	private static final String VERSION = "Version";
-  private static final String DESCRIPTION = "Collects data on available device sensors";
+	private static final String DESCRIPTION = "Collects data on available device sensors";
 	private String status = Constants.METADATA_PLUGIN_STATUS_PASSED;
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.androidanalyzer.plugins.AbstractPlugin#getData()
-	 */
-	@Override
-	protected Data getData() {
-		Logger.DEBUG(TAG, "getData in Sensor Plugin");
-		Data parent = new Data();
-		ArrayList<Data> masterChildren = new ArrayList<Data>();
-		try {
-			parent.setName(SENSORS);
-		} catch (Exception e) {
-			Logger.ERROR(TAG, "Could not set Sensor parent node!", e);
-			status = "Could not set Sensor parent node!";
-			return null;
-		}
-		SensorManager sensorMgr = (SensorManager) this.getSystemService(Context.SENSOR_SERVICE);
-		masterChildren = getSensorInfo(sensorMgr, masterChildren);
-		masterChildren = getSensorExtraInfo(sensorMgr, masterChildren);
-		parent = addToParent(parent, masterChildren);
-		return parent;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.androidanalyzer.plugins.AbstractPlugin#getPluginClassName()
-	 */
-	@Override
-	protected String getPluginClassName() {
-		return this.getClass().getName();
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -119,7 +85,61 @@ public class SensorsPlugin extends AbstractPlugin {
 	public String getPluginVendor() {
 		return PLUGIN_VENDOR;
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.androidanalyzer.plugins.AbstractPlugin#getPluginDescription()
+	 */
+	@Override
+	public String getPluginDescription() {
+		return DESCRIPTION;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.androidanalyzer.plugins.AbstractPlugin#isPluginRequiredUI()
+	 */
+	@Override
+	public boolean isPluginRequiredUI() {
+		return false;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.androidanalyzer.plugins.AbstractPlugin#getData()
+	 */
+	@Override
+	protected Data getData() {
+		Logger.DEBUG(TAG, "getData in Sensor Plugin");
+		Data parent = new Data();
+		ArrayList<Data> masterChildren = new ArrayList<Data>();
+		try {
+			parent.setName(SENSORS);
+		} catch (Exception e) {
+			Logger.ERROR(TAG, "Could not set Sensor parent node!", e);
+			status = "Could not set Sensor parent node!";
+			return null;
+		}
+		SensorManager sensorMgr = (SensorManager) this.getSystemService(Context.SENSOR_SERVICE);
+		masterChildren = getSensorInfo(sensorMgr, masterChildren);
+		masterChildren = getSensorExtraInfo(sensorMgr, masterChildren);
+		parent = addToParent(parent, masterChildren);
+		return parent;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.androidanalyzer.plugins.AbstractPlugin#getPluginClassName()
+	 */
+	@Override
+	protected String getPluginClassName() {
+		return this.getClass().getName();
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -129,7 +149,7 @@ public class SensorsPlugin extends AbstractPlugin {
 	protected String getPluginStatus() {
 		return status;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -225,7 +245,7 @@ public class SensorsPlugin extends AbstractPlugin {
 				status = "Failed to set pressure sensor";
 			}
 		}
-	
+
 		Data temperature = new Data();
 		if (!sensorMgr.getSensorList(Sensor.TYPE_TEMPERATURE).isEmpty()) {
 			try {
@@ -334,8 +354,4 @@ public class SensorsPlugin extends AbstractPlugin {
 		return masterChildren;
 	}
 
-  @Override
-  public String getPluginDescription() {
-    return DESCRIPTION;
-  }
 }

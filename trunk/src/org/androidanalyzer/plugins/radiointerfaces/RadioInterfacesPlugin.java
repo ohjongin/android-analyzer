@@ -54,8 +54,68 @@ public class RadioInterfacesPlugin extends AbstractPlugin {
 	private static final String B900 = "900";
 	private static final String B1800 = "1800";
 	private static final String B1900 = "1900";
-  private static final String DESCRIPTION = "Collects data on the radio interface and capabilities";
+	private static final String DESCRIPTION = "Collects data on the radio interface and capabilities";
 	private String status = Constants.METADATA_PLUGIN_STATUS_PASSED;
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.androidanalyzer.plugins.AbstractPlugin#getPluginName ()
+	 */
+	@Override
+	public String getPluginName() {
+		return NAME;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.androidanalyzer.plugins.AbstractPlugin#getPluginTimeout ()
+	 */
+	@Override
+	public long getPluginTimeout() {
+		return 10000;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.androidanalyzer.plugins.AbstractPlugin#getPluginVersion ()
+	 */
+	@Override
+	public String getPluginVersion() {
+		return PLUGIN_VERSION;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.androidanalyzer.plugins.AbstractPlugin#getPluginVendor()
+	 */
+	@Override
+	public String getPluginVendor() {
+		return PLUGIN_VENDOR;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.androidanalyzer.plugins.AbstractPlugin#getPluginDescription()
+	 */
+	@Override
+	public String getPluginDescription() {
+		return DESCRIPTION;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.androidanalyzer.plugins.AbstractPlugin#isPluginRequiredUI()
+	 */
+	@Override
+	public boolean isPluginRequiredUI() {
+		return false;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -138,7 +198,7 @@ public class RadioInterfacesPlugin extends AbstractPlugin {
 				currentNetwork.setValue(networkType);
 				masterChildren.add(currentNetwork);
 			} catch (Exception e) {
-				Logger.ERROR(TAG, "Could not create supported node for Radio interfaces!" ,e);
+				Logger.ERROR(TAG, "Could not create supported node for Radio interfaces!", e);
 				status = "Could not create supported node for Radio interfaces!";
 			}
 
@@ -155,46 +215,6 @@ public class RadioInterfacesPlugin extends AbstractPlugin {
 	@Override
 	protected String getPluginClassName() {
 		return this.getClass().getName();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.androidanalyzer.plugins.AbstractPlugin#getPluginName ()
-	 */
-	@Override
-	public String getPluginName() {
-		return NAME;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.androidanalyzer.plugins.AbstractPlugin#getPluginTimeout ()
-	 */
-	@Override
-	public long getPluginTimeout() {
-		return 10000;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.androidanalyzer.plugins.AbstractPlugin#getPluginVersion ()
-	 */
-	@Override
-	public String getPluginVersion() {
-		return PLUGIN_VERSION;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.androidanalyzer.plugins.AbstractPlugin#getPluginVendor()
-	 */
-	@Override
-	public String getPluginVendor() {
-		return PLUGIN_VENDOR;
 	}
 
 	/*
@@ -341,9 +361,4 @@ public class RadioInterfacesPlugin extends AbstractPlugin {
 		fourGHolder = addToParent(fourGHolder, twoChildren);
 		return fourGHolder;
 	}
-
-  @Override
-  public String getPluginDescription() {
-    return DESCRIPTION;
-  }
 }

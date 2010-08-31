@@ -25,4 +25,6 @@ interface IAnalyzerPlugin {
 	String getVendor();
 	
 	String getStatus();
+	
+	boolean isUIRequired();
 }
