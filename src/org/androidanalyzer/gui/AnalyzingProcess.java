@@ -35,7 +35,7 @@ public class AnalyzingProcess implements Runnable {
 		Logger.DEBUG(TAG, "[run] data: " + data);
 		Message msg = dataHandler.obtainMessage();
 		Bundle bundle = new Bundle();
-		bundle.putParcelable(Constants.HANDLER_SEND, data);
+		bundle.putParcelable(Constants.GUI_HANDLER_SEND, data);
 		msg.setData(bundle);
 		dataHandler.sendMessage(msg);
 	}

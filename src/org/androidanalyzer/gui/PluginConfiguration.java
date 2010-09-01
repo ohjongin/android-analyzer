@@ -24,6 +24,10 @@ public class PluginConfiguration extends Activity {
   ArrayList<PluginStatus> plugins;
   ListView list;
   
+  /*
+   * (non-Javadoc)
+   * @see android.app.Activity#onCreate(android.os.Bundle)
+   */
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);

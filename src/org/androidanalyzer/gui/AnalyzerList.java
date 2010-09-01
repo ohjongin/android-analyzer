@@ -48,6 +48,10 @@ public class AnalyzerList extends Activity implements UICallback {
   AnalyzerCore core;
 
   /** Called when the activity is first created. */
+  /*
+   * (non-Javadoc)
+   * @see android.app.Activity#onCreate(android.os.Bundle)
+   */
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -87,25 +91,6 @@ public class AnalyzerList extends Activity implements UICallback {
     super.onDestroy();
   }
   
-
-  ArrayList<PluginStatus> preparePluginList(Context ctx) {
-    	ArrayList<PluginStatus> plugins = new ArrayList<PluginStatus>();
-    	SharedPreferences prefs = ctx.getSharedPreferences(PREFS_NAME, 0);
-    	Map<String, ?> all = prefs.getAll();
-    	Set<?> values = all.entrySet();
-      Iterator<?> it = values.iterator();
-      Entry<String, String> record;
-      PluginStatus decoded;
-      for (;it.hasNext();) {
-        record = (Entry<String, String>)it.next();
-        decoded = PluginStatus.decodeStatus(record.getValue());        
-        if (decoded != null) {
-          plugins.add(decoded);
-          name2status.put(decoded.getPluginClass(), decoded);
-        }
-      }
-    	return plugins;
-    }
 	
   /*
    * (non-Javadoc)
@@ -135,6 +120,10 @@ public class AnalyzerList extends Activity implements UICallback {
     return result || super.onOptionsItemSelected(item);
   }  
 	
+  /*
+   * (non-Javadoc)
+   * @see android.app.Activity#onCreateDialog(int)
+   */
   @Override
   protected Dialog onCreateDialog(int id) {
     switch (id) {
@@ -148,6 +137,10 @@ public class AnalyzerList extends Activity implements UICallback {
     return null;
   }
 
+  /*
+   * (non-Javadoc)
+   * @see org.androidanalyzer.core.UICallback#updateAnalysisProgress(java.util.Hashtable)
+   */
   @Override
   public void updateAnalysisProgress(Hashtable progress) {
     if (progress.containsKey(UICallback.PLUGIN_STARTED_ANALYZING)) {
@@ -155,34 +148,20 @@ public class AnalyzerList extends Activity implements UICallback {
       int total = (Integer) progress.get(UICallback.NUMBER_OF_PLUGINS);
       Message msg = guiHandler.obtainMessage();
       Bundle bundle = new Bundle();
-      bundle.putInt("total", total);
+      bundle.putInt(Constants.GUI_HANDLER_PROGRESS_TOTAL_PLUGINS, total);
       current++;
-      bundle.putInt("current", current);
-      bundle.putString("name", name);
-      bundle.putString(Constants.HANDLER_PROGRESS, "true");
+      bundle.putInt(Constants.GUI_HANDLER_PROGRESS_CURRENT_PLUGIN, current);
+      bundle.putString(Constants.GUI_HANDLER_PROGRESS_PLUGIN_NAME, name);
+      bundle.putString(Constants.GUI_HANDLER_PROGRESS, Constants.GUI_HANDLER_PROGRESS_ENABLED);
       msg.setData(bundle);
       guiHandler.sendMessage(msg);
     }
   }
   
-  void updateProgress(int total, int current, String pluginName) {
-    progressDialog.setMax(total);
-    progressDialog.setProgress(0);
-    progressDialog.incrementProgressBy(current);
-    progressDialog.setMessage(getString(R.string.progress_dialog_msg)+pluginName);
-  }
-  
-  void hideProgress(Data result) {
-    progressDialog.setProgress(0);
-    dismissDialog(Constants.PROGRESS_DIALOG);
-    current = 0;
-    Intent intent = new Intent(this, ReportActivity.class);
-    String host = PreferencesManager.loadStringPreference(this, Constants.HOST);
-    intent.putExtra(Constants.HANDLER_SEND, result);
-    intent.putExtra(Constants.HOST, host);
-    startActivity(intent);
-  }
-
+  /*
+   * (non-Javadoc)
+   * @see org.androidanalyzer.core.UICallback#notifyPluginRegistered(org.androidanalyzer.core.IAnalyzerPlugin)
+   */
   @Override
   public void notifyPluginRegistered(IAnalyzerPlugin iAnalyzerPlugin) {
     try {
@@ -222,6 +201,10 @@ public class AnalyzerList extends Activity implements UICallback {
     
   }
 
+  /*
+   * (non-Javadoc)
+   * @see org.androidanalyzer.core.UICallback#notifyPluginUnregistered(org.androidanalyzer.core.IAnalyzerPlugin)
+   */
   @Override
   public void notifyPluginUnregistered(IAnalyzerPlugin iAnalyzerPlugin) {
     try {
@@ -240,4 +223,40 @@ public class AnalyzerList extends Activity implements UICallback {
     }
   }
 	
+  void updateProgress(int total, int current, String pluginName) {
+    progressDialog.setMax(total);
+    progressDialog.setProgress(0);
+    progressDialog.incrementProgressBy(current);
+    progressDialog.setMessage(getString(R.string.progress_dialog_msg)+pluginName);
+  }
+  
+  void hideProgress(Data result) {
+    progressDialog.setProgress(0);
+    dismissDialog(Constants.PROGRESS_DIALOG);
+    current = 0;
+    Intent intent = new Intent(this, ReportActivity.class);
+    String host = PreferencesManager.loadStringPreference(this, Constants.HOST);
+    intent.putExtra(Constants.GUI_HANDLER_SEND, result);
+    intent.putExtra(Constants.HOST, host);
+    startActivity(intent);
+  }
+  
+  ArrayList<PluginStatus> preparePluginList(Context ctx) {
+  	ArrayList<PluginStatus> plugins = new ArrayList<PluginStatus>();
+  	SharedPreferences prefs = ctx.getSharedPreferences(PREFS_NAME, 0);
+  	Map<String, ?> all = prefs.getAll();
+  	Set<?> values = all.entrySet();
+    Iterator<?> it = values.iterator();
+    Entry<String, String> record;
+    PluginStatus decoded;
+    for (;it.hasNext();) {
+      record = (Entry<String, String>)it.next();
+      decoded = PluginStatus.decodeStatus(record.getValue());        
+      if (decoded != null) {
+        plugins.add(decoded);
+        name2status.put(decoded.getPluginClass(), decoded);
+      }
+    }
+  	return plugins;
+  }
 }
