@@ -139,18 +139,18 @@ public class AnalyzerCore {
 		Logger.DEBUG(TAG, "pluginCache : " + pluginCache);
 		ArrayList<String> enabledPlugins = new ArrayList<String>();
 		if (pluginCache != null) {
-  		SharedPreferences prefs = ctx.getSharedPreferences("org.androidanalyzer.plugin.status", 0);
-  		String record;
-  		PluginStatus decoded;
-  		for (String pluginClass : pluginCache) {
-  		  record = prefs.getString(pluginClass, null);
-  		  if (record != null) {
-  		    decoded = PluginStatus.decodeStatus(record);
-  		    if (decoded != null && decoded.isEnabled()) {
-  		      enabledPlugins.add(pluginClass);
-  		    }
-  		  }
-  		}
+			SharedPreferences prefs = ctx.getSharedPreferences("org.androidanalyzer.plugin.status", 0);
+			String record;
+			PluginStatus decoded;
+			for (String pluginClass : pluginCache) {
+				record = prefs.getString(pluginClass, null);
+				if (record != null) {
+					decoded = PluginStatus.decodeStatus(record);
+					if (decoded != null && decoded.isEnabled()) {
+						enabledPlugins.add(pluginClass);
+					}
+				}
+			}
 		}
 		int size = enabledPlugins.size();
 		/* Updating UI on Analysis start */
@@ -160,8 +160,11 @@ public class AnalyzerCore {
 		}
 		String pluginName = null;
 		String description = "";
+		Logger.DEBUG(TAG, "Non sorted enabledPlugins - " + enabledPlugins);
+		ArrayList<String> sortedEnabledPlugins = sortPluginList(enabledPlugins);
+		Logger.DEBUG(TAG, "Sorted enabledPlugins - " + sortedEnabledPlugins);
 		if (size > 0) {
-			for (String plugin : enabledPlugins) {
+			for (String plugin : sortedEnabledPlugins) {
 				runningPluginConn = connectToPlugin(plugin);
 				if (runningPluginConn != null && runningPluginConn.plugin != null) {
 					try {
@@ -332,7 +335,7 @@ public class AnalyzerCore {
 			Logger.ERROR(TAG, "Could not set Metadata!", e);
 		}
 		if (deviceIMEI != null && reportPlugins != null) {
-			String md5 = Reporter.mD5H(deviceIMEI.getBytes());			
+			String md5 = Reporter.mD5H(deviceIMEI.getBytes());
 			try {
 				device.setValue(md5);
 				device.setValueMetric(Constants.METADATA_DEVICE_ID_METRIC);
@@ -849,14 +852,41 @@ public class AnalyzerCore {
 	}
 
 	private void checkNew(String pluginClass) {
-	  SharedPreferences prefs = ctx.getSharedPreferences("org.androidanalyzer.plugin.status", 0);
-	  String record = prefs.getString(pluginClass, null);
-	  if (record == null) {
-	    String pluginName = pluginClass.substring(pluginClass.lastIndexOf(".")+1);
-	    PluginStatus status = new PluginStatus(pluginName, pluginClass, PluginStatus.STATUS_NOT_RUN, -1, "%");
-	    Editor edit = prefs.edit();
-	    edit.putString(pluginClass, PluginStatus.encodeStatus(status));
-	    edit.commit();
-	  }
+		SharedPreferences prefs = ctx.getSharedPreferences("org.androidanalyzer.plugin.status", 0);
+		String record = prefs.getString(pluginClass, null);
+		if (record == null) {
+			String pluginName = pluginClass.substring(pluginClass.lastIndexOf(".") + 1);
+			PluginStatus status = new PluginStatus(pluginName, pluginClass, PluginStatus.STATUS_NOT_RUN, -1, "%");
+			Editor edit = prefs.edit();
+			edit.putString(pluginClass, PluginStatus.encodeStatus(status));
+			edit.commit();
+		}
+	}
+
+	private ArrayList<String> sortPluginList(ArrayList<String> enabledPlugins) {
+		ArrayList<String> sortPlugins = new ArrayList<String>(enabledPlugins.size());
+		if (enabledPlugins != null && enabledPlugins.size() > 0) {
+			for (String plugin : enabledPlugins) {
+				PluginServiceConnection runningPluginConn = connectToPlugin(plugin);
+				if (runningPluginConn != null && runningPluginConn.plugin != null) {
+					try {
+						boolean uI = runningPluginConn.plugin.isUIRequired();
+						Logger.DEBUG(TAG, "Plugin name: " + runningPluginConn.plugin.getName());
+						if (uI) {
+							Logger.DEBUG(TAG, "Plugin " + plugin + " required UI");
+							sortPlugins.add(0, plugin);
+						} else {
+							Logger.DEBUG(TAG, "Plugin " + plugin + " doesn't required UI");
+							sortPlugins.add(plugin);
+						}
+						ctx.unbindService(runningPluginConn);
+						runningPluginConn = null;
+					} catch (Exception e) {
+						Logger.DEBUG(TAG, "Error while trying to activate debug for plugin : " + plugin);
+					}
+				}
+			}
+		}
+		return sortPlugins;
 	}
 }

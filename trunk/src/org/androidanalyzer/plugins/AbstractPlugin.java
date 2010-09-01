@@ -166,7 +166,7 @@ public abstract class AbstractPlugin extends Service {
 		 */
     @Override
 		public boolean isUIRequired() throws RemoteException {
-			return false;
+			return isPluginRequiredUI();
 		}
 
 
