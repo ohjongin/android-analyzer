@@ -7,6 +7,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
+/**
+ * This class handle Progress bar
+ *
+ */
 public class ProgressHandler extends Handler {
 
   AnalyzerList analyzerList;
@@ -15,6 +19,10 @@ public class ProgressHandler extends Handler {
     this.analyzerList = progressActivity;
   }
 
+  /*
+   * (non-Javadoc)
+   * @see android.os.Handler#handleMessage(android.os.Message)
+   */
   @Override
   public void handleMessage(Message msg) {
     Bundle bundle = msg.getData();

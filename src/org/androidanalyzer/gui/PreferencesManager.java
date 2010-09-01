@@ -4,6 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
+/**
+ * This class is used to store and load info about each plugin 
+ *
+ */
 public class PreferencesManager {
   
   private static final String PREFS_NAME = "org.androidanalyzer.gui.SettingsActivity";  

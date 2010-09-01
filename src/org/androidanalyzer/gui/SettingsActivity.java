@@ -28,14 +28,12 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 
 /**
- * Description
+ * SettingsActivity class is used to create Setting initial form
  * 
- * @author <Georgi Chepilev>
- * @version <1.0.0>
  */
 public class SettingsActivity extends Activity {
 
-  private static final String TAG = "Analyzer-Settings-GUI";
+  private static final String TAG = "Analyzer-SettingsActivity";
   private static final String PREFS_NAME = "org.androidanalyzer.gui.settings";
   private static final int CONNECTION_TEST = 0;
 
@@ -59,7 +57,11 @@ public class SettingsActivity extends Activity {
     applyButton.setText(R.string.save_button_txt);
     applyButton.setOnClickListener(new View.OnClickListener() {
       
-      @Override
+      /*
+       * (non-Javadoc)
+       * @see android.view.View.OnClickListener#onClick(android.view.View)
+       */
+    	@Override
       public void onClick(View v) {
         boolean d = debug.isChecked();
         if ((d && !debugEnabled) || (!d && debugEnabled)) {
@@ -92,15 +94,27 @@ public class SettingsActivity extends Activity {
     }
     hostField.setText(host);
     hostField.addTextChangedListener(new TextWatcher() {
-      @Override
+      /*
+       * (non-Javadoc)
+       * @see android.text.TextWatcher#onTextChanged(java.lang.CharSequence, int, int, int)
+       */
+    	@Override
       public void onTextChanged(CharSequence s, int start, int before, int count) {
         applyButton.setEnabled(true);
       }
       
+      /*
+       * (non-Javadoc)
+       * @see android.text.TextWatcher#beforeTextChanged(java.lang.CharSequence, int, int, int)
+       */
       @Override
       public void beforeTextChanged(CharSequence s, int start, int count, int after) {
       }
       
+      /*
+       * (non-Javadoc)
+       * @see android.text.TextWatcher#afterTextChanged(android.text.Editable)
+       */
       @Override
       public void afterTextChanged(Editable s) {
       }
@@ -109,7 +123,11 @@ public class SettingsActivity extends Activity {
     debug.setChecked(debugEnabled);
     debug.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       
-      @Override
+      /*
+       * (non-Javadoc)
+       * @see android.widget.CompoundButton.OnCheckedChangeListener#onCheckedChanged(android.widget.CompoundButton, boolean)
+       */
+    	@Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if ((isChecked && !debugEnabled) || (!isChecked && debugEnabled))
           applyButton.setEnabled(true);
@@ -118,7 +136,11 @@ public class SettingsActivity extends Activity {
     Button testLink = (Button)findViewById(R.id.test_link_btn);
     testLink.setOnClickListener(new View.OnClickListener() {
       
-      @Override
+      /*
+       * (non-Javadoc)
+       * @see android.view.View.OnClickListener#onClick(android.view.View)
+       */
+    	@Override
       public void onClick(View v) {
         showDialog(CONNECTION_TEST);
         new ProgressThread(pHandler).start();
@@ -126,35 +148,49 @@ public class SettingsActivity extends Activity {
     });
   }
   
-  private void showAlertDialog() {
-    AlertDialog.Builder alert = new AlertDialog.Builder(this);
-    alert.setTitle(getString(R.string.alert_dialog_warning_title));
-    alert.setIcon(R.drawable.warning_icon_yellow);
-    alert.setMessage(R.string.alert_dialog_warning_host);
-    alert.setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
-      
-      @Override
-      public void onClick(DialogInterface dialog, int which) {
-        dialog.dismiss();
-      }
-    });
-    alert.show();
-  }
+	private void showAlertDialog() {
+		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+		alert.setTitle(getString(R.string.alert_dialog_warning_title));
+		alert.setIcon(R.drawable.warning_icon_yellow);
+		alert.setMessage(R.string.alert_dialog_warning_host);
+		alert.setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
+
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * android.content.DialogInterface.OnClickListener#onClick(android.content
+			 * .DialogInterface, int)
+			 */
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
+		alert.show();
+	}
   
-  private void showConnectionDialog(boolean success) {
-    AlertDialog.Builder alert = new AlertDialog.Builder(this);
-    alert.setTitle(success ? R.string.alert_dialog_success_title : R.string.alert_dialog_warning_title);
-    alert.setIcon(success ? R.drawable.ok_icon : R.drawable.warning_icon_yellow);
-    alert.setMessage(success ? R.string.alert_connection_ok : R.string.alert_connection_failed);
-    alert.setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
-      
-      @Override
-      public void onClick(DialogInterface dialog, int which) {
-        dialog.dismiss();
-      }
-    });
-    alert.show();    
-  }
+	private void showConnectionDialog(boolean success) {
+		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+		alert.setTitle(success ? R.string.alert_dialog_success_title : R.string.alert_dialog_warning_title);
+		alert.setIcon(success ? R.drawable.ok_icon : R.drawable.warning_icon_yellow);
+		alert.setMessage(success ? R.string.alert_connection_ok : R.string.alert_connection_failed);
+		alert.setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
+
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see
+			 * android.content.DialogInterface.OnClickListener#onClick(android.content
+			 * .DialogInterface, int)
+			 */
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
+		alert.show();
+	}
   
    
   @Override
@@ -172,7 +208,11 @@ public class SettingsActivity extends Activity {
 
   private Handler pHandler = new Handler() {
 
-    @Override
+    /*
+     * (non-Javadoc)
+     * @see android.os.Handler#handleMessage(android.os.Message)
+     */
+  	@Override
     public void handleMessage(Message msg) {
       Bundle data = msg.getData();
       boolean done = data.getBoolean(Constants.GUI_SETTINGS_DONE);
@@ -213,7 +253,7 @@ public class SettingsActivity extends Activity {
         os.close();
         result = true;
       } catch (Throwable t) {
-        t.printStackTrace();
+        Logger.ERROR(TAG, "Failed to test connection to the given Host", t);
       }
       data.putBoolean(Constants.GUI_SETTINGS_RESULT, result);
       msg.setData(data);
