@@ -32,10 +32,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
+/**
+ * This class is used to create initial list with all plugins and their status.  
+ *
+ */
 public class AnalyzerList extends Activity implements UICallback {
 	
 	private static final int MENU_SETTINGS = 0;
-  private static final String TAG = "AnalyzerList";
+  private static final String TAG = "Analyzer-AnalyzerList";
   private static final String PREFS_NAME = "org.androidanalyzer.plugin.status";
   AnalyzerListAdapter adapter;
   ListView list;

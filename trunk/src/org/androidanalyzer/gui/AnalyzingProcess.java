@@ -9,12 +9,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
-/*
- * Start analyzing operation in a separate process and return it via Progress Handler
+/**
+ * Start analyzing operation in a separate process and return it via Progress
+ * Handler
  */
 public class AnalyzingProcess implements Runnable {
 
-	private static final String TAG = "AnalyzingProcess";
+	private static final String TAG = "Analyzer-AnalyzingProcess";
 
 	private Handler dataHandler;
 	private AnalyzerCore core;

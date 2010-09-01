@@ -18,6 +18,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
+/**
+ * This class is used to create list of all plugins with their status in Plugins
+ * tab on Settings menu.
+ * 
+ */
+
 public class PluginConfiguration extends Activity {
 
   AnalyzerConfigAdapter adapter;
@@ -39,7 +45,11 @@ public class PluginConfiguration extends Activity {
     Button saveB = (Button)findViewById(R.id.first_button);
     saveB.setOnClickListener(new View.OnClickListener() {
       
-      @Override
+      /*
+       * (non-Javadoc)
+       * @see android.view.View.OnClickListener#onClick(android.view.View)
+       */
+    	@Override
       public void onClick(View v) {
         savePluginState();
       }
@@ -47,7 +57,11 @@ public class PluginConfiguration extends Activity {
     Button resetB = (Button)findViewById(R.id.second_button);
     resetB.setOnClickListener(new View.OnClickListener() {
       
-      @Override
+      /*
+       * (non-Javadoc)
+       * @see android.view.View.OnClickListener#onClick(android.view.View)
+       */
+    	@Override
       public void onClick(View v) {
         resetPluginState();
       }

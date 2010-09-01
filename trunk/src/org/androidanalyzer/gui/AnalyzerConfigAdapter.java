@@ -16,7 +16,10 @@ import android.widget.ListAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-
+/**
+ * This class is used to create list of all plugins with their status 
+ *
+ */
 class AnalyzerConfigAdapter extends BaseAdapter implements ListAdapter {
 	
 	ArrayList<PluginStatus> listItems;
@@ -53,7 +56,11 @@ class AnalyzerConfigAdapter extends BaseAdapter implements ListAdapter {
 			CheckBox checkBox = (CheckBox)rowLayout.findViewById(R.id.plugin_status_checkbox);
 			checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
         
-        @Override
+        /*
+         * (non-Javadoc)
+         * @see android.widget.CompoundButton.OnCheckedChangeListener#onCheckedChanged(android.widget.CompoundButton, boolean)
+         */
+				@Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
           pStatus.setEnabled(isChecked);
         }

@@ -6,10 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.androidanalyzer.R;
-import org.androidanalyzer.core.IAnalyzerPlugin;
 import org.androidanalyzer.core.PluginStatus;
-import org.androidanalyzer.core.PluginStatus;
-import org.androidanalyzer.plugins.AbstractPlugin;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -20,6 +17,11 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+/**
+ * This class is used to create initial list with all plugins and their status.  
+ *
+ */
 
 class AnalyzerListAdapter extends BaseAdapter implements ListAdapter {
 	

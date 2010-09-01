@@ -8,6 +8,10 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.widget.TabHost;
 
+/**
+ * This class is used to create Tabs in Setting menu 
+ *
+ */
 public class AnalyzerSettings extends TabActivity {
 	
 	private static final String TAB_CORE = "core";
