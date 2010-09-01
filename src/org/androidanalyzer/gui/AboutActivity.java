@@ -8,6 +8,10 @@ import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.widget.TextView;
 
+/**
+ *  AboutActivity class represents About form. 
+ *
+ */
 public class AboutActivity extends Activity {
 
 	/*
