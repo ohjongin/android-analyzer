@@ -12,9 +12,8 @@ import org.androidanalyzer.core.utils.Logger;
 import org.androidanalyzer.plugins.AbstractPlugin;
 
 /**
- * CPUPlugin class used for gathering CPu data
+ * CPUPlugin class used for gathering CPU data
  * 
- * @author k.raev
  */
 public class CPUPlugin extends AbstractPlugin {
 

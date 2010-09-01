@@ -9,7 +9,6 @@ import java.util.Hashtable;
  * Callback interface used by the Analyzer Core to notify the UI for progress
  * with the analysis
  * 
- * @author k.raev
  */
 public interface UICallback {
 

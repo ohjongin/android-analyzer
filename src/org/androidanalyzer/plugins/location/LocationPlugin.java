@@ -14,9 +14,8 @@ import android.provider.Settings;
 import android.provider.Settings.SettingNotFoundException;
 
 /**
- * LocatonPlugin class used for gathering Location data
+ * LocatonPlugin class used for gathering Location capabilities data
  * 
- * @author k.raev
  */
 public class LocationPlugin extends AbstractPlugin {
 

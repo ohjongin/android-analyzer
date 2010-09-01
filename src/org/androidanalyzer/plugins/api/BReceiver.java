@@ -7,10 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 
 /**
- * Description
+ * Broadcast Receiver to fire up the plugin registering it to the Core
  * 
- * @author <Georgi Chepilev>
- * @version <1.0.0>
  */
 public class BReceiver extends BroadcastReceiver {
 	

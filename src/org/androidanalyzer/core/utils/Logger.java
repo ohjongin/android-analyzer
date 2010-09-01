@@ -5,8 +5,6 @@ import android.util.Log;
 /**
  * Logger class used to dump messages to the device log
  * 
- * @author <Georgi Chepilev>
- * @version <1.0.0>
  */
 public class Logger {
   private static boolean DEBUG = false;

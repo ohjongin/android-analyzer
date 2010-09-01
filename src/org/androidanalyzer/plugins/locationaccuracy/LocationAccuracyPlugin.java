@@ -8,10 +8,9 @@ import org.androidanalyzer.core.utils.Logger;
 import org.androidanalyzer.plugins.AbstractPlugin;
 
 /**
- * Description
+ * LocationAccuracyPlugin class used to read previously saved data for GPS
+ * capabilities and send it to the Core
  * 
- * @author <Georgi Chepilev>
- * @version <1.0.0>
  */
 
 public class LocationAccuracyPlugin extends AbstractPlugin {

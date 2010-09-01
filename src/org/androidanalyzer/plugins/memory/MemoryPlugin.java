@@ -15,8 +15,7 @@ import org.androidanalyzer.plugins.AbstractPlugin;
 
 /**
  * MemoryPlugin class used for gathering device memory connected data
- * 
- * @author k.raev
+ *
  */
 public class MemoryPlugin extends AbstractPlugin {
 

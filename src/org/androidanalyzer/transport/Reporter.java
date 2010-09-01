@@ -7,10 +7,8 @@ import java.security.NoSuchAlgorithmException;
 import org.androidanalyzer.core.Data;
 
 /**
- * Description
+ * Abstract class representing sending data to the back-end.
  * 
- * @author <Georgi Chepilev>
- * @version <1.0.0>
  */
 
 public abstract class Reporter {

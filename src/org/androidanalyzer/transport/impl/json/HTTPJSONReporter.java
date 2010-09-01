@@ -26,14 +26,13 @@ import org.apache.http.params.HttpParams;
 import org.json.JSONObject;
 
 /**
- * Description
+ * HTTPJSONReporter is responsible for sending final report to the back-end over
+ * HTTP protocol.
  * 
- * @author <Georgi Chepilev>
- * @version <1.0.0>
  */
 
 public class HTTPJSONReporter extends Reporter {
-	
+
 	private static final String X_ANDROID_ANALYZER_REPORT_MD5 = "X_ANDROID_ANALYZER_REPORT_MD5";
 
 	private static final String TAG = "Analyzer-HTTPJSONReporter";

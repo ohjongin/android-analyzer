@@ -4,6 +4,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
+/**
+ * This class is used to store and read data from Preference Manager. The data
+ * is received from GPS Benchmark application
+ * 
+ */
 public class LocationAccuracyPreferencesManager {
 
 	private static final String PREFS_NAME = "org.androidanalyzer.gui.GPSBenchmarkPreferencesManager";

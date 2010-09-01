@@ -44,7 +44,6 @@ import android.telephony.TelephonyManager;
 /**
  * Core class for managing plugins and performing analysis on the device.
  * 
- * @author k.raev
  */
 public class AnalyzerCore {
 
