@@ -9,9 +9,17 @@ import android.os.Bundle;
 import android.widget.TabHost;
 
 public class AnalyzerSettings extends TabActivity {
-
-  /** Called when the activity is first created. */
-  @Override
+	
+	private static final String TAB_CORE = "core";
+	private static final String TAB_PLUGINS = "plugins";
+	private static final String TAB_ABOUT = "about";
+	
+	/** Called when the activity is first created. */
+  /*
+   * (non-Javadoc)
+   * @see android.app.ActivityGroup#onCreate(android.os.Bundle)
+   */
+	@Override
   public void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
       int index = 0;
@@ -23,20 +31,20 @@ public class AnalyzerSettings extends TabActivity {
       intent = new Intent().setClass(this, SettingsActivity.class);
 
       // Initialize a TabSpec for each tab and add it to the TabHost
-      spec = tabHost.newTabSpec("core").setIndicator(getString(R.string.tab_core_settings),
+      spec = tabHost.newTabSpec(TAB_CORE).setIndicator(getString(R.string.tab_core_settings),
                         res.getDrawable(R.drawable.prefs_select))
                     .setContent(intent);
       tabHost.addTab(spec);
 
       // Do the same for the other tabs
       intent = new Intent().setClass(this, PluginConfiguration.class);
-      spec = tabHost.newTabSpec("plugins").setIndicator(getString(R.string.tab_plugin_settings),
+      spec = tabHost.newTabSpec(TAB_PLUGINS).setIndicator(getString(R.string.tab_plugin_settings),
                         res.getDrawable(R.drawable.prefs_select))
                     .setContent(intent);
       tabHost.addTab(spec);
 
       intent = new Intent().setClass(this, AboutActivity.class);
-      spec = tabHost.newTabSpec("about").setIndicator(getString(R.string.tab_about),
+      spec = tabHost.newTabSpec(TAB_ABOUT).setIndicator(getString(R.string.tab_about),
                         res.getDrawable(R.drawable.about_select))
                     .setContent(intent);
       tabHost.addTab(spec);

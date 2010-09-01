@@ -18,13 +18,13 @@ public class ProgressHandler extends Handler {
   @Override
   public void handleMessage(Message msg) {
     Bundle bundle = msg.getData();
-    if (bundle.containsKey(Constants.HANDLER_PROGRESS)) {
-      int total = bundle.getInt("total");
-      int current_plugin = bundle.getInt("current");
-      String name = bundle.getString("name");
+    if (bundle.containsKey(Constants.GUI_HANDLER_PROGRESS)) {
+      int total = bundle.getInt(Constants.GUI_HANDLER_PROGRESS_TOTAL_PLUGINS);
+      int current_plugin = bundle.getInt(Constants.GUI_HANDLER_PROGRESS_CURRENT_PLUGIN);
+      String name = bundle.getString(Constants.GUI_HANDLER_PROGRESS_PLUGIN_NAME);
       analyzerList.updateProgress(total, current_plugin, name);
-    } else if (bundle.containsKey(Constants.HANDLER_SEND)) {
-      Data result = (Data)bundle.get(Constants.HANDLER_SEND);
+    } else if (bundle.containsKey(Constants.GUI_HANDLER_SEND)) {
+      Data result = (Data)bundle.get(Constants.GUI_HANDLER_SEND);
       analyzerList.hideProgress(result);
     }
   }

@@ -39,11 +39,22 @@ public class Constants {
 	public static final String VALUE_TYPE_INCORRECT = "Value type is incorrect!";
 	public static final String NO_VALUE_IN_DATA_OBJECT = "Data Object has no value!";
 
-	public static final String HANDLER_PROGRESS = "handler.progress";
-	public static final String HANDLER_SEND = "handler.send";
-
+	public static final String GUI_HANDLER_PROGRESS = "handler.progress";
+	public static final String GUI_HANDLER_SEND = "handler.send";
+	public static final String GUI_HANDLER_PROGRESS_TOTAL_PLUGINS = "total";
+	public static final String GUI_HANDLER_PROGRESS_CURRENT_PLUGIN = "current";
+	public static final String GUI_HANDLER_PROGRESS_PLUGIN_NAME = "name";
+	public static final String GUI_HANDLER_PROGRESS_ENABLED = "true";
+	public static final String GUI_SETTINGS_DONE = "done";
+	public static final String GUI_SETTINGS_RESULT = "result";
+	
+	public static final String REPORT_DONE = "done";
+	public static final String REPORT_RESULT = "result";
+	public static final String REPORT_RESULT_NEGATIVE = "negative";
+	public static final String REPORT_ID = "id";
+	
+	
 	public static final int PROGRESS_DIALOG = 0;
-
 	public static final int LAYOUT_ANALYSIS = 1;
 	public static final int LAYOUT_SEND = 2;
 	public static final String ROOT = "Root";

@@ -35,18 +35,34 @@ class AnalyzerListAdapter extends BaseAdapter implements ListAdapter {
 		this.list = list;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see android.widget.Adapter#getCount()
+	 */
 	public int getCount() {
 		return listItems != null ? listItems.size() : 0;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see android.widget.Adapter#getItem(int)
+	 */
 	public Object getItem(int position) {
 		return position < getCount() ? listItems.get(position) : null;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see android.widget.Adapter#getItemId(int)
+	 */
 	public long getItemId(int position) {
 		return position;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see android.widget.Adapter#getView(int, android.view.View, android.view.ViewGroup)
+	 */
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (position < getCount()) {
 		  PluginStatus pluginStatus = listItems.get(position);

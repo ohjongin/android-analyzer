@@ -175,10 +175,10 @@ public class SettingsActivity extends Activity {
     @Override
     public void handleMessage(Message msg) {
       Bundle data = msg.getData();
-      boolean done = data.getBoolean("done");
+      boolean done = data.getBoolean(Constants.GUI_SETTINGS_DONE);
       if (done) {
         dismissDialog(CONNECTION_TEST);
-        boolean result = data.getBoolean("result");
+        boolean result = data.getBoolean(Constants.GUI_SETTINGS_RESULT);
         showConnectionDialog(result);
       }
     }
@@ -193,11 +193,15 @@ public class SettingsActivity extends Activity {
       this.handler = handler;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Thread#run()
+     */
     @Override
     public void run() {
       Message msg = new Message();
       Bundle data = new Bundle();
-      data.putBoolean("done", true);
+      data.putBoolean(Constants.GUI_SETTINGS_DONE, true);
       boolean result = false;
       try {
         URI test = new URI(host);
@@ -211,7 +215,7 @@ public class SettingsActivity extends Activity {
       } catch (Throwable t) {
         t.printStackTrace();
       }
-      data.putBoolean("result", result);
+      data.putBoolean(Constants.GUI_SETTINGS_RESULT, result);
       msg.setData(data);
       handler.sendMessage(msg);
     }

@@ -26,46 +26,79 @@ public class ReportActivity extends Activity {
   private static final int SEND_REPORT_PROGRESS = 0;
   private static final int SAVE_REPORT_PROGRESS = 1;
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.send);
-    Intent intent = getIntent();
-    Bundle data = intent.getExtras();
-    final Data analysisResult = (Data)data.get(Constants.HANDLER_SEND);
-    final AnalyzerCore core = AnalyzerCore.getInstance();
-    final String host = (String) data.get(Constants.HOST);
-    Button sendB = (Button)findViewById(R.id.first_button);
-    sendB.setText(R.string.send_report_button);
-    sendB.setOnClickListener(new View.OnClickListener() {
-      
-      @Override
-      public void onClick(View v) {
-        EditText mUserText = (EditText) findViewById(R.id.edittext1);
-        String comment = mUserText.getText().toString();
-        analysisResult.setComment(comment);
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.HANDLER_SEND, analysisResult);
-        bundle.putString(Constants.HOST, host);
-        showDialog(SEND_REPORT_PROGRESS);
-        new ProgressThread(SEND_REPORT_PROGRESS, bundle, handler).start();
-      }
-    });
-    Button saveB = (Button)findViewById(R.id.second_button);
-    saveB.setText(R.string.save_report_button);
-    saveB.setOnClickListener(new View.OnClickListener() {
-      
-      @Override
-      public void onClick(View v) {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.HANDLER_SEND, analysisResult);
-        showDialog(SAVE_REPORT_PROGRESS);
-        new ProgressThread(SAVE_REPORT_PROGRESS, bundle, handler).start();
-      }
-    });
-    
-  }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.send);
+		Intent intent = getIntent();
+		Bundle data = intent.getExtras();
+		final Data analysisResult = (Data) data.get(Constants.GUI_HANDLER_SEND);
+		final AnalyzerCore core = AnalyzerCore.getInstance();
+		final String host = (String) data.get(Constants.HOST);
+		Button sendB = (Button) findViewById(R.id.first_button);
+		sendB.setText(R.string.send_report_button);
+		sendB.setOnClickListener(new View.OnClickListener() {
+
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see android.view.View.OnClickListener#onClick(android.view.View)
+			 */
+			@Override
+			public void onClick(View v) {
+				EditText mUserText = (EditText) findViewById(R.id.edittext1);
+				String comment = mUserText.getText().toString();
+				analysisResult.setComment(comment);
+				Bundle bundle = new Bundle();
+				bundle.putParcelable(Constants.GUI_HANDLER_SEND, analysisResult);
+				bundle.putString(Constants.HOST, host);
+				showDialog(SEND_REPORT_PROGRESS);
+				new ProgressThread(SEND_REPORT_PROGRESS, bundle, handler).start();
+			}
+		});
+		Button saveB = (Button) findViewById(R.id.second_button);
+		saveB.setText(R.string.save_report_button);
+		saveB.setOnClickListener(new View.OnClickListener() {
+
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see android.view.View.OnClickListener#onClick(android.view.View)
+			 */
+			@Override
+			public void onClick(View v) {
+				Bundle bundle = new Bundle();
+				bundle.putParcelable(Constants.GUI_HANDLER_SEND, analysisResult);
+				showDialog(SAVE_REPORT_PROGRESS);
+				new ProgressThread(SAVE_REPORT_PROGRESS, bundle, handler).start();
+			}
+		});
+
+	}
   
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onCreateDialog(int)
+	 */
+	@Override
+	protected Dialog onCreateDialog(int id) {
+		ProgressDialog progress = new ProgressDialog(this);
+		switch (id) {
+		case SAVE_REPORT_PROGRESS:
+			progress.setMessage(getString(R.string.save_progress_message));
+			break;
+		case SEND_REPORT_PROGRESS:
+			progress.setMessage(getString(R.string.send_progress_message));
+		}
+		return progress;
+	}
+
   void showResultDialog(String message, int action, boolean negative) {
     AlertDialog.Builder dialog = new AlertDialog.Builder(this);
     switch (action) {
@@ -92,27 +125,15 @@ public class ReportActivity extends Activity {
     dialog.show();
   }
 
-  @Override
-  protected Dialog onCreateDialog(int id) {
-    ProgressDialog progress = new ProgressDialog(this);    
-    switch (id) {
-      case SAVE_REPORT_PROGRESS:
-        progress.setMessage(getString(R.string.save_progress_message));
-        break;
-      case SEND_REPORT_PROGRESS:
-        progress.setMessage(getString(R.string.send_progress_message));
-    }
-    return progress;
-  }
   
   final Handler handler = new Handler() {
     
     public void handleMessage(Message msg) {
-      if (msg.getData().getBoolean("done")) {
-        int id = msg.getData().getInt("id");
-        boolean negative = msg.getData().getBoolean("negative");
+      if (msg.getData().getBoolean(Constants.REPORT_DONE)) {
+        int id = msg.getData().getInt(Constants.REPORT_ID);
+        boolean negative = msg.getData().getBoolean(Constants.REPORT_RESULT_NEGATIVE);
         dismissDialog(id);
-        String response = msg.getData().getString("result");
+        String response = msg.getData().getString(Constants.REPORT_RESULT);
         showResultDialog(response, id, negative);
       }
     }
@@ -136,16 +157,16 @@ public class ReportActivity extends Activity {
     public void run() {
       Message msg = new Message();
       Bundle bundle = new Bundle();
-      bundle.putBoolean("done", true);
-      bundle.putInt("id", action);
+      bundle.putBoolean(Constants.REPORT_DONE, true);
+      bundle.putInt(Constants.REPORT_ID, action);
       String response = null;
       boolean negative = false;
-      Data result = (Data)data.get(Constants.HANDLER_SEND);
+      Data result = (Data)data.get(Constants.GUI_HANDLER_SEND);
       switch (action) {
         case SAVE_REPORT_PROGRESS:
           response = core.writeToFile(result);
           if (response != null)
-            bundle.putString("result", response);
+            bundle.putString(Constants.REPORT_RESULT, response);
           break;
         case SEND_REPORT_PROGRESS:
           try {
@@ -160,10 +181,10 @@ public class ReportActivity extends Activity {
             }
           }
           if (response != null)
-            bundle.putString("result", response);
+            bundle.putString(Constants.REPORT_RESULT, response);
           break;
       }
-      bundle.putBoolean("negative", negative);
+      bundle.putBoolean(Constants.REPORT_RESULT_NEGATIVE, negative);
       msg.setData(bundle);
       handler.sendMessage(msg);
     }
