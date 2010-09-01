@@ -27,7 +27,6 @@ import android.os.RemoteException;
  * with the Analyzer Core and defines abstract methods for the plugins to
  * implement
  * 
- * @author k.raev
  */
 public abstract class AbstractPlugin extends Service {
 

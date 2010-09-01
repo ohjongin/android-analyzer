@@ -11,10 +11,9 @@ import android.content.Context;
 import android.telephony.TelephonyManager;
 
 /**
- * Description
+ * RadioInterfacesPlugin class used for gathering data about radio interfaces
+ * that available on the device.
  * 
- * @author <Georgi Chepilev>
- * @version <1.0.0>
  */
 public class RadioInterfacesPlugin extends AbstractPlugin {
 	private static final String NAME = "Radio Interfaces Plugin";

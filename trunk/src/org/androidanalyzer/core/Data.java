@@ -14,8 +14,7 @@ import android.os.Parcelable;
 /**
  * Parcelable Data object used in plugins to create data tree of the acquired
  * information
- * 
- * @author k.raev
+ *
  */
 public class Data implements Parcelable {
 

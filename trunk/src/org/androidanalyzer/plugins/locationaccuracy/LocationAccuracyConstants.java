@@ -1,5 +1,8 @@
 package org.androidanalyzer.plugins.locationaccuracy;
 
+/**
+ * Class contains constants used in the Location Accuracy Plugin
+ */
 public class LocationAccuracyConstants {
 	/* Constants for internal Analyzer data structure */
 	protected static final String TEST_ID = "Test ID";
@@ -41,10 +44,12 @@ public class LocationAccuracyConstants {
 	protected static final String ESTIMATED_HOR_ACCURACY_ERROR_95THPERCENTILE = "95th Percentile";
 	protected static final String ESTIMATED_HOR_ACCURACY_ERROR_RMSE = "RMSE";
 	protected static final String ESTIMATED_HOR_ACCURACY_ERROR_STANDARD_DEVIATION = "Standard Deviation";
-	/*protected static final String GROUND_TRUTH = "Ground Truth";
-	protected static final String GROUND_TRUTH_LATITUDE = "Latitude";
-	protected static final String GROUND_TRUTH_LONGITUDE = "Longitude";
-	protected static final String GROUND_TRUTH_ALTITUDE = "Altitude";*/
+	/*
+	 * protected static final String GROUND_TRUTH = "Ground Truth"; protected
+	 * static final String GROUND_TRUTH_LATITUDE = "Latitude"; protected static
+	 * final String GROUND_TRUTH_LONGITUDE = "Longitude"; protected static final
+	 * String GROUND_TRUTH_ALTITUDE = "Altitude";
+	 */
 	protected static final String FIRST_FIX_TIME = "First Fix Time";
 	protected static final String SAMPLING = "Sampling";
 	protected static final String SAMPLING_INTERVAL = "Interval";
@@ -56,14 +61,14 @@ public class LocationAccuracyConstants {
 	protected static final String TIME_INJECTED_TIME_DATA = "Time Data";
 	protected static final String TIME_INJECTED_XTRA_DATA = "XTRA Data";
 	protected static final String TIME_CLEARED_ASSIST_DATA = "Time Cleared Assist Data";
-	/*protected static final String WIFI_STATUS = "WiFi Status";*/
+	/* protected static final String WIFI_STATUS = "WiFi Status"; */
 	protected static final String METRIC_METERS = "meters";
 	protected static final String METRIC_SECONDS = "seconds";
 	protected static final String METRIC_MILLISECONDS = "milliseconds";
 	protected static final String UNKNOWN = "Unknown";
 	protected static final String UNAVAILABLE = "n/a";
-	
-	/* Constants for raw data from GPS Benchmark application*/
+
+	/* Constants for raw data from GPS Benchmark application */
 	protected static final String RAW_TEST_ID = "testID";
 	protected static final String RAW_APP_VERSION = "AppVersion";
 	protected static final String RAW_DEVICE_BRAND = "deviceBrand";
@@ -99,9 +104,12 @@ public class LocationAccuracyConstants {
 	protected static final String RAW_ESTIMATED_HOR_ACCURACY_ERROR_95THPERCENTILE = "EstimatedHorAccuracyError95thPercentile(m)";
 	protected static final String RAW_ESTIMATED_HOR_ACCURACY_ERROR_RMSE = "EstimatedHorAccuracyErrorRMSE(m)";
 	protected static final String RAW_ESTIMATED_HOR_ACCURACY_ERROR_STANDARD_DEVIATION = "EstimatedHorAccuracyErrorStandardDeviation(m)";
-	/*protected static final String RAW_GROUND_TRUTH_LATITUDE = "GroundTruthLatitude";
-	protected static final String RAW_GROUND_TRUTH_LONGITUDE = "GroundTruthLongitude";
-	protected static final String RAW_GROUND_TRUTH_ALTITUDE = "GroundTruthAltitude";*/
+	/*
+	 * protected static final String RAW_GROUND_TRUTH_LATITUDE =
+	 * "GroundTruthLatitude"; protected static final String
+	 * RAW_GROUND_TRUTH_LONGITUDE = "GroundTruthLongitude"; protected static final
+	 * String RAW_GROUND_TRUTH_ALTITUDE = "GroundTruthAltitude";
+	 */
 	protected static final String RAW_FIRST_FIX_TIME = "FirstFixTime";
 	protected static final String RAW_SAMPLING_INTERVAL = "SamplingInterval(ms)";
 	protected static final String RAW_SAMPLING_DISTANCE = "SamplingDistance(m)";
@@ -111,5 +119,5 @@ public class LocationAccuracyConstants {
 	protected static final String RAW_TIME_INJECTED_TIME_DATA = "TimeInjectedTimeData";
 	protected static final String RAW_TIME_INJECTED_XTRA_DATA = "TimeInjectedXTRAData";
 	protected static final String RAW_TIME_CLEARED_ASSIST_DATA = "TimeClearedAssistData";
-	/*protected static final String RAW_WIFI_STATUS = "WiFiStatus";*/
+	/* protected static final String RAW_WIFI_STATUS = "WiFiStatus"; */
 }

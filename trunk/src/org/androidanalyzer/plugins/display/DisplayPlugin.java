@@ -14,10 +14,7 @@ import android.view.Display;
 import android.view.WindowManager;
 
 /**
- * Description
- * 
- * @author <Georgi Chepilev>
- * @version <1.0.0>
+ * DisplayPlugin class used to gathering display capabilities of the device.
  */
 public class DisplayPlugin extends AbstractPlugin {
 	

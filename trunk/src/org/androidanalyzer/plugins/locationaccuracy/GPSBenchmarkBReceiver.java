@@ -12,10 +12,9 @@ import android.content.Context;
 import android.content.Intent;
 
 /**
- * Broadcast Receiver to get data from gps benchmark application and send it to
- * the Core
+ * Broadcast Receiver to get data from Intent send from GPS Benchmark
+ * application and saved it for further use.
  * 
- * @author g.chepilev
  */
 public class GPSBenchmarkBReceiver extends BroadcastReceiver {
 
@@ -33,14 +32,14 @@ public class GPSBenchmarkBReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		Serializable data = intent.getSerializableExtra(HM);
 		if (data != null) {
-			//Hashtable table = (Hashtable) data;
-		  Hashtable<String, String> table = new Hashtable<String, String>((HashMap<String, String>) data);
+			// Hashtable table = (Hashtable) data;
+			Hashtable<String, String> table = new Hashtable<String, String>((HashMap<String, String>) data);
 			Logger.DEBUG(TAG, "Hashtable " + table);
 			Enumeration keys = table.keys();
 			while (keys.hasMoreElements()) {
 				String rawKey = (String) keys.nextElement();
 				String value = (String) table.get(rawKey);
-				if(value !=null && value.length() == 0)
+				if (value != null && value.length() == 0)
 					value = LocationAccuracyConstants.UNAVAILABLE;
 				String key = parseRawKey(rawKey);
 				LocationAccuracyPreferencesManager.savePreference(context, key, value);
@@ -124,12 +123,15 @@ public class GPSBenchmarkBReceiver extends BroadcastReceiver {
 			r_key = LocationAccuracyConstants.ESTIMATED_HOR_ACCURACY_ERROR_RMSE;
 		} else if (key.equals(LocationAccuracyConstants.RAW_ESTIMATED_HOR_ACCURACY_ERROR_STANDARD_DEVIATION)) {
 			r_key = LocationAccuracyConstants.ESTIMATED_HOR_ACCURACY_ERROR_STANDARD_DEVIATION;
-		/*} else if (key.equals(LocationAccuracyConstants.RAW_GROUND_TRUTH_LATITUDE)) {
-			r_key = LocationAccuracyConstants.GROUND_TRUTH_LATITUDE;
-		} else if (key.equals(LocationAccuracyConstants.RAW_GROUND_TRUTH_LONGITUDE)) {
-			r_key = LocationAccuracyConstants.GROUND_TRUTH_LONGITUDE;
-		} else if (key.equals(LocationAccuracyConstants.RAW_GROUND_TRUTH_ALTITUDE)) {
-			r_key = LocationAccuracyConstants.GROUND_TRUTH_ALTITUDE;*/
+			/*
+			 * } else if
+			 * (key.equals(LocationAccuracyConstants.RAW_GROUND_TRUTH_LATITUDE)) {
+			 * r_key = LocationAccuracyConstants.GROUND_TRUTH_LATITUDE; } else if
+			 * (key.equals(LocationAccuracyConstants.RAW_GROUND_TRUTH_LONGITUDE)) {
+			 * r_key = LocationAccuracyConstants.GROUND_TRUTH_LONGITUDE; } else if
+			 * (key.equals(LocationAccuracyConstants.RAW_GROUND_TRUTH_ALTITUDE)) {
+			 * r_key = LocationAccuracyConstants.GROUND_TRUTH_ALTITUDE;
+			 */
 		} else if (key.equals(LocationAccuracyConstants.RAW_FIRST_FIX_TIME)) {
 			r_key = LocationAccuracyConstants.FIRST_FIX_TIME;
 		} else if (key.equals(LocationAccuracyConstants.RAW_SAMPLING_INTERVAL)) {
@@ -148,8 +150,10 @@ public class GPSBenchmarkBReceiver extends BroadcastReceiver {
 			r_key = LocationAccuracyConstants.TIME_INJECTED_XTRA_DATA;
 		} else if (key.equals(LocationAccuracyConstants.RAW_TIME_CLEARED_ASSIST_DATA)) {
 			r_key = LocationAccuracyConstants.TIME_CLEARED_ASSIST_DATA;
-		/*} else if (key.equals(LocationAccuracyConstants.RAW_WIFI_STATUS)) {
-			r_key = LocationAccuracyConstants.WIFI_STATUS;*/
+			/*
+			 * } else if (key.equals(LocationAccuracyConstants.RAW_WIFI_STATUS)) {
+			 * r_key = LocationAccuracyConstants.WIFI_STATUS;
+			 */
 		} else {
 			// TODO Check more precisely
 			r_key = LocationAccuracyConstants.UNKNOWN + counter;

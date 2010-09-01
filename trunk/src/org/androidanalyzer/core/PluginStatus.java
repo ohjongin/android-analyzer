@@ -5,6 +5,9 @@ import java.util.StringTokenizer;
 import org.androidanalyzer.R;
 import org.androidanalyzer.core.utils.Logger;
 
+/**
+ * This class is responsible for encoding and decoding of the plugin status   
+ */
 public class PluginStatus {
   
   public static final int STATUS_PASSED = R.drawable.ok_icon_3;
