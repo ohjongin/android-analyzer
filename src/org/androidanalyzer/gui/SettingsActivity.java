@@ -92,6 +92,7 @@ public class SettingsActivity extends Activity {
       host = Reporter.getHost();
       PreferencesManager.savePreference(this, Constants.HOST, host);
     }
+		Reporter.setHost(host);
     hostField.setText(host);
     hostField.addTextChangedListener(new TextWatcher() {
       /*
