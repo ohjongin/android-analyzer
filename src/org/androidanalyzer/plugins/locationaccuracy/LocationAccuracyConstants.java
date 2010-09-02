@@ -1,7 +1,7 @@
 package org.androidanalyzer.plugins.locationaccuracy;
 
 /**
- * Class contains constants used in the Location Accuracy Plugin
+ * This class contains constants used in the Location Accuracy Plugin
  */
 public class LocationAccuracyConstants {
 	/* Constants for internal Analyzer data structure */

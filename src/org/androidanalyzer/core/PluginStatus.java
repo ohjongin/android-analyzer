@@ -6,7 +6,7 @@ import org.androidanalyzer.R;
 import org.androidanalyzer.core.utils.Logger;
 
 /**
- * This class is responsible for encoding and decoding of the plugin status   
+ * This class is responsible for encoding and decoding plugin status   
  */
 public class PluginStatus {
   

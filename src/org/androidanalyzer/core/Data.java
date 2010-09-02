@@ -12,7 +12,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
- * Parcelable Data object used in plugins to create data tree of the acquired
+ * This class represents parcelable Data object used in plugins to create data tree of the acquired
  * information
  *
  */

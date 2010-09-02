@@ -26,7 +26,7 @@ import org.apache.http.params.HttpParams;
 import org.json.JSONObject;
 
 /**
- * HTTPJSONReporter is responsible for sending final report to the back-end over
+ * HTTPJSONReporter is used to sending final report to the backend over
  * HTTP protocol.
  * 
  */

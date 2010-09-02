@@ -7,7 +7,7 @@ import java.security.NoSuchAlgorithmException;
 import org.androidanalyzer.core.Data;
 
 /**
- * Abstract class representing sending data to the back-end.
+ * Abstract class representing sending data to the backend.
  * 
  */
 

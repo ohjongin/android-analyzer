@@ -20,8 +20,7 @@ import android.hardware.Camera.Parameters;
 import android.hardware.Camera.Size;
 
 /**
- * CameraPlugin class that represents the main camera functionality and data
- * gathering
+ * CameraPlugin class is used to gathering main camera functionality and data
  * 
  */
 public class CameraPlugin extends AbstractPlugin {

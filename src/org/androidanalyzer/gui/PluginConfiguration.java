@@ -20,7 +20,7 @@ import android.widget.ListView;
 
 /**
  * This class is used to create list of all plugins with their status in Plugins
- * tab on Settings menu.
+ * tab in Settings menu.
  * 
  */
 

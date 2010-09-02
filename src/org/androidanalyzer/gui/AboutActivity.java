@@ -9,7 +9,7 @@ import android.text.method.LinkMovementMethod;
 import android.widget.TextView;
 
 /**
- *  AboutActivity class is used to create About form in Settings menu. 
+ *  AboutActivity class is used to create windows with About information 
  *
  */
 public class AboutActivity extends Activity {
