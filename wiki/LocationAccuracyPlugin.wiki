@@ -67,7 +67,7 @@ The following table defines a mapping between keys received via Intent extra dat
 
 || *Intent Key* || *Report Node* || *Parent Node* ||
 || testID || Test ID || Location Accuracy ||
-|| AppVersion{{{ }}}|| Application Version || Location Accuracy ||
+|| AppVersion || Application Version || Location Accuracy ||
 || startTime || Start Time || Location Accuracy ||
 || endTime || End Time || Location Accuracy ||
 || TimeToFirstFix(s) || Time To First Fix || Location Accuracy ||
