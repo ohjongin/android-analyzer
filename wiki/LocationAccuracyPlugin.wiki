@@ -60,7 +60,7 @@ The following table defines the structure of data being inserted in the report, 
 ||  || Time Cleared Assist Data || || || || Unknown, N/A ||
 
 == Integration with GPSBenchmark ==
-In order to produce meaningful data this plugin requires [GPSBenchmark http://gpsbenchmark.com] app to be installed. GPSBenchmark must be run at least once prior to running Android Analyzer in order to store the accuracy data in the report. When the GPSBenchmark analysis completes the user needs to choose to send the benchmark data to Android Analyzer (opposed to e.g. sending it via mail). The latest data received by the Location Accuracy Plugin will be stored internally and then converted to the report structure above.
+In order to produce meaningful data this plugin requires [http://gpsbenchmark.com GPSBenchmark] app to be installed. GPSBenchmark must be run at least once prior to running Android Analyzer in order to store the accuracy data in the report. When the GPSBenchmark analysis completes the user needs to choose to send the benchmark data to Android Analyzer (opposed to e.g. sending it via mail). The latest data received by the Location Accuracy Plugin will be stored internally and then converted to the report structure above.
 
 The Location Accuracy Plugin will handle Intent with name {{{org.androidanalyzer.plugins.locationaccuracy.gpsbenchmark}}}. The Intent will carry the extra data in the form of hashmap stored with the key {{{gpsbenchmark}}}, like this:
 {{{gpsBenchmarkIntent.putExtra("gpsbenchmark", hashmap)}}}
