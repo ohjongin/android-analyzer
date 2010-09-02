@@ -26,12 +26,12 @@ public class DisplayPlugin extends AbstractPlugin {
 	private static final String DISPLAY = "Display";
 	private static final String SIZE = "Size";
 	private static final String DSPL_SIZE_METRIC = "inch";
-	private static final String DSPL_METRIC = "pixels";
+	private static final String DSPL_METRIC = "pixel";
 	private static final String HRES = "Horizontal Resolution";
 	private static final String VRES = "Vertical Resolution";
 	private static final String TOUCH = "Touch support";
 	private static final String COLOR_DEPTH = "Color depth";
-	private static final String COLOR_DEPTH_METRIC = "bits";
+	private static final String COLOR_DEPTH_METRIC = "bit";
 	//private static final String DENSITY = "The logical density of the display";
 	private static final String DENSITY = "Display density";
 	private static final String DENSITY_METRIC = "dpi";
