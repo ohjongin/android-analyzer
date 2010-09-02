@@ -10,48 +10,44 @@ The following table defines the structure of data being inserted in the report, 
 || Location Accuracy  || || || || || ||
 ||  || Test ID || || _integer_ (eg. 1) || || Unknown, N/A ||
 ||  || App Version || || _string_ (eg. 0.9.119) || || Unknown, N/A ||
-||  || Device || || || || ||
-||  ||  || Brand || _string_ || || Unknown, N/A  ||
-||  ||  || Product || _string_ || || Unknown, N/A ||
-||  || Android Version || || _string_ || || Unknown, N/A ||
-||  || Start Time || || _string_ || MM/dd/yyyy HH:mm || Unknown, N/A ||
-||  || End Time || || _string_ || MM/dd/yyyy HH:mm || Unknown, N/A ||
-||  || Time To First Fix || || _double_ || seconds || Unknown, N/A ||
-||  || Location Provider || || _double_ || seconds || Unknown, N/A ||
-||  || Sample Size || || _double_ || seconds || Unknown, N/A ||
+||  || Start Time || || _string_ || (date) MM/dd/yyyy HH:mm || Unknown, N/A ||
+||  || End Time || || _string_ || (date) MM/dd/yyyy HH:mm || Unknown, N/A ||
+||  || Time To First Fix || || _double_ || second || Unknown, N/A ||
+||  || Location Provider || || _double_ || second || Unknown, N/A ||
+||  || Sample Size || || _double_ || second || Unknown, N/A ||
 ||  || Horizontal Error || || || || ||
-||  ||  || Min || _double_ || meters || Unknown, N/A ||
-||  ||  || Max || _double_ || meters || Unknown, N/A ||
-||  ||  || Mean || _double_ || meters || Unknown, N/A ||
-||  ||  || 50th Percentile || _double_ || meters || Unknown, N/A ||
-||  ||  || 68th Percentile || _double_ || meters || Unknown, N/A ||
-||  ||  || 95th Percentile || _double_ || meters || Unknown, N/A ||
-||  ||  || Standard Deviation || _double_ || meters || Unknown, N/A ||
+||  ||  || Min || _double_ || meter || Unknown, N/A ||
+||  ||  || Max || _double_ || meter || Unknown, N/A ||
+||  ||  || Mean || _double_ || meter || Unknown, N/A ||
+||  ||  || 50th Percentile || _double_ || meter || Unknown, N/A ||
+||  ||  || 68th Percentile || _double_ || meter || Unknown, N/A ||
+||  ||  || 95th Percentile || _double_ || meter || Unknown, N/A ||
+||  ||  || Standard Deviation || _double_ || meter || Unknown, N/A ||
 ||  || Vertical Error ||  || || || ||
-||  ||  || Min || _double_ || meters || Unknown, N/A ||
-||  ||  || Max || _double_ ||  meters || Unknown, N/A ||
-||  ||  || Mean || _double_ || meters || Unknown, N/A ||
+||  ||  || Min || _double_ || meter || Unknown, N/A ||
+||  ||  || Max || _double_ ||  meter || Unknown, N/A ||
+||  ||  || Mean || _double_ || meter || Unknown, N/A ||
 ||  ||  || Mean Absolute  || _double_ || || Unknown, N/A ||
-||  ||  || 50th Percentile || _double_ || meters || Unknown, N/A ||
-||  ||  || 68th Percentile || _double_ || meters || Unknown, N/A ||
-||  ||  || 95th Percentile || _double_ || meters || Unknown, N/A ||
-||  ||  || RMSE || || meters || Unknown, N/A ||
-||  ||  || Standard Deviation || _double_ || meters || Unknown, N/A ||
+||  ||  || 50th Percentile || _double_ || meter || Unknown, N/A ||
+||  ||  || 68th Percentile || _double_ || meter || Unknown, N/A ||
+||  ||  || 95th Percentile || _double_ || meter || Unknown, N/A ||
+||  ||  || RMSE || || meter || Unknown, N/A ||
+||  ||  || Standard Deviation || _double_ || meter || Unknown, N/A ||
 ||  ||  Estimated Horizontal Accuracy Error || || || || ||
-||  ||  || Min || _double_ || meters || Unknown, N/A ||
-||  ||  || Max || _double_ || meters || Unknown, N/A ||
-||  ||  || Mean || _double_ || meters || Unknown, N/A ||
+||  ||  || Min || _double_ || meter || Unknown, N/A ||
+||  ||  || Max || _double_ || meter || Unknown, N/A ||
+||  ||  || Mean || _double_ || meter || Unknown, N/A ||
 ||  ||  || Mean Absolute  || _double_ || || Unknown, N/A ||
-||  ||  || 50th Percentile|| _double_ || meters || Unknown, N/A ||
-||  ||  || 68th Percentile|| _double_ || meters || Unknown, N/A ||
-||  ||  || 95th Percentile|| _double_ || meters || Unknown, N/A ||
-||  ||  || RMSE || _double_ || meters || Unknown, N/A ||
-||  ||  || Standard Deviation|| _double_ || meters || Unknown, N/A ||
+||  ||  || 50th Percentile|| _double_ || meter || Unknown, N/A ||
+||  ||  || 68th Percentile|| _double_ || meter || Unknown, N/A ||
+||  ||  || 95th Percentile|| _double_ || meter || Unknown, N/A ||
+||  ||  || RMSE || _double_ || meter || Unknown, N/A ||
+||  ||  || Standard Deviation|| _double_ || meter || Unknown, N/A ||
 ||  || First Fix Time || || _string_ || MM/dd/yyyy HH:mm || Unknown, N/A ||
 ||  || Sampling || || || || ||
-||  || || Interval  || _double_ || milliseconds || Unknown, N/A ||
-||  || || Distance  || _double_ || meters || Unknown, N/A ||
-||  || Average Time Between Fixes || || _double_ || seconds || Unknown, N/A ||
+||  || || Interval  || _double_ || millisecond || Unknown, N/A ||
+||  || || Distance  || _double_ || meter || Unknown, N/A ||
+||  || Average Time Between Fixes || || _double_ || second || Unknown, N/A ||
 ||  || Override Refresh Rate || ||  _boolean_ (Y, N) || || Unknown, N/A ||
 ||  || Keep Screen On || || _boolean_ (Y, N)  || || Unknown, N/A ||
 ||  || Time Injected || || || || ||
@@ -70,16 +66,16 @@ The Location Accuracy Plugin will handle Intent with name {{{org.androidanalyzer
 The following table defines a mapping between keys received via Intent extra data from GPS Benchmark application (right column) and how they structured as nodes in the report.
 
 || *Intent Key* || *Report Node* || *Parent Node* ||
-|| testID || Test ID || No ||
-|| AppVersion || Application Version || No ||
+|| testID || Test ID || Location Accuracy ||
+|| AppVersion || Application Version || Location Accuracy ||
 || deviceBrand || Brand || Device ||
 || deviceProduct || Product || Device ||
-|| AndroidVersion || Android Version || No ||
-|| startTime || Start Time || No ||
-|| endTime || End Time || No ||
-|| TimeToFirstFix(s) || Time To First Fix || No ||
-|| locationProvider || Location Provider || No ||
-|| sampleSize || Sample Size || No ||
+|| AndroidVersion || Android Version || Location Accuracy ||
+|| startTime || Start Time || Location Accuracy ||
+|| endTime || End Time || Location Accuracy ||
+|| TimeToFirstFix(s) || Time To First Fix || Location Accuracy ||
+|| locationProvider || Location Provider || Location Accuracy ||
+|| sampleSize || Sample Size || Location Accuracy ||
 || HorizontalErrorMin(m) || Min || Horizontal ||
 || HorizontalErrorMax(m) || Max || Horizontal ||
 || HorizontalErrorMean(m) || Mean || Horizontal ||
@@ -105,12 +101,12 @@ The following table defines a mapping between keys received via Intent extra dat
 || EstimatedHorAccuracyError95thPercentile(m) || 95th Percentile || Estimated Horizontal Accuracy Error ||
 || EstimatedHorAccuracyErrorRMSE(m) || RMSE || Estimated Horizontal Accuracy Error ||
 || EstimatedHorAccuracyErrorStandardDeviation(m) || Standard Deviation || Estimated Horizontal Accuracy Error ||
-|| FirstFixTime || 	First Fix Time || No ||
+|| FirstFixTime || 	First Fix Time || Location Accuracy ||
 || SamplingInterval(ms) || 	Interval || Sampling ||
 || SamplingDistance(m) || 	Distance || Sampling ||
-|| AverageTimeBetweenFixes(s) || Average Time Between Fixes || No ||
-|| OverrideRefreshRate || Override Refresh Rate || No ||
-|| KeepScreenOn || 	Keep Screen On || No ||
+|| AverageTimeBetweenFixes(s) || Average Time Between Fixes || Location Accuracy ||
+|| OverrideRefreshRate || Override Refresh Rate || Location Accuracy ||
+|| KeepScreenOn || 	Keep Screen On || Location Accuracy ||
 || TimeInjectedTimeData || Time Data || Time Injected ||
 || TimeInjectedXTRAData || XTRA Data || Time Injected ||
-|| TimeClearedAssistData || Time Cleared Assist Data || No ||
+|| TimeClearedAssistData || Time Cleared Assist Data || Location Accuracy ||
