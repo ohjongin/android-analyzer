@@ -2,9 +2,7 @@ This plugin benchmarks the accuracy of the positioning technology.
 
 *Plugin Name:* Location Accuracy Plugin
 
-*Class Name:* {{{org.androidanalyzer.plugins.location.LocationAccuracyPlugin}}}
-
-*The plugin will handle Intent with name * {{{org.androidanalyzer.plugins.gpsbenchmark}}}
+*Class Name:* {{{org.androidanalyzer.plugins.locationaccuracy.LocationAccuracyPlugin}}}
 
 The following table defines the structure of data being inserted in the report, and the APIs or methods used to retrieve the value.
 
@@ -61,9 +59,12 @@ The following table defines the structure of data being inserted in the report, 
 ||  ||  || XTRA Data  || || || Unknown, N/A ||
 ||  || Time Cleared Assist Data || || || || Unknown, N/A ||
 
+*The plugin will handle Intent with name * {{{org.androidanalyzer.plugins.locationaccuracy.gpsbenchmark}}}. The Intent will carry the extra data in the form of hashmap stored with the key {{{gpsbenchmark}}}, like this:
+{{{gpsBenchmarkIntent.putExtra("gpsbenchmark", hashmap)}}}
 
-The following table defines a map between keys received from GPS Benchmark application (right column) and how they saved in the report.
-|| *Recieved Key* || *Saved key* || *Parent key* ||
+The following table defines a mapping between keys received via Intent extra data from GPS Benchmark application (right column) and how they structured as nodes in the report.
+
+|| *Intent Key* || *Report Node* || *Parent Node* ||
 || testID || Test ID || No ||
 || AppVersion || Application Version || No ||
 || deviceBrand || Brand || Device ||
