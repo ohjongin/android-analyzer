@@ -150,7 +150,7 @@
 	          android:label="gps benchmark plugin receiver"
 	          android:name=".plugins.locationaccuracy.GPSBenchmarkBReceiver" >
 	           <intent-filter>
-	                <action android:name="org.androidanalyzer.plugins.gpsbenchmark" />
+	                <action android:name="org.androidanalyzer.plugins.locationaccuracy.gpsbenchmark" />
 	            </intent-filter>
 	    </receiver>
 	    <service android:name=".plugins.locationaccuracy.LocationAccuracyPlugin" android:process=":aanalyzer_plugins">
