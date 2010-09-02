@@ -59,6 +59,8 @@ The following table defines the structure of data being inserted in the report, 
 ||  ||  || XTRA Data  || || || Unknown, N/A ||
 ||  || Time Cleared Assist Data || || || || Unknown, N/A ||
 
+*Privacy policy: this plugin MUST NEVER report the device location to the backend. Querying device location for determining positioning method accuracy is allowed, as long as this data never leaves the device.*
+
 == Integration with GPSBenchmark ==
 In order to produce meaningful data this plugin requires [http://gpsbenchmark.com GPSBenchmark] app to be installed. GPSBenchmark must be run at least once prior to running Android Analyzer in order to store the accuracy data in the report. When the GPSBenchmark analysis completes the user needs to choose to send the benchmark data to Android Analyzer (opposed to e.g. sending it via mail). The latest data received by the Location Accuracy Plugin will be stored internally and then converted to the report structure above.
 
