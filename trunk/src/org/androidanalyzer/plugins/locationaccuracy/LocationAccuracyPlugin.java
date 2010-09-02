@@ -137,7 +137,7 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 		}
 
 		/* Device */
-		try {
+		/*try {
 			Data device = new Data();
 			device.setName(LocationAccuracyConstants.DEVICE);
 			ArrayList<Data> deviceChildren = new ArrayList<Data>();
@@ -168,10 +168,10 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 			masterChildren.add(device);
 		} catch (Exception e) {
 			Logger.ERROR(TAG, "Could not set Device node!", e);
-		}
+		}*/
 
 		/* Android version */
-		try {
+		/*try {
 			Data androidVersion = new Data();
 			androidVersion.setName(LocationAccuracyConstants.ANDROID_VERSION);
 			String value = LocationAccuracyPreferencesManager.loadStringPreference(this, LocationAccuracyConstants.ANDROID_VERSION);
@@ -181,7 +181,7 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 			}
 		} catch (Exception e) {
 			Logger.ERROR(TAG, "Could not set Android version node!", e);
-		}
+		}*/
 
 		/* Start time */
 		try {

@@ -7,10 +7,12 @@ public class LocationAccuracyConstants {
 	/* Constants for internal Analyzer data structure */
 	protected static final String TEST_ID = "Test ID";
 	protected static final String APP_VERSION = "Application Version";
-	protected static final String DEVICE = "Device";
-	protected static final String DEVICE_BRAND = "Brand";
-	protected static final String DEVICE_PRODUCT = "Product";
-	protected static final String ANDROID_VERSION = "Android Version";
+	/*
+	 * protected static final String DEVICE = "Device"; protected static final
+	 * String DEVICE_BRAND = "Brand"; protected static final String DEVICE_PRODUCT
+	 * = "Product"; protected static final String ANDROID_VERSION =
+	 * "Android Version";
+	 */
 	protected static final String START_TIME = "Start Time";
 	protected static final String END_TIME = "End Time";
 	protected static final String TIME_TO_FIRST_FIX = "Time To First Fix";
