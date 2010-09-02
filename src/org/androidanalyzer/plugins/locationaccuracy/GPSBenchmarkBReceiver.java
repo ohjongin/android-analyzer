@@ -57,12 +57,14 @@ public class GPSBenchmarkBReceiver extends BroadcastReceiver {
 			r_key = LocationAccuracyConstants.TEST_ID;
 		} else if (key.equals(LocationAccuracyConstants.RAW_APP_VERSION)) {
 			r_key = LocationAccuracyConstants.APP_VERSION;
-		} else if (key.equals(LocationAccuracyConstants.RAW_DEVICE_BRAND)) {
-			r_key = LocationAccuracyConstants.DEVICE_BRAND;
-		} else if (key.equals(LocationAccuracyConstants.RAW_DEVICE_PRODUCT)) {
-			r_key = LocationAccuracyConstants.DEVICE_PRODUCT;
-		} else if (key.equals(LocationAccuracyConstants.RAW_ANDROID_VERSION)) {
-			r_key = LocationAccuracyConstants.ANDROID_VERSION;
+			/*
+			 * } else if (key.equals(LocationAccuracyConstants.RAW_DEVICE_BRAND)) {
+			 * r_key = LocationAccuracyConstants.DEVICE_BRAND; } else if
+			 * (key.equals(LocationAccuracyConstants.RAW_DEVICE_PRODUCT)) { r_key =
+			 * LocationAccuracyConstants.DEVICE_PRODUCT; } else if
+			 * (key.equals(LocationAccuracyConstants.RAW_ANDROID_VERSION)) { r_key =
+			 * LocationAccuracyConstants.ANDROID_VERSION;
+			 */
 		} else if (key.equals(LocationAccuracyConstants.RAW_START_TIME)) {
 			r_key = LocationAccuracyConstants.START_TIME;
 		} else if (key.equals(LocationAccuracyConstants.RAW_END_TIME)) {
