@@ -3,7 +3,7 @@ package org.androidanalyzer.core.utils;
 import android.util.Log;
 
 /**
- * Logger class used to dump messages to the device log
+ * Logger class used to dump messages to the Log output
  * 
  */
 public class Logger {

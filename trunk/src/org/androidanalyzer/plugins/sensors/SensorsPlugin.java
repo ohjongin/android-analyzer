@@ -13,7 +13,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 
 /**
- * SensorsPlugin class used for gathering sensors that are available on the device.
+ * SensorsPlugin class used for gathering information about available sensors on the device.
  * 
  */
 public class SensorsPlugin extends AbstractPlugin {

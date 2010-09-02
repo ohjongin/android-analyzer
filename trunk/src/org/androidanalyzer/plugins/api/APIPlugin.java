@@ -8,7 +8,7 @@ import org.androidanalyzer.core.utils.Logger;
 import org.androidanalyzer.plugins.AbstractPlugin;
 
 /**
- * APIPlugin class that represents all API sets and version available on the device.
+ * APIPlugin class that represents all API sets and versions available on the device.
  * 
  */
 public class APIPlugin extends AbstractPlugin {

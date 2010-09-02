@@ -12,7 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 
 /**
- * Broadcast Receiver to get data from Intent sent from GPS Benchmark
+ * Broadcast Receiver class is used to get data from Intent sent from GPS Benchmark
  * application and saved it for further use.
  * 
  */

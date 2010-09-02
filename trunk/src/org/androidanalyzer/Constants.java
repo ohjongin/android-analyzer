@@ -1,7 +1,7 @@
 package org.androidanalyzer;
 
 /**
- * Class contains constants used in the Analyzer
+ * This class contains constants used in the Analyzer
  */
 public class Constants {
 	public static final String PLUGINS_DISCOVERY_INTENT = "org.androidanalyzer.plugins.discovery";
