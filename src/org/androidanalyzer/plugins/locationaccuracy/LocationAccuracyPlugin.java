@@ -190,6 +190,7 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 			String value = LocationAccuracyPreferencesManager.loadStringPreference(this, LocationAccuracyConstants.START_TIME);
 			if (value != null && value.length() > 0) {
 				startTime.setValue(value);
+				startTime.setValueMetric(LocationAccuracyConstants.METRIC_DATE);
 				masterChildren.add(startTime);
 			}
 		} catch (Exception e) {
@@ -203,6 +204,7 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 			String value = LocationAccuracyPreferencesManager.loadStringPreference(this, LocationAccuracyConstants.END_TIME);
 			if (value != null && value.length() > 0) {
 				endTime.setValue(value);
+				endTime.setValueMetric(LocationAccuracyConstants.METRIC_DATE);
 				masterChildren.add(endTime);
 			}
 		} catch (Exception e) {
@@ -217,7 +219,7 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 			if (value != null && value.length() > 0) {
 				timeToFirstFix.setValue(value);
 				timeToFirstFix.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
-				timeToFirstFix.setValueMetric(LocationAccuracyConstants.METRIC_SECONDS);
+				timeToFirstFix.setValueMetric(LocationAccuracyConstants.METRIC_SECOND);
 				masterChildren.add(timeToFirstFix);
 			}
 		} catch (Exception e) {
@@ -232,7 +234,7 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 			if (value != null && value.length() > 0) {
 				locationProvider.setValue(value);
 				locationProvider.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
-				locationProvider.setValueMetric(LocationAccuracyConstants.METRIC_SECONDS);
+				locationProvider.setValueMetric(LocationAccuracyConstants.METRIC_SECOND);
 				masterChildren.add(locationProvider);
 			}
 		} catch (Exception e) {
@@ -247,7 +249,7 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 			if (value != null && value.length() > 0) {
 				sampleSize.setValue(value);
 				sampleSize.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
-				sampleSize.setValueMetric(LocationAccuracyConstants.METRIC_SECONDS);
+				sampleSize.setValueMetric(LocationAccuracyConstants.METRIC_SECOND);
 				masterChildren.add(sampleSize);
 			}
 		} catch (Exception e) {
@@ -267,7 +269,7 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 				if (value != null && value.length() > 0) {
 					min.setValue(value);
 					min.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
-					min.setValueMetric(LocationAccuracyConstants.METRIC_METERS);
+					min.setValueMetric(LocationAccuracyConstants.METRIC_METER);
 					horErrorChildren.add(min);
 				}
 			} catch (Exception e) {
@@ -282,7 +284,7 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 				if (value != null && value.length() > 0) {
 					max.setValue(value);
 					max.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
-					max.setValueMetric(LocationAccuracyConstants.METRIC_METERS);
+					max.setValueMetric(LocationAccuracyConstants.METRIC_METER);
 					horErrorChildren.add(max);
 				}
 			} catch (Exception e) {
@@ -297,7 +299,7 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 				if (value != null && value.length() > 0) {
 					mean.setValue(value);
 					mean.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
-					mean.setValueMetric(LocationAccuracyConstants.METRIC_METERS);
+					mean.setValueMetric(LocationAccuracyConstants.METRIC_METER);
 					horErrorChildren.add(mean);
 				}
 			} catch (Exception e) {
@@ -312,7 +314,7 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 				if (value != null && value.length() > 0) {
 					fifthPercentile.setValue(value);
 					fifthPercentile.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
-					fifthPercentile.setValueMetric(LocationAccuracyConstants.METRIC_METERS);
+					fifthPercentile.setValueMetric(LocationAccuracyConstants.METRIC_METER);
 					horErrorChildren.add(fifthPercentile);
 				}
 			} catch (Exception e) {
@@ -327,7 +329,7 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 				if (value != null && value.length() > 0) {
 					sixthPercentile.setValue(value);
 					sixthPercentile.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
-					sixthPercentile.setValueMetric(LocationAccuracyConstants.METRIC_METERS);
+					sixthPercentile.setValueMetric(LocationAccuracyConstants.METRIC_METER);
 					horErrorChildren.add(sixthPercentile);
 				}
 			} catch (Exception e) {
@@ -342,7 +344,7 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 				if (value != null && value.length() > 0) {
 					ninethPercentile.setValue(value);
 					ninethPercentile.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
-					ninethPercentile.setValueMetric(LocationAccuracyConstants.METRIC_METERS);
+					ninethPercentile.setValueMetric(LocationAccuracyConstants.METRIC_METER);
 					horErrorChildren.add(ninethPercentile);
 				}
 			} catch (Exception e) {
@@ -357,7 +359,7 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 				if (value != null && value.length() > 0) {
 					standardDev.setValue(value);
 					standardDev.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
-					standardDev.setValueMetric(LocationAccuracyConstants.METRIC_METERS);
+					standardDev.setValueMetric(LocationAccuracyConstants.METRIC_METER);
 					horErrorChildren.add(standardDev);
 				}
 			} catch (Exception e) {
@@ -383,7 +385,7 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 				if (value != null && value.length() > 0) {
 					min.setValue(value);
 					min.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
-					min.setValueMetric(LocationAccuracyConstants.METRIC_METERS);
+					min.setValueMetric(LocationAccuracyConstants.METRIC_METER);
 					vertErrorChildren.add(min);
 				}
 			} catch (Exception e) {
@@ -398,7 +400,7 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 				if (value != null && value.length() > 0) {
 					max.setValue(value);
 					max.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
-					max.setValueMetric(LocationAccuracyConstants.METRIC_METERS);
+					max.setValueMetric(LocationAccuracyConstants.METRIC_METER);
 					vertErrorChildren.add(max);
 				}
 			} catch (Exception e) {
@@ -413,7 +415,7 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 				if (value != null && value.length() > 0) {
 					mean.setValue(value);
 					mean.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
-					mean.setValueMetric(LocationAccuracyConstants.METRIC_METERS);
+					mean.setValueMetric(LocationAccuracyConstants.METRIC_METER);
 					vertErrorChildren.add(mean);
 				}
 			} catch (Exception e) {
@@ -428,7 +430,7 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 				if (value != null && value.length() > 0) {
 					meanAbs.setValue(value);
 					meanAbs.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
-					meanAbs.setValueMetric(LocationAccuracyConstants.METRIC_METERS);
+					meanAbs.setValueMetric(LocationAccuracyConstants.METRIC_METER);
 					vertErrorChildren.add(meanAbs);
 				}
 			} catch (Exception e) {
@@ -443,7 +445,7 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 				if (value != null && value.length() > 0) {
 					fifthPercentile.setValue(value);
 					fifthPercentile.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
-					fifthPercentile.setValueMetric(LocationAccuracyConstants.METRIC_METERS);
+					fifthPercentile.setValueMetric(LocationAccuracyConstants.METRIC_METER);
 					vertErrorChildren.add(fifthPercentile);
 				}
 			} catch (Exception e) {
@@ -458,7 +460,7 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 				if (value != null && value.length() > 0) {
 					sixthPercentile.setValue(value);
 					sixthPercentile.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
-					sixthPercentile.setValueMetric(LocationAccuracyConstants.METRIC_METERS);
+					sixthPercentile.setValueMetric(LocationAccuracyConstants.METRIC_METER);
 					vertErrorChildren.add(sixthPercentile);
 				}
 			} catch (Exception e) {
@@ -473,7 +475,7 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 				if (value != null && value.length() > 0) {
 					ninethPercentile.setValue(value);
 					ninethPercentile.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
-					ninethPercentile.setValueMetric(LocationAccuracyConstants.METRIC_METERS);
+					ninethPercentile.setValueMetric(LocationAccuracyConstants.METRIC_METER);
 					vertErrorChildren.add(ninethPercentile);
 				}
 			} catch (Exception e) {
@@ -488,7 +490,7 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 				if (value != null && value.length() > 0) {
 					rmse.setValue(value);
 					rmse.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
-					rmse.setValueMetric(LocationAccuracyConstants.METRIC_METERS);
+					rmse.setValueMetric(LocationAccuracyConstants.METRIC_METER);
 					vertErrorChildren.add(rmse);
 				}
 			} catch (Exception e) {
@@ -503,7 +505,7 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 				if (value != null && value.length() > 0) {
 					standardDev.setValue(value);
 					standardDev.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
-					standardDev.setValueMetric(LocationAccuracyConstants.METRIC_METERS);
+					standardDev.setValueMetric(LocationAccuracyConstants.METRIC_METER);
 					vertErrorChildren.add(standardDev);
 				}
 			} catch (Exception e) {
@@ -529,7 +531,7 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 				if (value != null && value.length() > 0) {
 					min.setValue(value);
 					min.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
-					min.setValueMetric(LocationAccuracyConstants.METRIC_METERS);
+					min.setValueMetric(LocationAccuracyConstants.METRIC_METER);
 					ehaeErrorChildren.add(min);
 				}
 			} catch (Exception e) {
@@ -544,7 +546,7 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 				if (value != null && value.length() > 0) {
 					max.setValue(value);
 					max.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
-					max.setValueMetric(LocationAccuracyConstants.METRIC_METERS);
+					max.setValueMetric(LocationAccuracyConstants.METRIC_METER);
 					ehaeErrorChildren.add(max);
 				}
 			} catch (Exception e) {
@@ -559,7 +561,7 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 				if (value != null && value.length() > 0) {
 					mean.setValue(value);
 					mean.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
-					mean.setValueMetric(LocationAccuracyConstants.METRIC_METERS);
+					mean.setValueMetric(LocationAccuracyConstants.METRIC_METER);
 					ehaeErrorChildren.add(mean);
 				}
 			} catch (Exception e) {
@@ -574,7 +576,7 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 				if (value != null && value.length() > 0) {
 					meanAbs.setValue(value);
 					meanAbs.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
-					meanAbs.setValueMetric(LocationAccuracyConstants.METRIC_METERS);
+					meanAbs.setValueMetric(LocationAccuracyConstants.METRIC_METER);
 					ehaeErrorChildren.add(meanAbs);
 				}
 			} catch (Exception e) {
@@ -589,7 +591,7 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 				if (value != null && value.length() > 0) {
 					fifthPercentile.setValue(value);
 					fifthPercentile.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
-					fifthPercentile.setValueMetric(LocationAccuracyConstants.METRIC_METERS);
+					fifthPercentile.setValueMetric(LocationAccuracyConstants.METRIC_METER);
 					ehaeErrorChildren.add(fifthPercentile);
 				}
 			} catch (Exception e) {
@@ -604,7 +606,7 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 				if (value != null && value.length() > 0) {
 					sixthPercentile.setValue(value);
 					sixthPercentile.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
-					sixthPercentile.setValueMetric(LocationAccuracyConstants.METRIC_METERS);
+					sixthPercentile.setValueMetric(LocationAccuracyConstants.METRIC_METER);
 					ehaeErrorChildren.add(sixthPercentile);
 				}
 			} catch (Exception e) {
@@ -619,7 +621,7 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 				if (value != null && value.length() > 0) {
 					ninethPercentile.setValue(value);
 					ninethPercentile.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
-					ninethPercentile.setValueMetric(LocationAccuracyConstants.METRIC_METERS);
+					ninethPercentile.setValueMetric(LocationAccuracyConstants.METRIC_METER);
 					ehaeErrorChildren.add(ninethPercentile);
 				}
 			} catch (Exception e) {
@@ -634,7 +636,7 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 				if (value != null && value.length() > 0) {
 					rmse.setValue(value);
 					rmse.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
-					rmse.setValueMetric(LocationAccuracyConstants.METRIC_METERS);
+					rmse.setValueMetric(LocationAccuracyConstants.METRIC_METER);
 					ehaeErrorChildren.add(rmse);
 				}
 			} catch (Exception e) {
@@ -649,7 +651,7 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 				if (value != null && value.length() > 0) {
 					standardDev.setValue(value);
 					standardDev.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
-					standardDev.setValueMetric(LocationAccuracyConstants.METRIC_METERS);
+					standardDev.setValueMetric(LocationAccuracyConstants.METRIC_METER);
 					ehaeErrorChildren.add(standardDev);
 				}
 			} catch (Exception e) {
@@ -707,6 +709,7 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 			String value = LocationAccuracyPreferencesManager.loadStringPreference(this, LocationAccuracyConstants.FIRST_FIX_TIME);
 			if (value != null && value.length() > 0) {
 				firstFixTime.setValue(value);
+				firstFixTime.setValueMetric(LocationAccuracyConstants.METRIC_DATE);
 				masterChildren.add(firstFixTime);
 			}
 		} catch (Exception e) {
@@ -725,7 +728,7 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 				if (value != null && value.length() > 0) {
 					distance.setValue(value);
 					distance.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
-					distance.setValueMetric(LocationAccuracyConstants.METRIC_METERS);
+					distance.setValueMetric(LocationAccuracyConstants.METRIC_METER);
 					samplingChildren.add(distance);
 				}
 			} catch (Exception e) {
@@ -738,7 +741,7 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 				if (value != null && value.length() > 0) {
 					interval.setValue(value);
 					interval.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
-					interval.setValueMetric(LocationAccuracyConstants.METRIC_MILLISECONDS);
+					interval.setValueMetric(LocationAccuracyConstants.METRIC_MILLISECOND);
 					samplingChildren.add(interval);
 				}
 			} catch (Exception e) {
@@ -759,7 +762,7 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 			if (value != null && value.length() > 0) {
 				averageTBF.setValue(value);
 				averageTBF.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
-				averageTBF.setValueMetric(LocationAccuracyConstants.METRIC_SECONDS);
+				averageTBF.setValueMetric(LocationAccuracyConstants.METRIC_SECOND);
 				masterChildren.add(averageTBF);
 			}
 		} catch (Exception e) {
