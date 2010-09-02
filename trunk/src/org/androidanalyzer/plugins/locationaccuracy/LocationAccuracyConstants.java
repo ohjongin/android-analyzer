@@ -64,9 +64,10 @@ public class LocationAccuracyConstants {
 	protected static final String TIME_INJECTED_XTRA_DATA = "XTRA Data";
 	protected static final String TIME_CLEARED_ASSIST_DATA = "Time Cleared Assist Data";
 	/* protected static final String WIFI_STATUS = "WiFi Status"; */
-	protected static final String METRIC_METERS = "meters";
-	protected static final String METRIC_SECONDS = "seconds";
-	protected static final String METRIC_MILLISECONDS = "milliseconds";
+	protected static final String METRIC_METER = "meter";
+	protected static final String METRIC_SECOND = "second";
+	protected static final String METRIC_MILLISECOND = "millisecond";
+	protected static final String METRIC_DATE = "date";
 	protected static final String UNKNOWN = "Unknown";
 	protected static final String UNAVAILABLE = "n/a";
 
