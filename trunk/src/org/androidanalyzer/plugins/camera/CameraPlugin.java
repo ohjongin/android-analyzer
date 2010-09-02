@@ -674,7 +674,7 @@ public class CameraPlugin extends AbstractPlugin {
 	 */
 	private Data getMinAudioChannels(int cameraNumber, String format) {
 		return getEncFormatCapability(cameraNumber, format, AUDIO_CODEC_CAPABILITES_PREFIX + "." + format + ".ch",
-				AUDIO_MIN_CHANNELS, "channels", false);
+				AUDIO_MIN_CHANNELS, "channel", false);
 	}
 
 	/**
@@ -684,7 +684,7 @@ public class CameraPlugin extends AbstractPlugin {
 	 */
 	private Data getMaxAudioChannels(int cameraNumber, String format) {
 		return getEncFormatCapability(cameraNumber, format, AUDIO_CODEC_CAPABILITES_PREFIX + "." + format + ".ch",
-				AUDIO_MAX_CHANNELS, "channels", true);
+				AUDIO_MAX_CHANNELS, "channel", true);
 	}
 
 	/**
