@@ -43,7 +43,7 @@ The following table defines the structure of data being inserted in the report, 
 ||  ||  || 95th Percentile|| _double_ || meter || Unknown, N/A ||
 ||  ||  || RMSE || _double_ || meter || Unknown, N/A ||
 ||  ||  || Standard Deviation|| _double_ || meter || Unknown, N/A ||
-||  || First Fix Time || || _string_ || MM/dd/yyyy HH:mm || Unknown, N/A ||
+||  || First Fix Time || || _string_ || (date) MM/dd/yyyy HH:mm || Unknown, N/A ||
 ||  || Sampling || || || || ||
 ||  || || Interval  || _double_ || millisecond || Unknown, N/A ||
 ||  || || Distance  || _double_ || meter || Unknown, N/A ||
