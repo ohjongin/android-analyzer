@@ -106,6 +106,7 @@ public class ReportActivity extends Activity {
 	}
 
 	void showResultDialog(String message, int action, boolean negative) {
+		Logger.DEBUG(TAG, "message - " + message + " action - " + action + " negative - " + negative);
 		AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 		switch (action) {
 		case SAVE_REPORT_PROGRESS:
@@ -117,7 +118,7 @@ public class ReportActivity extends Activity {
 		case SEND_REPORT_PROGRESS:
 			dialog.setTitle(negative ? R.string.alert_dialog_warning_title : R.string.alert_dialog_pos_title);
 			dialog.setIcon(negative ? R.drawable.warning_icon_yellow : R.drawable.ok_icon);
-			message = message == null || message.length() == 0 ? getString(R.string.alert_dialog_warning_msg) : message;
+			message = message != null && message.length() != 0 ? getString(R.string.alert_dialog_warning_msg) : message;
 			dialog.setMessage(negative ? message : getString(R.string.alert_dialog_pos_ss) + message);
 			break;
 		}
@@ -186,13 +187,18 @@ public class ReportActivity extends Activity {
 					String host = (String) data.get(Constants.HOST);
 					URL lHost = new URL(host);
 					response = (String) core.sendReport(result, lHost);
-				} catch (Exception ex) {
-					Logger.ERROR(TAG, "Error while sending data", ex);
+				} catch (HttpResponseException ex) {
+					Logger.ERROR(TAG, "[HttpResponseException] Error while sending data", ex);
 					negative = true;
-					if (ex instanceof HttpResponseException) {
-						int code = ((HttpResponseException) ex).getStatusCode();
-						response = getString(R.string.alert_dialog_warning_msg) + System.getProperty("line.separator") + "Status - " + code;
-					}
+					int code = ex.getStatusCode();
+					String messsage = ex.getMessage();
+					response = getString(R.string.alert_dialog_warning_msg) + System.getProperty("line.separator") + "Status - " + code
+							+ " " + messsage;
+				} catch (Exception ex) {
+					negative = true;
+					Logger.ERROR(TAG, "[Exception] Error while sending data", ex);
+					String messsage = ex.getMessage();
+					response = getString(R.string.alert_dialog_warning_msg) + System.getProperty("line.separator") + "Status - " + messsage;
 				}
 				if (response != null)
 					bundle.putString(Constants.REPORT_RESULT, response);
