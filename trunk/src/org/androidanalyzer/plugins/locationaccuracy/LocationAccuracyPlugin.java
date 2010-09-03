@@ -810,6 +810,7 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 						LocationAccuracyConstants.TIME_INJECTED_TIME_DATA);
 				if (value != null && value.length() > 0) {
 					timeData.setValue(value);
+					timeData.setValueMetric(LocationAccuracyConstants.METRIC_DATE);
 					timeInjectedChildren.add(timeData);
 				}
 			} catch (Exception e) {
@@ -822,6 +823,7 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 						LocationAccuracyConstants.TIME_INJECTED_XTRA_DATA);
 				if (value != null && value.length() > 0) {
 					xtraData.setValue(value);
+					xtraData.setValueMetric(LocationAccuracyConstants.METRIC_DATE);
 					timeInjectedChildren.add(xtraData);
 				}
 			} catch (Exception e) {
@@ -841,6 +843,7 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 					LocationAccuracyConstants.TIME_CLEARED_ASSIST_DATA);
 			if (value != null && value.length() > 0) {
 				timeCAD.setValue(value);
+				timeCAD.setValueMetric(LocationAccuracyConstants.METRIC_DATE);
 				masterChildren.add(timeCAD);
 			}
 		} catch (Exception e) {
