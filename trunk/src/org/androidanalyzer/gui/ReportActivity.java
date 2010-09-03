@@ -118,7 +118,10 @@ public class ReportActivity extends Activity {
 		case SEND_REPORT_PROGRESS:
 			dialog.setTitle(negative ? R.string.alert_dialog_warning_title : R.string.alert_dialog_pos_title);
 			dialog.setIcon(negative ? R.drawable.warning_icon_yellow : R.drawable.ok_icon);
-			message = message != null && message.length() != 0 ? getString(R.string.alert_dialog_warning_msg) : message;
+			Logger.DEBUG(TAG, "message - " + message);
+			if( message != null && message.length() != 0)
+				message = getString(R.string.alert_dialog_warning_msg) + " " + message;
+			Logger.DEBUG(TAG, "message -- " + message);
 			dialog.setMessage(negative ? message : getString(R.string.alert_dialog_pos_ss) + message);
 			break;
 		}
@@ -192,15 +195,16 @@ public class ReportActivity extends Activity {
 					negative = true;
 					int code = ex.getStatusCode();
 					String messsage = ex.getMessage();
-					response = getString(R.string.alert_dialog_warning_msg) + System.getProperty("line.separator") + "Status - " + code
+					response = "Status - " + code
 							+ " " + messsage;
 				} catch (Exception ex) {
 					negative = true;
 					Logger.ERROR(TAG, "[Exception] Error while sending data", ex);
 					String messsage = ex.getMessage();
-					response = getString(R.string.alert_dialog_warning_msg) + System.getProperty("line.separator") + "Status - " + messsage;
+					response = "Status - " + messsage;
 				}
 				if (response != null)
+					Logger.DEBUG(TAG, "response: " + response);
 					bundle.putString(Constants.REPORT_RESULT, response);
 				break;
 			}
