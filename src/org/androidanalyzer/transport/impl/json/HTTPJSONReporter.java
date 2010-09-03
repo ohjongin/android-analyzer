@@ -66,17 +66,9 @@ public class HTTPJSONReporter extends Reporter {
 		httpost.setHeader(X_ANDROID_ANALYZER_REPORT_MD5, hex);
 		httpost.setHeader("Content-Encoding", "gzip");
 		httpost.setEntity(new ByteArrayEntity(bytes));
-		ResponseHandler responseHandler = new BasicResponseHandler();
-		// try {
-		HttpResponse response = httpclient.execute(httpost, responseHandler);
-		return HttpHelper.request(response);
-		/*
-		 * Log.d(tag, "Response: " + response); } catch (HttpResponseException hre)
-		 * { int code = hre.getStatusCode(); Log.d(tag, "Status code: " + code); }
-		 * catch (ClientProtocolException e) { e.printStackTrace(); } catch
-		 * (IOException e) { e.printStackTrace(); }
-		 */
-
+		ResponseHandler<String> responseHandler = new BasicResponseHandler();
+		String response = httpclient.execute(httpost, responseHandler);
+		return response;
 	}
 
 	private byte[] doCompress(StringEntity se) {
@@ -93,25 +85,5 @@ public class HTTPJSONReporter extends Reporter {
 			e.printStackTrace();
 		}
 		return retval;
-	}
-
-	static class HttpHelper {
-		static String request(HttpResponse response) {
-			String result = "";
-			try {
-				InputStream in = response.getEntity().getContent();
-				BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-				StringBuilder str = new StringBuilder();
-				String line = null;
-				while ((line = reader.readLine()) != null) {
-					str.append(line + System.getProperty("line.separator"));
-				}
-				in.close();
-				result = str.toString();
-			} catch (Exception ex) {
-				result = "Error";
-			}
-			return result;
-		}
 	}
 }
