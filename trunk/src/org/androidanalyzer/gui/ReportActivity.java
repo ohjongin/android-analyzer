@@ -6,6 +6,7 @@ import org.androidanalyzer.Constants;
 import org.androidanalyzer.R;
 import org.androidanalyzer.core.AnalyzerCore;
 import org.androidanalyzer.core.Data;
+import org.androidanalyzer.core.utils.Logger;
 import org.apache.http.client.HttpResponseException;
 
 import android.app.Activity;
@@ -29,6 +30,7 @@ public class ReportActivity extends Activity {
 
 	private static final int SEND_REPORT_PROGRESS = 0;
 	private static final int SAVE_REPORT_PROGRESS = 1;
+	private static final String TAG = "Analyzer-ReportActivity";
 
 	/*
 	 * (non-Javadoc)
@@ -185,6 +187,7 @@ public class ReportActivity extends Activity {
 					URL lHost = new URL(host);
 					response = (String) core.sendReport(result, lHost);
 				} catch (Exception ex) {
+					Logger.ERROR(TAG, "Error while sending data", ex);
 					negative = true;
 					if (ex instanceof HttpResponseException) {
 						int code = ((HttpResponseException) ex).getStatusCode();
