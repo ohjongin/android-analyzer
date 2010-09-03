@@ -51,9 +51,9 @@ The following table defines the structure of data being inserted in the report, 
 ||  || Override Refresh Rate || ||  _boolean_ (Y, N) || || Unknown, N/A ||
 ||  || Keep Screen On || || _boolean_ (Y, N)  || || Unknown, N/A ||
 ||  || Time Injected || || || || ||
-||  ||  || Time Data  || || || Unknown, N/A ||
-||  ||  || XTRA Data  || || || Unknown, N/A ||
-||  || Time Cleared Assist Data || || || || Unknown, N/A ||
+||  ||  || Time Data  || _string_ || (date) MM/dd/yyyy HH:mm || Unknown, N/A ||
+||  ||  || XTRA Data  || _string_ || (date) MM/dd/yyyy HH:mm || Unknown, N/A ||
+||  || Time Cleared Assist Data || || _string_ || (date) MM/dd/yyyy HH:mm || Unknown, N/A ||
 
 *Privacy policy: this plugin MUST NEVER report the device location to the backend. Querying device location for determining positioning method accuracy is allowed, as long as this data never leaves the device.*
 
