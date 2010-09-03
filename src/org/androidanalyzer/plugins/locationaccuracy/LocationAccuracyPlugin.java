@@ -366,8 +366,10 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 				Logger.ERROR(TAG, "Could not set Standard deviation node!", e);
 			}
 
-			horError = addToParent(horError, horErrorChildren);
-			masterChildren.add(horError);
+			if (horErrorChildren.size() > 0) {
+				horError = addToParent(horError, horErrorChildren);
+				masterChildren.add(horError);
+			}
 		} catch (Exception e) {
 			Logger.ERROR(TAG, "Could not set Horizontal Error node!", e);
 		}
@@ -511,9 +513,10 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 			} catch (Exception e) {
 				Logger.ERROR(TAG, "Could not set Standard deviation node!", e);
 			}
-
-			vertError = addToParent(vertError, vertErrorChildren);
-			masterChildren.add(vertError);
+			if (vertErrorChildren.size() > 0) {
+				vertError = addToParent(vertError, vertErrorChildren);
+				masterChildren.add(vertError);
+			}
 		} catch (Exception e) {
 			Logger.ERROR(TAG, "Could not set Vertical Error node!", e);
 		}
@@ -657,9 +660,10 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 			} catch (Exception e) {
 				Logger.ERROR(TAG, "Could not set Standard deviation node!", e);
 			}
-
-			ehaeError = addToParent(ehaeError, ehaeErrorChildren);
-			masterChildren.add(ehaeError);
+			if (ehaeErrorChildren.size() > 0) {
+				ehaeError = addToParent(ehaeError, ehaeErrorChildren);
+				masterChildren.add(ehaeError);
+			}
 		} catch (Exception e) {
 			Logger.ERROR(TAG, "Could not set Estimated Horizontal Accuracy Error node!", e);
 		}
@@ -747,8 +751,10 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 			} catch (Exception e) {
 				Logger.ERROR(TAG, "Could not set Sampling Interval node!", e);
 			}
-			sampling = addToParent(sampling, samplingChildren);
-			masterChildren.add(sampling);
+			if (samplingChildren.size() > 0) {
+				sampling = addToParent(sampling, samplingChildren);
+				masterChildren.add(sampling);
+			}
 		} catch (Exception e) {
 			Logger.ERROR(TAG, "Could not set Sampling node!", e);
 		}
@@ -829,8 +835,10 @@ public class LocationAccuracyPlugin extends AbstractPlugin {
 			} catch (Exception e) {
 				Logger.ERROR(TAG, "Could not set XTRA Data node!", e);
 			}
-			timeInjected = addToParent(timeInjected, timeInjectedChildren);
-			masterChildren.add(timeInjected);
+			if(timeInjectedChildren.size() > 0){
+				timeInjected = addToParent(timeInjected, timeInjectedChildren);
+				masterChildren.add(timeInjected);
+			}
 		} catch (Exception e) {
 			Logger.ERROR(TAG, "Could not set Time Injected node!", e);
 		}
