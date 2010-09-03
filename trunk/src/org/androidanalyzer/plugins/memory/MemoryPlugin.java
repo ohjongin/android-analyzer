@@ -166,7 +166,7 @@ public class MemoryPlugin extends AbstractPlugin {
 			Data extStorMediaType = new Data();
 			extStorMediaType.setName(EXTERNAL_STORAGE_MEDIA_TYPE);
 			String intStorage = getExtStorageType();
-			if (extStorMediaType != null && intStorage.length() > 0) {
+			if (extStorMediaType != null && intStorage != null && intStorage.length() > 0) {
 				extStorMediaType.setValue(intStorage);
 				extStorMediaType.setStatus(Constants.NODE_STATUS_OK);
 			} else {
