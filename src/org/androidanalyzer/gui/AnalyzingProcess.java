@@ -10,7 +10,7 @@ import android.os.Handler;
 import android.os.Message;
 
 /**
- * Start analyzing operation in a separate process and return it via Progress
+ * Start analyzing operation in a separate process and sends updates via Progress
  * Handler
  */
 public class AnalyzingProcess implements Runnable {

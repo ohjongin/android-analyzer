@@ -17,7 +17,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 /**
- * This class is used to create list of all plugins with their status 
+ * This class represents custom list adapter, used to display list of the available plugins, 
+ * along with short description and means to enable/disable plugin for/from execution. 
  *
  */
 class AnalyzerConfigAdapter extends BaseAdapter implements ListAdapter {

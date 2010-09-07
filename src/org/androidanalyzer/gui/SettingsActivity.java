@@ -28,7 +28,8 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 
 /**
- * SettingsActivity class is used to create Setting initial form
+ * This activity provides means for configuration of the Android Analyzer Core,
+ * enabling/disabling debug, setting the backend url to which collected data is posted, etc.
  * 
  */
 public class SettingsActivity extends Activity {

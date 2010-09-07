@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.widget.TabHost;
 
 /**
- * This class is used to create Tabs in Setting menu 
+ * This class holds the Tabs (Core/Plugins/About) of the Settings Activity 
  *
  */
 public class AnalyzerSettings extends TabActivity {

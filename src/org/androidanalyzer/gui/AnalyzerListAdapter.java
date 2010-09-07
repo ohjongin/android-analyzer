@@ -19,7 +19,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /**
- * This class is used to create initial list with all plugins and their status.  
+ * This class represents custom list adapter, used in AnalyzerList Activity to
+ * display list of registered plugins with their last run status and icon representing it (passed/failed/not run)  
  *
  */
 

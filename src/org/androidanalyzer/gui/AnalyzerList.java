@@ -33,7 +33,10 @@ import android.widget.Button;
 import android.widget.ListView;
 
 /**
- * This class is used to create initial list with all plugins and their status.  
+ * This is the main Activity of the Android Analyzer application.
+ * It shows list with all registered AnalyzerPlugins, provided with
+ * short information about their last run status. At the bottom end of the screen
+ * is the "Analyze" button, that triggers the analysis.  
  *
  */
 public class AnalyzerList extends Activity implements UICallback {

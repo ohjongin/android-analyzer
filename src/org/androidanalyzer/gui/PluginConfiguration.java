@@ -19,8 +19,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 /**
- * This class is used to create list of all plugins with their status in Plugins
- * tab in Settings menu.
+ * This activity represents the Plugin Configuration settings tab. 
  * 
  */
 

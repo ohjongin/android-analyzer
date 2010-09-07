@@ -8,7 +8,7 @@ import android.os.Handler;
 import android.os.Message;
 
 /**
- * This class handle Progress bar
+ * This Handler is used to update the progress bar during the analyzing process
  *
  */
 public class ProgressHandler extends Handler {
