@@ -23,8 +23,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 /**
- * This class is used to create form for processing (save to file or/and send to the
- * back-end) collected data.
+ * This activity provides means for processing (save to file or/and send to the
+ * back-end) the collected data.
  */
 public class ReportActivity extends Activity {
 

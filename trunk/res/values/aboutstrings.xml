@@ -19,14 +19,14 @@
 	
     <string name="about_text">The Android Analyzer is an application that analyzes and collects hardware and software capabilities of devices based on the Android OS. Capability reports can be sent to an online database, where a comprehensive user interface is presented for browsing and comparing device capabilities for one or more devices.</string>
     
-    <string name="aa_url_text">More info on Android Analyzer...</string>
+    <string name="aa_url_text">More about Android Analyzer...</string>
     <string name="aa_url_link">http://code.google.com/p/android-analyzer/</string>
 
-    <string name="af_url_text">More info on Android Fragmentation...</string>
+    <string name="af_url_text">More about Android Fragmentation...</string>
     <string name="af_url_link">http://androidfragmentation.com</string>
     
     <string name="about_vendor_name">Android Analyzer Community</string>
-    <string name="about_vendor_mail">s.djukic@gmail.com</string>
+    <string name="about_vendor_mail">mailto:android.analyzer@gmail.com</string>
     <string name="about_version">Version: 1.0</string>
     <string name="about_build">Build date: 16/Aug/2010</string>
 	<string name="about_vendor_label">Author:</string>

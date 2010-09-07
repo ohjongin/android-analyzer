@@ -9,7 +9,8 @@ import android.text.method.LinkMovementMethod;
 import android.widget.TextView;
 
 /**
- *  AboutActivity class is used to create windows with About information 
+ *  This Activity displays the About info of the Android Analyzer application.
+ *  It is shown in the About tab of the Settings activity. 
  *
  */
 public class AboutActivity extends Activity {
@@ -24,14 +25,14 @@ public class AboutActivity extends Activity {
 		String title = getResources().getString(R.string.about_title);
 		setContentView(R.layout.about_layout);
 		setTitle(title);
-		TextView mtelUrl = (TextView)findViewById(R.id.aa_url);
-		String mtelLink = "<a href="+getString(R.string.aa_url_link)+">"+getString(R.string.aa_url_text)+"</a>";
-		mtelUrl.setText(Html.fromHtml(mtelLink), TextView.BufferType.SPANNABLE);
-		mtelUrl.setMovementMethod(LinkMovementMethod.getInstance());
-		TextView bzUrl = (TextView)findViewById(R.id.af_url);
-		String sumcLink = "<a href="+getString(R.string.af_url_link)+">"+getString(R.string.af_url_text)+"</a>";
-		bzUrl.setText(Html.fromHtml(sumcLink), TextView.BufferType.SPANNABLE);
-		bzUrl.setMovementMethod(LinkMovementMethod.getInstance());
+		TextView aaUrl = (TextView)findViewById(R.id.aa_url);
+		String aaLink = "<a href="+getString(R.string.aa_url_link)+">"+getString(R.string.aa_url_text)+"</a>";
+		aaUrl.setText(Html.fromHtml(aaLink), TextView.BufferType.SPANNABLE);
+		aaUrl.setMovementMethod(LinkMovementMethod.getInstance());
+		TextView afUrl = (TextView)findViewById(R.id.af_url);
+		String afLink = "<a href="+getString(R.string.af_url_link)+">"+getString(R.string.af_url_text)+"</a>";
+		afUrl.setText(Html.fromHtml(afLink), TextView.BufferType.SPANNABLE);
+		afUrl.setMovementMethod(LinkMovementMethod.getInstance());
 		TextView contactName = (TextView)findViewById(R.id.about_vendor_name);
 		String authorMail = "<a href="+getString(R.string.about_vendor_mail)+">"+getString(R.string.about_vendor_name)+"</a>";
 		contactName.setText(Html.fromHtml(authorMail), TextView.BufferType.SPANNABLE);

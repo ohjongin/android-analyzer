@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
 /**
- * This class is used to store and load info about each plugin 
+ * Helper class that saves and loads data from the preferences 
  *
  */
 public class PreferencesManager {
