@@ -13,8 +13,10 @@ import org.androidanalyzer.core.Data;
 
 public abstract class Reporter {
 	private static String HOST = null;
-	private static String DEFAULT_HOST = "http://212.95.166.45:8080/DataServlet";
-	
+	//private static String DEFAULT_HOST = "http://212.95.166.45:8080/DataServlet";
+
+	private static String DEFAULT_HOST = "http://212.95.166.45:8080/af/SubmitDeviceReport";
+
 
 	/**
 	 * Send data collected from available plugins to the server

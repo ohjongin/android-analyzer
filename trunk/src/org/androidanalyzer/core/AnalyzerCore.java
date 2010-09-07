@@ -354,6 +354,7 @@ public class AnalyzerCore {
 			version.setName(Constants.METADATA_ANALYZER_VERSION);
 			version.setValue(VERSION);
 			analyzerVersion.setValue(version);
+			Logger.DEBUG(TAG, "Version is: " + VERSION);
 			reportMetadata.setValue(analyzerVersion);
 		} catch (Exception e) {
 			Logger.ERROR(TAG, "Could not set Metadata!", e);
@@ -368,6 +369,7 @@ public class AnalyzerCore {
 			String dateString = formatter.format(currentTime);
 			date.setValue(dateString);
 			date.setValueMetric(Constants.METADATA_DATE_METRIC);
+			Logger.DEBUG(TAG, "Date is: " + dateString);
 			reportMetadata.setValue(date);
 		} catch (Exception e) {
 			Logger.ERROR(TAG, "Could not set Metadata!", e);
