@@ -315,6 +315,9 @@ public class AnalyzerCore {
 				operatorName.setName(Constants.M_OPERATOR);
 				String name = telephonyManager.getNetworkOperatorName();
 				Logger.DEBUG(TAG, "Operator name is " + name);
+				if (name != null && name.length() == 0) {
+					name = Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE;
+				}
 				operatorName.setValue(name);
 				reportMetadata.setValue(operatorName);
 			} catch (Exception e) {
