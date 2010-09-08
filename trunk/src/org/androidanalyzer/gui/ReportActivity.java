@@ -1,6 +1,7 @@
 package org.androidanalyzer.gui;
 
 import java.net.URL;
+import java.util.ArrayList;
 
 import org.androidanalyzer.Constants;
 import org.androidanalyzer.R;
@@ -18,9 +19,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 /**
  * This activity provides means for processing (save to file or/and send to the
@@ -85,6 +88,25 @@ public class ReportActivity extends Activity {
 			}
 		});
 
+		TextView result = (TextView) findViewById(R.id.text);
+		StringBuffer sb = new StringBuffer();
+		addNodeValue(sb, analysisResult, "");
+		result.setText(sb.toString());
+	}
+
+	private void addNodeValue(StringBuffer sb, Data data, String indent) {
+		sb.append(indent).append(">>").append(data.getName()).append('\n');
+		if (data.getValue() instanceof ArrayList<?>){
+			ArrayList<Parcelable> children = (ArrayList<Parcelable>) data.getValue();
+			for (int i = 0; i < children.size(); i++) {
+				Data child = (Data) children.get(i);
+				addNodeValue(sb, child, indent + "  ");				
+			}
+		} else {
+			sb.append(indent).append("  = " + data.getValue() + "\n");
+		}
+		//sb.append(indent).append ("<<").append(data.getName()).append("\n");
+		
 	}
 
 	/*
