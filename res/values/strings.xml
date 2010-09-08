@@ -4,7 +4,7 @@
 	<string name="app_name">Device Analyzer</string>
 	
 	<!-- Progress Dialog -->
-	<string name="progress_dialog_title">Starting device analisys</string>
+	<string name="progress_dialog_title">Analyzing...</string>
 	<string name="progress_dialog_msg">Plugin name: \n</string>
 	
 	<!-- Alert Dialog-->
