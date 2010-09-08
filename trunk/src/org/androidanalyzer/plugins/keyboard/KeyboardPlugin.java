@@ -1,14 +1,6 @@
 package org.androidanalyzer.plugins.keyboard;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-import java.util.StringTokenizer;
 
 import org.androidanalyzer.Constants;
 import org.androidanalyzer.core.Data;
@@ -16,11 +8,6 @@ import org.androidanalyzer.core.utils.Logger;
 import org.androidanalyzer.plugins.AbstractPlugin;
 
 import android.content.res.Configuration;
-import android.hardware.Camera;
-import android.hardware.Camera.Parameters;
-import android.hardware.Camera.Size;
-import android.inputmethodservice.Keyboard;
-import android.os.RemoteException;
 
 /**
  * KeyboardPlugin class that represents the main KeyboardPlugin
@@ -37,10 +24,18 @@ public class KeyboardPlugin extends AbstractPlugin {
   private static final String PARENT_NODE_NAME = "Keyboard";
 
   private static final String HARD_KEYBOARD = "Hard keyboard";
-  private static final Object KEYBOARD_NOKEYS = "Keyboard with no keys";
-  private static final Object KEYBOARD_12KEY = "Keyboard with 12 keys";
-  private static final Object KEYBOARD_QUERTY = "Querty keyboard";
-  private static final Object KEYBOARD_UNDEFINED = "Undefined";
+  private static final String KEYBOARD_NOKEYS = "Keyboard without keys";
+  private static final String KEYBOARD_12KEY = "Keyboard with 12 keys";
+  private static final String KEYBOARD_QUERTY = "Querty keyboard";
+  private static final String KEYBOARD_UNDEFINED = "Undefined";
+  
+  private static final String NAVIGATION = "Navigation";
+  private static final String NAVIGATION_NONAV = "No Navigation";
+  private static final String NAVIGATION_WHEEL = "Wheel";
+  private static final String NAVIGATION_DPAD = "DPad";
+  private static final String NAVIGATION_TRACKBALL = "Trackball";
+  private static final String NAVIGATION_UNDEFINED = "Undefined";
+  
   
   
   private static String status = Constants.METADATA_PLUGIN_STATUS_PASSED;
@@ -89,6 +84,30 @@ public class KeyboardPlugin extends AbstractPlugin {
 	} catch (Exception e) {
 		Logger.ERROR(TAG, "Could not create hard keyboard node!", e);
 		status = "Could not create hard keyboard node!";
+	}
+	
+	try {
+		Data navigation = new Data();
+		navigation.setName(NAVIGATION);
+		
+		if (c.navigation == Configuration.NAVIGATION_NONAV) {
+			navigation.setValue(NAVIGATION_NONAV);
+		} else if (c.navigation == Configuration.NAVIGATION_DPAD){
+			navigation.setValue(NAVIGATION_DPAD);			
+		} else if (c.navigation == Configuration.NAVIGATION_TRACKBALL){
+			navigation.setValue(NAVIGATION_TRACKBALL);
+		} else if (c.navigation == Configuration.NAVIGATION_WHEEL){
+			navigation.setValue(NAVIGATION_WHEEL);
+		} else if (c.navigation == Configuration.NAVIGATION_UNDEFINED){
+			navigation.setValue(NAVIGATION_UNDEFINED);
+		} else {
+			navigation.setStatus(Constants.NODE_STATUS_FAILED);
+			navigation.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
+		}
+		children.add(navigation);
+	} catch (Exception e) {
+		Logger.ERROR(TAG, "Could not create navigation node!", e);
+		status = "Could not create navigation node!";
 	}
   
 	addToParent(parent, children);	
