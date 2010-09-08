@@ -136,7 +136,22 @@
 	         </intent-filter>
         </service>
 		
-		  <!-- **** Location Accuracy Plugin **** -->        
+        <!-- **** Keyboard Plugin **** -->
+        <receiver android:enabled="true"
+	          android:exported="true"
+	          android:label="keyboard plugin receiver"
+	          android:name=".plugins.keyboard.BReceiver" >
+	           <intent-filter>
+	                <action android:name="org.androidanalyzer.plugins.discovery" />
+	            </intent-filter>
+	    </receiver>
+	    <service android:name=".plugins.keyboard.KeyboardPlugin" android:process=":aanalyzer_plugins">
+	    	<intent-filter>												 
+                <action android:name="org.androidanalyzer.plugins.keyboard.KeyboardPlugin"  />
+	         </intent-filter>
+        </service>
+        
+		<!-- **** Location Accuracy Plugin **** -->        
 		<receiver android:enabled="true"
 	          android:exported="true"
 	          android:label="location accuracy plugin receiver"
@@ -159,6 +174,7 @@
 	         </intent-filter>
         </service>
 		
+
 	<activity android:name=".gui.AnalyzerSettings"/>
 	<activity android:name=".gui.PluginConfiguration"/>
 	<activity android:name=".gui.AboutActivity"/>
