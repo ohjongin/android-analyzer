@@ -103,16 +103,12 @@ public class CameraViewActivity extends Activity {
 		this.sendBroadcast(dummyGUIIntent);
 	}
 
-	// handler for splash screen
-
 	private Handler handler = new Handler() {
-
 		/*
 		 * (non-Javadoc)
 		 * 
 		 * @see android.os.Handler#handleMessage(android.os.Message)
 		 */
-
 		@Override
 		public void handleMessage(Message msg) {
 			Bundle bundle = msg.getData();
