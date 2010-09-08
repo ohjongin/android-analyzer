@@ -26,6 +26,7 @@ public class LocationPlugin extends AbstractPlugin {
 	private static final String PARENT_NODE_NAME = "Location";
 
 	private static final String GPS = "GPS";
+	private static final String GPS_SUPPORTED = "Supported";
 	private static final String AGPS = "A-GPS support";
 	private static final String NETWORK_BASED = "Network based";
 	private static final Object NETWORK_PROVIDER = "network";
@@ -150,7 +151,7 @@ public class LocationPlugin extends AbstractPlugin {
 			gps = new Data();
 			gps.setName(GPS);
 			Data gpsSupported = new Data();
-			gpsSupported.setName("Supported");
+			gpsSupported.setName(GPS_SUPPORTED);
 			String gpsAvailable = getGpsAvailable();
 			if (gpsAvailable != null && gpsAvailable.length() > 0) {
 				gpsSupported.setValue(gpsAvailable);
@@ -173,6 +174,7 @@ public class LocationPlugin extends AbstractPlugin {
 			String netBasedAvailable = getNetworkProviderAvailable();
 			if (netBasedAvailable != null && netBasedAvailable.length() > 0) {
 				netBased.setValue(netBasedAvailable);
+				netBased.setValueType(Constants.NODE_VALUE_TYPE_BOOLEAN);
 				netBased.setStatus(Constants.NODE_STATUS_OK);
 			} else {
 				netBased.setStatus(Constants.NODE_STATUS_FAILED);
@@ -197,6 +199,7 @@ public class LocationPlugin extends AbstractPlugin {
 					agps.setStatus(Constants.NODE_STATUS_FAILED);
 					agps.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
 				}
+				agps.setValueType(Constants.NODE_VALUE_TYPE_BOOLEAN);
 				gps.setValue(agps);
 			}
 		} catch (Exception e) {
