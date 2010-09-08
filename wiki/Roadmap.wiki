@@ -1,17 +1,17 @@
 The following roadmap provides an overview of features and timeframes of major releases. Initially, we aim at having major releases every quarter:
 
-= Android Analyzer 1.0: Q3/2010 =
+= Android Analyzer 1.0: September/2010 =
 Features:
     * Analyzer Core, JSON HTTP Reporter
     * Pluggable architecture, discovery of internal and external plugins
     * Reporting to backend with user comments and a simple UI
-    * Plugins: Display, Radio, Memory, API, CPU, Location, Sensor, Camera
+    * Plugins: Display, Radio, Memory, API, CPU, Location, Location Accuracy, Sensor, Camera, Keyboard
 
 = Android Analyzer 2.0: Q4/2010 =
 Features:
     * Enhanced on-device UI and reporting
     * Per-data value editing and report comments on-device
-    * Plugins: Google Applications, Data Network, Local Connectivity, Keyboard, Image, Audio, Video, Physical Attributes (under investigation)
+    * Plugins: Google Applications, Data Network, Local Connectivity, Image, Audio, Video, Physical Attributes (under investigation)
 
 = Android Analyzer 3.0: Q1/2011 =
 Features:
