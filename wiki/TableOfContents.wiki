@@ -11,4 +11,5 @@
       * [LocationAccuracyPlugin Location Accuracy]
       * [SensorPlugin Sensor]
       * [CameraPlugin Camera]
+      * [KeyboardPlugin Keyboard]
     * [DeviceReports Device Reports]
