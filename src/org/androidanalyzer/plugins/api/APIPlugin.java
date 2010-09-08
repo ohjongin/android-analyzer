@@ -80,7 +80,7 @@ public class APIPlugin extends AbstractPlugin {
 	 * @see org.androidanalyzer.plugins.AbstractPlugin#uiRequired()
 	 */
 	@Override
-	public boolean isPluginRequiredUI() {
+	public boolean isPluginUIRequired() {
 		return false;
 	}
 

@@ -112,7 +112,7 @@ public class RadioInterfacesPlugin extends AbstractPlugin {
 	 * @see org.androidanalyzer.plugins.AbstractPlugin#isPluginRequiredUI()
 	 */
 	@Override
-	public boolean isPluginRequiredUI() {
+	public boolean isPluginUIRequired() {
 		return false;
 	}
 

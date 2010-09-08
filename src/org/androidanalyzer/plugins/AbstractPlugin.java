@@ -165,7 +165,7 @@ public abstract class AbstractPlugin extends Service {
 		 */
     @Override
 		public boolean isUIRequired() throws RemoteException {
-			return isPluginRequiredUI();
+			return isPluginUIRequired();
 		}
 
 
@@ -324,10 +324,10 @@ public abstract class AbstractPlugin extends Service {
 	abstract public String getPluginDescription();
 	
 	/**
-	 * Return if plugin required user interaction
+	 * Return if plugin requires user interaction
 	 * @return boolean.
 	 */
-	abstract public boolean isPluginRequiredUI();
+	abstract public boolean isPluginUIRequired();
 
 	/**
 	 * Return plugin class name
