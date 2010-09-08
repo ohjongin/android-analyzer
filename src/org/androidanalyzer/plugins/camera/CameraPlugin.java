@@ -942,8 +942,10 @@ public class CameraPlugin extends AbstractPlugin {
 				data.setName(nodeName);
 				if (hasFeature) {
 					data.setValue(Constants.NODE_VALUE_YES);
+					data.setValueType(Constants.NODE_VALUE_TYPE_BOOLEAN);
 				} else {
 					data.setValue(Constants.NODE_VALUE_NO);
+					data.setValueType(Constants.NODE_VALUE_TYPE_BOOLEAN);
 				}
 			} catch (Exception e) {
 				Logger.ERROR(TAG, "Could not create node name !");
