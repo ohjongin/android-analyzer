@@ -69,6 +69,7 @@ public class AnalyzerCore {
 	private Data reportMetadata = null;
 	private Data tempReport = null;
 	private UninstallBReceiver unRecv = null;
+	private int uiPluginsCounter = 0;
 
 	public static AnalyzerCore getInstance() {
 		if (core == null)
@@ -182,6 +183,13 @@ public class AnalyzerCore {
 						}
 					} catch (RemoteException e1) {
 					}
+					boolean isPluginRequiredUI = false;
+					try {
+						isPluginRequiredUI = runningPluginConn.plugin.isUIRequired();
+					} catch (RemoteException e) {
+						e.printStackTrace();
+						Logger.ERROR(TAG, "Could not get if Plugin required UI!");
+					}
 					long timeout = DEFAULT_MAX_TIME_TO_WAIT_FOR_PLUGIN_ANALYSIS_COMPLETION;
 					try {
 						timeout = runningPluginConn.plugin.getTimeout();
@@ -196,12 +204,24 @@ public class AnalyzerCore {
 					tempReport = null;
 					pluginAnalyzing = true;
 					exec.execute(new PluginAnalysisHandler(runningPluginConn.plugin, progressValues));
-					while (pluginAnalyzing == true && tempReport == null && timeout > 0) {
-						try {
-							Thread.sleep(100);
-							timeout -= 100;
-						} catch (InterruptedException e) {
-							Logger.ERROR(TAG, "Could not Sleep thread in Core!");
+					if (!isPluginRequiredUI) {
+						Logger.DEBUG(TAG, "Waiting with TIME OUT");
+						while (pluginAnalyzing == true && tempReport == null && timeout > 0) {
+							try {
+								Thread.sleep(100);
+								timeout -= 100;
+							} catch (InterruptedException e) {
+								Logger.ERROR(TAG, "Could not Sleep thread in Core!");
+							}
+						}
+					} else {
+						Logger.DEBUG(TAG, "Waiting without TIME OUT");
+						while (pluginAnalyzing == true && tempReport == null) {
+							try {
+								Thread.sleep(100);
+							} catch (InterruptedException e) {
+								Logger.ERROR(TAG, "Could not Sleep thread in Core!");
+							}
 						}
 					}
 					try {
@@ -465,6 +485,9 @@ public class AnalyzerCore {
 		return fName;
 	}
 
+	public int isPluginUIRequired(){
+		return uiPluginsCounter;
+	}
 	/**
 	 * Adds data to main Report in Core
 	 * 
@@ -523,6 +546,7 @@ public class AnalyzerCore {
 		reportPlugins = null;
 		reportMetadata = null;
 		tempReport = null;
+		uiPluginsCounter = 0;
 	}
 
 	/**
@@ -879,6 +903,7 @@ public class AnalyzerCore {
 						if (uI) {
 							Logger.DEBUG(TAG, "Plugin " + plugin + " required UI");
 							sortPlugins.add(0, plugin);
+							uiPluginsCounter++;
 						} else {
 							Logger.DEBUG(TAG, "Plugin " + plugin + " doesn't required UI");
 							sortPlugins.add(plugin);
