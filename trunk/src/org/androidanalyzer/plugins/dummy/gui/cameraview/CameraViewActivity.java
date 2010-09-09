@@ -31,6 +31,7 @@ public class CameraViewActivity extends Activity {
 	private static final String ANSWER_NO = "No";
 	private static final String ANSWER_YES = "Yes";
 	private static final String SHOW = "Show";
+	private static final int MESSAGE_DELAY = 5000;
 	private Preview mPreview;
 	private DrawOnTop mDraw;
 	private AlertDialog.Builder dialog;
@@ -220,6 +221,7 @@ public class CameraViewActivity extends Activity {
 		}
 	}
 
+	/* Alert dialog will show after 5 seconds */
 	class DelayDialog implements Runnable {
 		private static final String TAG = "Analyzer-CameraViewActivity";
 		private Handler handler;
@@ -237,7 +239,7 @@ public class CameraViewActivity extends Activity {
 		public void run() {
 			try {
 				Logger.DEBUG(TAG, "Sleeping...");
-				Thread.sleep(5000);
+				Thread.sleep(MESSAGE_DELAY);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
