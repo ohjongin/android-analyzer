@@ -101,6 +101,7 @@ public class DummyGUIPlugin extends AbstractPlugin {
 		Intent cameraViewIntent = new Intent(this, CameraViewActivity.class);
 		cameraViewIntent.setAction(CAMERA_VIEW_INTENT);
 		cameraViewIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		cameraViewIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 		startActivity(cameraViewIntent);
 		while (TIMEOUT > 0) {
 			answer = DummyGUIPreferencesManager.loadStringPreference(this, DummyGUIConstants.ANSWER_KEY);

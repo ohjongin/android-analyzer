@@ -67,10 +67,9 @@ public class CameraViewActivity extends Activity {
 				sendBroadcast(ANSWER_YES);
 				Logger.DEBUG(TAG, "YES  mPreview: " + mPreview);
 				mPreview.surfaceDestroyed(mPreview.getHolder());
-				mDraw.refersh();
-				mDraw.getCanvas().drawColor(0, PorterDuff.Mode.CLEAR);
+				mDraw.setVisibility(View.GONE);
 				dialog.dismiss();
-
+				CameraViewActivity.this.finish();
 			}
 		});
 		dialog.setNegativeButton(DummyGUIConstants.DIALOG_ANSWER_NO, new DialogInterface.OnClickListener() {
@@ -86,10 +85,10 @@ public class CameraViewActivity extends Activity {
 			public void onClick(DialogInterface dialog, int which) {
 				sendBroadcast(ANSWER_NO);
 				Logger.DEBUG(TAG, "NO  mPreview: " + mPreview);
-				mDraw.getCanvas().drawColor(0, PorterDuff.Mode.CLEAR);
-				mDraw.refersh();
 				mPreview.surfaceDestroyed(mPreview.getHolder());
+				mDraw.setVisibility(View.GONE);
 				dialog.dismiss();
+				CameraViewActivity.this.finish();
 			}
 		});
 		new Thread(new DelayDialog(handler)).start();
