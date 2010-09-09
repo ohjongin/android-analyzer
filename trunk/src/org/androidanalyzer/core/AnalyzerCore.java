@@ -485,7 +485,7 @@ public class AnalyzerCore {
 		return fName;
 	}
 
-	public int isPluginUIRequired(){
+	public int getPluginUIRequired(){
 		return uiPluginsCounter;
 	}
 	/**
@@ -904,6 +904,7 @@ public class AnalyzerCore {
 							Logger.DEBUG(TAG, "Plugin " + plugin + " required UI");
 							sortPlugins.add(0, plugin);
 							uiPluginsCounter++;
+							Logger.DEBUG(TAG, "uiPluginsCounter : "+uiPluginsCounter);
 						} else {
 							Logger.DEBUG(TAG, "Plugin " + plugin + " doesn't required UI");
 							sortPlugins.add(plugin);
