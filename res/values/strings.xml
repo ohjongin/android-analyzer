@@ -22,8 +22,8 @@
 	<string name="alert_connection_test_msg">Connecting to server! Please wait...</string>
 	
 	<!-- Toast -->
-	<string name="toast_plugins_gui_1">Next</string>	
-	<string name="toast_plugins_gui_2"> plugins will request user input</string>	
+	<string name="toast_plugins_gui">Next %1$ plugins will request user input </string>	
+
 	
 	<!-- Menu items-->
 	<string name="menu_settings">Settings</string>
