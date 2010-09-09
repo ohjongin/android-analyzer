@@ -20,9 +20,7 @@
 	<string name="alert_connection_ok">Connection to host succeeded!</string>
 	<string name="alert_dialog_success_title">Success</string>
 	<string name="alert_connection_test_msg">Connecting to server! Please wait...</string>
-	
-	<!-- Toast -->
-	<string name="toast_plugins_gui">Next %1$ plugins will request user input </string>	
+	<string name="alert_dialog_plugins_gui">Next %1$s plugins will request user input </string>	
 
 	
 	<!-- Menu items-->
