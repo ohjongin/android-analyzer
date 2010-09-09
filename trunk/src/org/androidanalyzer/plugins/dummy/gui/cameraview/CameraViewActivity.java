@@ -239,7 +239,7 @@ public class CameraViewActivity extends Activity {
 		public void run() {
 			try {
 				Logger.DEBUG(TAG, "Sleeping...");
-				Thread.sleep(10000);
+				Thread.sleep(5000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
