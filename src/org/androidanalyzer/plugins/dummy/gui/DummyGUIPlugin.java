@@ -25,7 +25,7 @@ public class DummyGUIPlugin extends AbstractPlugin {
 	private static final String PARENT_NODE_NAME = "DummyGUIPlugin";
 	private static final String DESCRIPTION = "Start internal activity which starts camera view with extra OpenGL process";
 
-	private static int TIMEOUT = 100000;
+	private static int TIMEOUT = 10000;
 	private String status = Constants.METADATA_PLUGIN_STATUS_PASSED;
 
 	private String answer = null;
