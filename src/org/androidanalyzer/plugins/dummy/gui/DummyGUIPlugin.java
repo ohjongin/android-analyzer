@@ -103,12 +103,9 @@ public class DummyGUIPlugin extends AbstractPlugin {
 		cameraViewIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		cameraViewIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 		startActivity(cameraViewIntent);
-		while (TIMEOUT > 0) {
+		while (answer == null) {
 			answer = DummyGUIPreferencesManager.loadStringPreference(this, DummyGUIConstants.ANSWER_KEY);
 			Logger.DEBUG(TAG, "Answer is : " + answer);
-			if (answer != null) {
-				break;
-			}
 			try {
 				Thread.sleep(100);
 				TIMEOUT -= 100;
