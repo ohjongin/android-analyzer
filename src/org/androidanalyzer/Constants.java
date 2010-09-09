@@ -12,6 +12,7 @@ public class Constants {
 	public static final String NODE_VALUE_TYPE = "analyzer.node.value.type";
 	public static final String NODE_VALUE_YES = "Y";
 	public static final String NODE_VALUE_NO = "N";
+	public static final String NODE_VALUE_UNKNOWN = "Unknown";
 	public static final String NODE_VALUE_METRIC = "analyzer.node.value.metric";
 	public static final String NODE_COMMENT = "analyzer.node.comment";
 	public static final String NODE_CONFIRMATION_LEVEL = "analyzer.node.confirmation.level";
@@ -57,6 +58,7 @@ public class Constants {
 	public static final int PROGRESS_DIALOG = 0;
 	public static final int LAYOUT_ANALYSIS = 1;
 	public static final int LAYOUT_SEND = 2;
+	public static final int ALERT_DIALOG = 3;
 	public static final String ROOT = "Root";
 	public static final String ROOT_DATA = "Data";
 	public static final String ROOT_METADATA = "Metadata";
