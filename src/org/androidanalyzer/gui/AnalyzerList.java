@@ -15,6 +15,7 @@ import org.androidanalyzer.core.IAnalyzerPlugin;
 import org.androidanalyzer.core.PluginStatus;
 import org.androidanalyzer.core.UICallback;
 import org.androidanalyzer.core.utils.Logger;
+import org.androidanalyzer.transport.Reporter;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -73,6 +74,11 @@ public class AnalyzerList extends Activity implements UICallback {
     adapter = new AnalyzerListAdapter(toUse, plugins, this);
     list.setAdapter(adapter);
     boolean debugEnabled = PreferencesManager.loadBooleanPreference(this, Constants.DEBUG);
+    String host = PreferencesManager.loadStringPreference(this, Constants.HOST);
+    if (host == null) {
+      host = Reporter.getHost();
+      PreferencesManager.savePreference(this, Constants.HOST, host);
+    }
     Logger.setDebug(debugEnabled);
     Button analyzeB = (Button)findViewById(R.id.first_button);
     analyzeB.setText(R.string.analyze_button);
