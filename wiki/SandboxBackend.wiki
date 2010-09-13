@@ -6,3 +6,5 @@ The Sandbox Backend runs on [http://212.95.166.45:8080]. The new functionality o
 
 The link to the device database section on the Sandbox Backend is:
 [http://212.95.166.45:8080/af/database]
+
+To make a developer's life easier the default configuration in the SVN will always point to the Sandbox Backend, as well as any intermediary binary releases. This way the developer is not required to change the URL each time. Public, major releases and the ones published on the Android Market will always come with the production backend pre-configured.
