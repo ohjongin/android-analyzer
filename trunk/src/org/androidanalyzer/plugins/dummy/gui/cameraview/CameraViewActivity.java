@@ -100,6 +100,7 @@ public class CameraViewActivity extends Activity {
 		dummyGUIIntent.setAction(DUMMY_GUI_INTENT);
 		dummyGUIIntent.putExtra(DummyGUIConstants.ANSWER_KEY, answer);
 		this.sendBroadcast(dummyGUIIntent);
+		Logger.DEBUG(TAG, "Broadcast intent -" + dummyGUIIntent + " answer - " + answer);
 	}
 
 	private Handler handler = new Handler() {
