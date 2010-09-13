@@ -290,7 +290,7 @@ public class AnalyzerCore {
 				manufacturer.setName(Constants.M_MANUFACTURER);
 				try {
 					// using reflection
-					Field manufacturerField = Build.class.getDeclaredField("MANUFACTURER");
+					Field manufacturerField = Build.class.getDeclaredField(Constants.MANUFACTURER);
 					manufacturerField.setAccessible(true);
 					Object myManufacturer = manufacturerField.get(null);
 					// value = android.os.Build.MANUFACTURER
