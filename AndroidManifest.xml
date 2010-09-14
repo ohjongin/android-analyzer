@@ -174,12 +174,42 @@
 	         </intent-filter>
         </service>
 		
+		<!-- **** Dummy Plugin - Camera View GUI **** -->
+        <!--
+		<receiver android:enabled="true"
+	          android:exported="true"
+	          android:label="gui camera view plugin receiver"
+	          android:name=".plugins.dummy.gui.BReceiver" >
+	           <intent-filter>
+	                <action android:name="org.androidanalyzer.plugins.discovery" />
+	            </intent-filter>
+	    </receiver>
+		 <receiver android:enabled="true"
+	          android:exported="true"
+	          android:label="gui camera view plugin receiver"
+	          android:name=".plugins.dummy.gui.DummyGUIBReceiver" >
+	           <intent-filter>
+	                <action android:name="org.androidanalyzer.plugins.dummy.guiplugin" />
+	            </intent-filter>
+	    </receiver>
+	    <service android:name=".plugins.dummy.gui.DummyGUIPlugin" android:process=":aanalyzer_plugins">
+	    	<intent-filter>
+                <action android:name="org.androidanalyzer.plugins.dummy.gui.DummyGUIPlugin"  />
+	         </intent-filter>
+        </service>
+		<activity android:name=".plugins.dummy.gui.cameraview.CameraViewActivity"
+			android:label="Camera View">
+		</activity>
+		-->
 
 	<activity android:name=".gui.AnalyzerSettings"/>
 	<activity android:name=".gui.PluginConfiguration"/>
 	<activity android:name=".gui.AboutActivity"/>
 	<activity android:name=".gui.ReportActivity"/>
 	<activity android:name=".gui.SettingsActivity"/>	
+	<!--
+	<activity android:name=".plugins.dummy.gui.cameraview.CameraViewActivity"/>	
+	-->
 </application>
 
 	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
