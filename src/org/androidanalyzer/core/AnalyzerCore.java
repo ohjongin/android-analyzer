@@ -124,6 +124,7 @@ public class AnalyzerCore {
 
 	
 	public void readFromCache() {
+		cleanReport();
 		Logger.DEBUG(TAG, "Read from chache");
 		ArrayList<String> enabledPlugins = new ArrayList<String>();
 		if (pluginCache != null) {
@@ -159,7 +160,6 @@ public class AnalyzerCore {
 		String status = null;
 		if (uiCallb != null)
 			progressValues = new Hashtable(5);
-		cleanReport();
 		Logger.DEBUG(TAG, "pluginCache : " + pluginCache);		
 		int size = sortedEnabledPlugins.size();
 		 //Updating UI on Analysis start 
