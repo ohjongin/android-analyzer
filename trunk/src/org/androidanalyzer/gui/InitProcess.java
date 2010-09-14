@@ -4,7 +4,6 @@ import org.androidanalyzer.Constants;
 import org.androidanalyzer.core.AnalyzerCore;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Message;
 
 public class InitProcess implements Runnable {
