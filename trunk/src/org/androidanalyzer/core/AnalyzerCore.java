@@ -61,6 +61,7 @@ public class AnalyzerCore {
 	private Executor exec;
 
 	private ArrayList<String> pluginCache = new ArrayList<String>();
+	private ArrayList<String> sortedEnabledPlugins;
 	private PluginServiceConnection runningPluginConn = null;
 	private boolean stopAnalyzing = false;
 	private boolean pluginAnalyzing = false;
@@ -91,7 +92,7 @@ public class AnalyzerCore {
 		Intent regPluginsIntent = new Intent();
 		regPluginsIntent.setAction(Constants.PLUGINS_DISCOVERY_INTENT);
 		ctx.sendBroadcast(regPluginsIntent);
-		exec = Executors.newFixedThreadPool(3);
+		exec = Executors.newFixedThreadPool(5);
 
 		/*
 		 * registering braodcast receiver to handle uninstalled external plugins
@@ -121,22 +122,9 @@ public class AnalyzerCore {
 		}
 	}
 
-	/**
-	 * Starts Analysis in the Core. Each plugin is taken from the registry Cache
-	 * and called for analysis.
-	 * 
-	 * @return Data object containing report from all the plugins that were
-	 *         registered
-	 */
-	public Data startAnalyzing() {
-		Hashtable progressValues = null;
-		int pluginCounter = 0;
-		Data plugins = null;
-		String status = null;
-		if (uiCallb != null)
-			progressValues = new Hashtable(5);
-		cleanReport();
-		Logger.DEBUG(TAG, "pluginCache : " + pluginCache);
+	
+	public void readFromCache() {
+		Logger.DEBUG(TAG, "Read from chache");
 		ArrayList<String> enabledPlugins = new ArrayList<String>();
 		if (pluginCache != null) {
 			SharedPreferences prefs = ctx.getSharedPreferences("org.androidanalyzer.plugin.status", 0);
@@ -152,17 +140,35 @@ public class AnalyzerCore {
 				}
 			}
 		}
-		int size = enabledPlugins.size();
-		/* Updating UI on Analysis start */
+		Logger.DEBUG(TAG, "Non sorted enabledPlugins - " + enabledPlugins);
+		ArrayList<String> sortedEnabledPlugins = sortPluginList(enabledPlugins);
+		Logger.DEBUG(TAG, "Sorted enabledPlugins - " + sortedEnabledPlugins);
+	}
+	/**
+	 * Starts Analysis in the Core. Each plugin is taken from the registry Cache
+	 * and called for analysis.
+	 * 
+	 * @return Data object containing report from all the plugins that were
+	 *         registered
+	 */
+	public Data startAnalyzing() {
+		Logger.DEBUG(TAG, "Start Analyzing");
+		Hashtable progressValues = null;
+		int pluginCounter = 0;
+		Data plugins = null;
+		String status = null;
+		if (uiCallb != null)
+			progressValues = new Hashtable(5);
+		cleanReport();
+		Logger.DEBUG(TAG, "pluginCache : " + pluginCache);		
+		int size = sortedEnabledPlugins.size();
+		 //Updating UI on Analysis start 
 		if (progressValues != null) {
 			progressValues.put(UICallback.NUMBER_OF_PLUGINS, size);
 			uiCallb.updateAnalysisProgress(progressValues);
 		}
 		String pluginName = null;
 		String description = "";
-		Logger.DEBUG(TAG, "Non sorted enabledPlugins - " + enabledPlugins);
-		ArrayList<String> sortedEnabledPlugins = sortPluginList(enabledPlugins);
-		Logger.DEBUG(TAG, "Sorted enabledPlugins - " + sortedEnabledPlugins);
 		if (size > 0) {
 			for (String plugin : sortedEnabledPlugins) {
 				runningPluginConn = connectToPlugin(plugin);
@@ -485,9 +491,10 @@ public class AnalyzerCore {
 		return fName;
 	}
 
-	public int getPluginUIRequired(){
+	public int getPluginUIRequired() {
 		return uiPluginsCounter;
 	}
+	
 	/**
 	 * Adds data to main Report in Core
 	 * 
@@ -547,6 +554,7 @@ public class AnalyzerCore {
 		reportMetadata = null;
 		tempReport = null;
 		uiPluginsCounter = 0;
+		sortedEnabledPlugins = null;
 	}
 
 	/**
@@ -892,7 +900,7 @@ public class AnalyzerCore {
 	}
 
 	private ArrayList<String> sortPluginList(ArrayList<String> enabledPlugins) {
-		ArrayList<String> sortPlugins = new ArrayList<String>(enabledPlugins.size());
+		sortedEnabledPlugins = new ArrayList<String>(enabledPlugins.size());
 		if (enabledPlugins != null && enabledPlugins.size() > 0) {
 			for (String plugin : enabledPlugins) {
 				PluginServiceConnection runningPluginConn = connectToPlugin(plugin);
@@ -902,12 +910,12 @@ public class AnalyzerCore {
 						Logger.DEBUG(TAG, "Plugin name: " + runningPluginConn.plugin.getName());
 						if (uI) {
 							Logger.DEBUG(TAG, "Plugin " + plugin + " required UI");
-							sortPlugins.add(0, plugin);
+							sortedEnabledPlugins.add(0, plugin);
 							uiPluginsCounter++;
 							Logger.DEBUG(TAG, "uiPluginsCounter : "+uiPluginsCounter);
 						} else {
 							Logger.DEBUG(TAG, "Plugin " + plugin + " doesn't required UI");
-							sortPlugins.add(plugin);
+							sortedEnabledPlugins.add(plugin);
 						}
 						ctx.unbindService(runningPluginConn);
 						runningPluginConn = null;
@@ -915,8 +923,8 @@ public class AnalyzerCore {
 						Logger.DEBUG(TAG, "Error while trying to activate debug for plugin : " + plugin);
 					}
 				}
-			}
+			}			
 		}
-		return sortPlugins;
+		return sortedEnabledPlugins;
 	}
 }

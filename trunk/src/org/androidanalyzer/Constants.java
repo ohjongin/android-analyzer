@@ -42,6 +42,7 @@ public class Constants {
 
 	public static final String GUI_HANDLER_PROGRESS = "handler.progress";
 	public static final String GUI_HANDLER_SEND = "handler.send";
+	public static final String GUI_HANDLER_PLUGIN_UI = "plugin.ui";
 	public static final String GUI_HANDLER_PROGRESS_TOTAL_PLUGINS = "total";
 	public static final String GUI_HANDLER_PROGRESS_CURRENT_PLUGIN = "current";
 	public static final String GUI_HANDLER_PROGRESS_PLUGIN_NAME = "name";

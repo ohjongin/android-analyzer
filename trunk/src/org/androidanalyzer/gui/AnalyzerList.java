@@ -18,6 +18,7 @@ import org.androidanalyzer.core.utils.Logger;
 import org.androidanalyzer.transport.Reporter;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -25,6 +26,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
 import android.view.Menu;
@@ -42,18 +44,24 @@ import android.widget.ListView;
  */
 public class AnalyzerList extends Activity implements UICallback {
 	
+	private static final int DIALOG_PLS_WAIT = 1;
 	private static final int MENU_SETTINGS = 0;
   private static final String TAG = "Analyzer-AnalyzerList";
   private static final String PREFS_NAME = "org.androidanalyzer.plugin.status";
+  private static final String SHOW_DIALOG = "Show";
   AnalyzerListAdapter adapter;
   ListView list;
 	Hashtable<String, PluginStatus> name2status;
   ArrayList<PluginStatus> plugins;
   
   ProgressDialog progressDialog;
+  ProgressDialog waitDialog;
   int current = 0;
-  ProgressHandler guiHandler;
+  DialogHandler guiHandler;
   AnalyzerCore core;
+  AlertDialog.Builder alert;
+  CustomDialog customDialog;
+  
 
   /** Called when the activity is first created. */
   /*
@@ -83,14 +91,19 @@ public class AnalyzerList extends Activity implements UICallback {
     Button analyzeB = (Button)findViewById(R.id.first_button);
     analyzeB.setText(R.string.analyze_button);
     analyzeB.setOnClickListener(new View.OnClickListener() {
-      
-      @Override
-      public void onClick(View v) {
-        guiHandler = new ProgressHandler(AnalyzerList.this);
-        showDialog(Constants.PROGRESS_DIALOG);
-        new Thread(new AnalyzingProcess(guiHandler, core)).start();
-      }
-    });
+
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see android.view.View.OnClickListener#onClick(android.view.View)
+			 */
+			@Override
+			public void onClick(View v) {
+				guiHandler = new DialogHandler(AnalyzerList.this);
+				showDialog(DIALOG_PLS_WAIT);
+				new Thread(new InitProcess(guiHandler, core)).start();
+			}
+		});
   }   
   
   /*
@@ -133,22 +146,40 @@ public class AnalyzerList extends Activity implements UICallback {
     return result || super.onOptionsItemSelected(item);
   }  
 	
+	public void showCustomDialog(int isPluginUIRequired) {
+		new Thread(new DialogThread(customDialogHandler)).start();
+		customDialog = new CustomDialog(AnalyzerList.this);
+		customDialog.setTitle(getString(R.string.alert_dialog_pos_title));
+		String msgDlg = getString(R.string.alert_dialog_plugins_gui);
+		msgDlg = String.format(msgDlg, isPluginUIRequired);
+		customDialog.setMessage(msgDlg);
+		customDialog.show();
+	}
+	
+	public void closeWaitDialog(){
+		waitDialog.dismiss();
+	}
+  
   /*
    * (non-Javadoc)
    * @see android.app.Activity#onCreateDialog(int)
    */
   @Override
-  protected Dialog onCreateDialog(int id) {
-    switch (id) {
-      case Constants.PROGRESS_DIALOG:
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progressDialog.setTitle(getString(R.string.progress_dialog_title));
-        progressDialog.setMessage(getString(R.string.progress_dialog_msg));
-        return progressDialog;
-    }
-    return null;
-  }
+	protected Dialog onCreateDialog(int id) {
+		switch (id) {
+		case Constants.PROGRESS_DIALOG:
+			progressDialog = new ProgressDialog(this);
+			progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+			progressDialog.setTitle(getString(R.string.progress_dialog_title));
+			progressDialog.setMessage(getString(R.string.progress_dialog_msg));
+			return progressDialog;
+		case DIALOG_PLS_WAIT:
+			waitDialog = new ProgressDialog(this);
+			waitDialog.setMessage(getString(R.string.alert_dialog_plugins_msg));
+			return waitDialog;
+		}
+		return null;
+	}
 
   /*
    * (non-Javadoc)
@@ -236,6 +267,10 @@ public class AnalyzerList extends Activity implements UICallback {
     }
   }
 	
+  protected void startAnalisys() {
+		new Thread(new AnalyzingProcess(guiHandler, core)).start();
+	}
+
   void updateProgress(int total, int current, String pluginName) {
     progressDialog.setMax(total);
     progressDialog.setProgress(0);
@@ -272,4 +307,66 @@ public class AnalyzerList extends Activity implements UICallback {
     }
   	return plugins;
   }
+
+	private Handler customDialogHandler = new Handler() {
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see android.os.Handler#handleMessage(android.os.Message)
+		 */
+		@Override
+		public void handleMessage(Message msg) {
+			Bundle bundle = msg.getData();
+			if (bundle.containsKey(SHOW_DIALOG)) {
+				Logger.DEBUG(TAG, "[handlerDialog] Message received");
+				customDialog.close();
+				showDialog(Constants.PROGRESS_DIALOG);
+				startAnalisys();
+				super.handleMessage(msg);
+			}
+			;
+		};
+	};
+
+	class DialogThread implements Runnable {
+
+		Handler handlerDialog;
+
+		public DialogThread(Handler handlerDialog) {
+			this.handlerDialog = handlerDialog;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see java.lang.Runnable#run()
+		 */
+		@Override
+		public void run() {
+			try {
+				Logger.DEBUG(TAG, "[DialogThread] Sleeping");
+				Thread.sleep(5000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			Message msg = handlerDialog.obtainMessage();
+			Bundle bundle = new Bundle();
+			bundle.putString(SHOW_DIALOG, "yes");
+			msg.setData(bundle);
+			handlerDialog.sendMessage(msg);
+			Logger.DEBUG(TAG, "[DialogThread] Message send");
+		}
+	}
+
+	
+	class CustomDialog extends AlertDialog {
+
+		protected CustomDialog(Context context) {
+			super(context);
+		}
+
+		public void close() {
+			this.dismiss();
+		}
+	}
 }
