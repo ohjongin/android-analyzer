@@ -135,13 +135,15 @@ public class RadioInterfacesPlugin extends AbstractPlugin {
 		}
 		TelephonyManager mTeleManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 		if (mTeleManager != null) {
+			int phoneTypeInt = -1;
 			Data radioSupported = new Data();
 			try {
 				radioSupported.setName("Supported");
-				if (mTeleManager.getPhoneType() != TelephonyManager.PHONE_TYPE_NONE) {
+				phoneTypeInt = mTeleManager.getPhoneType();
+				if (phoneTypeInt != TelephonyManager.PHONE_TYPE_NONE) {
 					radioSupported.setValue(Constants.NODE_VALUE_YES);
 				} else {
-					radioSupported.setValue(Constants.NODE_VALUE_YES);
+					radioSupported.setValue(Constants.NODE_VALUE_NO);
 				}
 				radioSupported.setValueType(Constants.NODE_VALUE_TYPE_BOOLEAN);
 				masterChildren.add(radioSupported);
@@ -149,58 +151,61 @@ public class RadioInterfacesPlugin extends AbstractPlugin {
 				Logger.ERROR(TAG, "Could not create supported node for Radio interfaces!", e);
 				status = "Could not create supported node for Radio interfaces!";
 			}
-
-			Data phoneType = new Data();
-			try {
-				phoneType.setName("Phone Type");
-				if (mTeleManager.getPhoneType() != TelephonyManager.PHONE_TYPE_GSM) {
-					phoneType.setValue(GSM);
-				} else if (mTeleManager.getPhoneType() != 2) {
-					phoneType.setValue(CDMA);
-				} else {
-					phoneType.setStatus(Constants.NODE_STATUS_FAILED);
-					phoneType.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
+			if ( phoneTypeInt > 0 ) {
+				Data phoneType = new Data();
+				try {
+					phoneType.setName("Phone Type");
+					switch ( phoneTypeInt ) {
+						case 1://GSM
+							phoneType.setValue(GSM);
+							break;
+						case 2://CDMA
+							phoneType.setValue(CDMA);
+							break;
+						default://future versions may support other networks
+							phoneType.setValue(UNKNOWN+"("+phoneTypeInt+")");
+							break;
+					}
+					masterChildren.add(phoneType);
+				} catch (Exception e) {
+					Logger.ERROR(TAG, "Could not create supported node for Radio interfaces!", e);
+					status = "Could not create supported node for Radio interfaces";
 				}
-				masterChildren.add(phoneType);
-			} catch (Exception e) {
-				Logger.ERROR(TAG, "Could not create supported node for Radio interfaces!", e);
-				status = "Could not create supported node for Radio interfaces";
+	
+				// if (mTeleManager.getPhoneType() ==
+				// TelephonyManager.PHONE_TYPE_GSM) {
+				// int networkType = mTeleManager.getNetworkType();
+				// Logger.DEBUG(TAG, "Network: " + networkType);
+				// String type =
+				// getNetworkTypeReadableName(networkType);
+				// Logger.DEBUG(TAG, "Network: " + type);
+				// ArrayList<Data> twoChildren = new
+				// ArrayList<Data>(2);
+				// Data twoG = get2GFeatures(twoChildren, type);
+				// masterChildren.add(twoG);
+				// }
+				/*
+				 * else if (mTeleManager.getPhoneType() ==
+				 * TelephonyManager.PHONE_TYPE_CDMA) { // check the phone type, cdma is
+				 * not available before API 2.0 try { Class.forName("CdmaCellLocation"); }
+				 * catch (Exception ex) { Logger.ERROR(TAG,
+				 * "Failed to initialize CDMA cell class", ex); } }
+				 */
+	
+				// Creating Current Network node
+				Data currentNetwork = new Data();
+				try {
+					currentNetwork.setName("Current Network");
+					Data networkType = new Data();
+					networkType.setName("Type");
+					networkType.setValue(getNetworkTypeReadableName(mTeleManager.getNetworkType()));
+					currentNetwork.setValue(networkType);
+					masterChildren.add(currentNetwork);
+				} catch (Exception e) {
+					Logger.ERROR(TAG, "Could not create supported node for Radio interfaces!", e);
+					status = "Could not create supported node for Radio interfaces!";
+				}
 			}
-
-			// if (mTeleManager.getPhoneType() ==
-			// TelephonyManager.PHONE_TYPE_GSM) {
-			// int networkType = mTeleManager.getNetworkType();
-			// Logger.DEBUG(TAG, "Network: " + networkType);
-			// String type =
-			// getNetworkTypeReadableName(networkType);
-			// Logger.DEBUG(TAG, "Network: " + type);
-			// ArrayList<Data> twoChildren = new
-			// ArrayList<Data>(2);
-			// Data twoG = get2GFeatures(twoChildren, type);
-			// masterChildren.add(twoG);
-			// }
-			/*
-			 * else if (mTeleManager.getPhoneType() ==
-			 * TelephonyManager.PHONE_TYPE_CDMA) { // check the phone type, cdma is
-			 * not available before API 2.0 try { Class.forName("CdmaCellLocation"); }
-			 * catch (Exception ex) { Logger.ERROR(TAG,
-			 * "Failed to initialize CDMA cell class", ex); } }
-			 */
-
-			// Creating Current Network node
-			Data currentNetwork = new Data();
-			try {
-				currentNetwork.setName("Current Network");
-				Data networkType = new Data();
-				networkType.setName("Type");
-				networkType.setValue(getNetworkTypeReadableName(mTeleManager.getNetworkType()));
-				currentNetwork.setValue(networkType);
-				masterChildren.add(currentNetwork);
-			} catch (Exception e) {
-				Logger.ERROR(TAG, "Could not create supported node for Radio interfaces!", e);
-				status = "Could not create supported node for Radio interfaces!";
-			}
-
 		}
 		parent = addToParent(parent, masterChildren);
 		return parent;

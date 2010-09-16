@@ -134,38 +134,51 @@ public class APIPlugin extends AbstractPlugin {
 			status = "Could not set API Level node!";
 		}
 
-		/* Google */
+		//TODO (s.djukic) The entire Google API code below is commented out temporarily.
+		//In order to use a library we must declare uses-library in the manifest
+		//I tried it but couldn't make it work event on Google 2.2 AVD. Also,
+		//they say that the app won't install unless you have the library installed
+		//on the device as well, which will be a huge blocker (though needs to be verified)
+		//Alternative to this, as I see it currently, is to have a separate apk being
+		//installed and uninstalled at runtime with user consent, but this would hinder
+		//the end user experience a lot. Ideas welcome!
+
+/*
+		// Google
 		Data googleHolder = new Data();
+		
+		// Google -> com.google.android.maps
 		Data mapViewHolder = new Data();
 		try {
-			ArrayList<Data> googleChildren = new ArrayList<Data>(2);
 			googleHolder.setName(GOOGLE);
-			/* Google map */
-			mapViewHolder.setName(GMAPS);
-			try {
-				Object classMapView = Class.forName("com.google.android.maps.MapView").newInstance();
-				if (classMapView == null) {
-					mapViewHolder.setValue(Constants.NODE_VALUE_NO);
-					mapViewHolder.setStatus(Constants.NODE_STATUS_OK);
-				}
-				mapViewHolder.setValue(Constants.NODE_VALUE_YES);
-				mapViewHolder.setStatus(Constants.NODE_STATUS_OK);
-			} catch (ClassNotFoundException e) {
-				mapViewHolder.setValue(Constants.NODE_VALUE_NO);
-				mapViewHolder.setStatus(Constants.NODE_STATUS_OK);
-			}
-			mapViewHolder.setValueType(Constants.NODE_VALUE_TYPE_BOOLEAN);
-			mapViewHolder.setConfirmationLevel(Constants.NODE_CONFIRMATION_LEVEL_TEST_CASE_CONFIRMED);
-			mapViewHolder.setInputSource(Constants.NODE_INPUT_SOURCE_AUTOMATIC);
-			googleChildren.add(mapViewHolder);
 
+			ArrayList<Data> googleChildren = new ArrayList<Data>(2);
+			mapViewHolder.setName(GMAPS);
+			Object classMapView = null;
+			try {
+				//classMapView = Class.forName("com.google.android.maps.MapView");//this way we avoid class linking
+				//classMapView = com.google.android.maps.MapView.class;//alternative, in case we nede to explicitly import the class
+			} catch (Throwable e) {
+				Logger.ERROR(TAG, "Could not obtain MapView", e);
+			}
+			if (classMapView == null) {
+				mapViewHolder.setValue(Constants.NODE_VALUE_NO);
+			} else {
+				mapViewHolder.setValue(Constants.NODE_VALUE_YES);
+			}
+			mapViewHolder.setStatus(Constants.NODE_STATUS_OK);
+			mapViewHolder.setValueType(Constants.NODE_VALUE_TYPE_BOOLEAN);
+			googleChildren.add(mapViewHolder);
+			
 			// TODO Check for others APIs <API Owner Name> <API Package Name>
+			
 			googleHolder = addToParent(googleHolder, googleChildren);
 			masterChildren.add(googleHolder);
 		} catch (Exception e) {
 			Logger.ERROR(TAG, "Could not set Google node!", e);
 			status = "Could not set Google node!";
 		}
+*/
 		parent = addToParent(parent, masterChildren);
 		return parent;
 	}
