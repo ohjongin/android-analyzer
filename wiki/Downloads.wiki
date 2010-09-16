@@ -1,5 +1,5 @@
 #labels Featured
 = Downloads=
 || *Versions* || *Stable* || *Changes* ||
-|| [http://android-analyzer.googlecode.com/files/andanalyzer-debug-0.9.0.apk 0.9.0 Debug] || No || First public debug version ||
-|| [http://android-analyzer.googlecode.com/files/andanalyzer-debug-0.9.1.apk 0.9.1 Debug] || Yes || - Added [x] nodes for unsupported sensor types<br>- App version now consistent across the manifest, report metadata and about box<br>- Changed plugin status from "passed" to yes/no values (X and V icons)<br>- Display density nodes added and restructured. Resolution values fixed<br>- Phone type detection fixed<br>- Keyboard plugin does not require UI anymore<br>- Removed Google API detection temporarily ||
+|| [http://code.google.com/p/android-analyzer/downloads/detail?name=andanalyzer-debug-0.9.1.apk&can=2&q= 0.9.1 Debug] || Yes || Multiple fixes:<br>- Added [x] nodes for unsupported sensor types<br>- App version now consistent across the manifest, report metadata and about box<br>- Changed plugin status from "passed" to yes/no values (X and V icons)<br>- Display density nodes added and restructured. Resolution values fixed<br>- Phone type detection fixed<br>- Keyboard plugin does not require UI anymore<br>- Removed Google API detection temporarily ||
+|| [http://code.google.com/p/android-analyzer/downloads/detail?name=andanalyzer-debug-0.9.0.apk&can=2&q= 0.9.0 Debug] || No || First public debug version with all features implemented||
