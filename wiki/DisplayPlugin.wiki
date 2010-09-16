@@ -16,8 +16,8 @@ The following table defines the structure of data being inserted in the report, 
 ||      || || || Logical || _integer_ || dpi || {{{DisplayMetrics.density}}} ||
 ||      || || || Logical DPI || _integer_ || dpi || If API>=4 {{{DisplayMetrics.densityDPI}}} ||
 ||      || || || Scaled || _integer_ || dpi || {{{DisplayMetrics.scaledDensity}}} ||
-||      || || || Horizontal DPI || _integer_ || dpi || {{{DisplayMetrics.xdpi}}} ||
-||      || || || Vertical DPI || _integer_ || dpi || {{{DisplayMetrics.ydpi}}} ||
+||      || || || Horizontal || _integer_ || dpi || {{{DisplayMetrics.xdpi}}} ||
+||      || || || Vertical || _integer_ || dpi || {{{DisplayMetrics.ydpi}}} ||
 ||      || || Display size || || _double_ (e.g. 3.7) || inch || Unknown, but we could use xdpi, ydpi and dpi to calculate the size diagonal ||
 ||      || || Display technology || || _string_ (e.g. AMOLED, etc.) || || Unknown, N/A ||
 ||      || || Touch support || || _boolean_ (e.g. Y, N) || || Unknown, N/A ||
