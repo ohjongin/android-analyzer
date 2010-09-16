@@ -37,6 +37,10 @@ public class AboutActivity extends Activity {
 		String authorMail = "<a href="+getString(R.string.about_vendor_mail)+">"+getString(R.string.about_vendor_name)+"</a>";
 		contactName.setText(Html.fromHtml(authorMail), TextView.BufferType.SPANNABLE);
 		contactName.setMovementMethod(LinkMovementMethod.getInstance());
+		//concat version
+		String appVersionName = getResources().getString(R.string.app_version_name);
+		TextView aaVersion = (TextView)findViewById(R.id.about_version);
+		aaVersion.setText(aaVersion.getText()+" "+appVersionName);
 	}
 	
 	
