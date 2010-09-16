@@ -161,115 +161,107 @@ public class SensorsPlugin extends AbstractPlugin {
 
 	private ArrayList<Data> getSensorInfo(SensorManager sensorMgr, ArrayList<Data> masterChildren) {
 		Data accelerometer = new Data();
-		if (!sensorMgr.getSensorList(Sensor.TYPE_ACCELEROMETER).isEmpty()) {
-			try {
-				accelerometer.setName(ACCELEROMETER);
-				accelerometer.setValue(Constants.NODE_VALUE_YES);
-				accelerometer.setValueType(Constants.NODE_VALUE_TYPE_BOOLEAN);
-				Logger.DEBUG(TAG, "Accelemoter");
-				masterChildren.add(accelerometer);
-			} catch (Exception e) {
-				Logger.ERROR(TAG, "Failed to set accelerometer sensor", e);
-				status = "Failed to set accelerometer sensor";
-			}
+		try {
+			accelerometer.setName(ACCELEROMETER);
+			accelerometer.setValue(!sensorMgr.getSensorList(Sensor.TYPE_ACCELEROMETER).isEmpty()
+									? Constants.NODE_VALUE_YES : Constants.NODE_VALUE_NO);
+			accelerometer.setValueType(Constants.NODE_VALUE_TYPE_BOOLEAN);
+			Logger.DEBUG(TAG, "Accelemoter");
+			masterChildren.add(accelerometer);
+		} catch (Exception e) {
+			Logger.ERROR(TAG, "Failed to set accelerometer sensor", e);
+			status = "Failed to set accelerometer sensor";
 		}
 
 		Data proximity = new Data();
-		if (!sensorMgr.getSensorList(Sensor.TYPE_PROXIMITY).isEmpty()) {
-			try {
-				proximity.setName(PROXIMITY);
-				proximity.setValue(Constants.NODE_VALUE_YES);
-				proximity.setValueType(Constants.NODE_VALUE_TYPE_BOOLEAN);
-				Logger.DEBUG(TAG, "Proximity");
-				masterChildren.add(proximity);
-			} catch (Exception e) {
-				Logger.ERROR(TAG, "Failed to set proximity sensor", e);
-				status = "Failed to set proximity sensor";
-			}
+		try {
+			proximity.setName(PROXIMITY);
+			proximity.setValue(!sensorMgr.getSensorList(Sensor.TYPE_PROXIMITY).isEmpty()
+								? Constants.NODE_VALUE_YES : Constants.NODE_VALUE_NO);
+			proximity.setValueType(Constants.NODE_VALUE_TYPE_BOOLEAN);
+			Logger.DEBUG(TAG, "Proximity");
+			masterChildren.add(proximity);
+		} catch (Exception e) {
+			Logger.ERROR(TAG, "Failed to set proximity sensor", e);
+			status = "Failed to set proximity sensor";
 		}
 
-		Data giroscope = new Data();
-		if (!sensorMgr.getSensorList(Sensor.TYPE_GYROSCOPE).isEmpty()) {
-			try {
-				giroscope.setName(GYROSCOPE);
-				giroscope.setValue(Constants.NODE_VALUE_YES);
-				giroscope.setValueType(Constants.NODE_VALUE_TYPE_BOOLEAN);
-				Logger.DEBUG(TAG, "Gyroscope");
-				masterChildren.add(giroscope);
-			} catch (Exception e) {
-				Logger.ERROR(TAG, "Failed to set giroscope sensor", e);
-				status = "Failed to set giroscope sensor";
-			}
+		Data gyroscope = new Data();
+		try {
+			gyroscope.setName(GYROSCOPE);
+			gyroscope.setValue(!sensorMgr.getSensorList(Sensor.TYPE_GYROSCOPE).isEmpty()
+								? Constants.NODE_VALUE_YES : Constants.NODE_VALUE_NO);
+			gyroscope.setValueType(Constants.NODE_VALUE_TYPE_BOOLEAN);
+			Logger.DEBUG(TAG, "Gyroscope");
+			masterChildren.add(gyroscope);
+		} catch (Exception e) {
+			Logger.ERROR(TAG, "Failed to set giroscope sensor", e);
+			status = "Failed to set giroscope sensor";
 		}
 
 		Data light = new Data();
-		if (!sensorMgr.getSensorList(Sensor.TYPE_LIGHT).isEmpty()) {
-			try {
-				light.setName(LIGHT);
-				light.setValue(Constants.NODE_VALUE_YES);
-				light.setValueType(Constants.NODE_VALUE_TYPE_BOOLEAN);
-				Logger.DEBUG(TAG, "Light");
-				masterChildren.add(light);
-			} catch (Exception e) {
-				Logger.ERROR(TAG, "Failed to set light sensor", e);
-				status = "Failed to set light sensor";
-			}
+		try {
+			light.setName(LIGHT);
+			light.setValue(!sensorMgr.getSensorList(Sensor.TYPE_LIGHT).isEmpty()
+							? Constants.NODE_VALUE_YES : Constants.NODE_VALUE_NO);
+			light.setValueType(Constants.NODE_VALUE_TYPE_BOOLEAN);
+			Logger.DEBUG(TAG, "Light");
+			masterChildren.add(light);
+		} catch (Exception e) {
+			Logger.ERROR(TAG, "Failed to set light sensor", e);
+			status = "Failed to set light sensor";
 		}
 
 		Data orientation = new Data();
-		if (!sensorMgr.getSensorList(Sensor.TYPE_ORIENTATION).isEmpty()) {
-			try {
-				orientation.setName(ORIENTATION);
-				orientation.setValue(Constants.NODE_VALUE_YES);
-				orientation.setValueType(Constants.NODE_VALUE_TYPE_BOOLEAN);
-				Logger.DEBUG(TAG, "Orientation");
-				masterChildren.add(orientation);
-			} catch (Exception e) {
-				Logger.ERROR(TAG, "Failed to set orientation sensor", e);
-				status = "Failed to set orientation sensor";
-			}
+		try {
+			orientation.setName(ORIENTATION);
+			orientation.setValue(!sensorMgr.getSensorList(Sensor.TYPE_ORIENTATION).isEmpty()
+									? Constants.NODE_VALUE_YES : Constants.NODE_VALUE_NO);
+			orientation.setValueType(Constants.NODE_VALUE_TYPE_BOOLEAN);
+			Logger.DEBUG(TAG, "Orientation");
+			masterChildren.add(orientation);
+		} catch (Exception e) {
+			Logger.ERROR(TAG, "Failed to set orientation sensor", e);
+			status = "Failed to set orientation sensor";
 		}
 
 		Data pressure = new Data();
-		if (!sensorMgr.getSensorList(Sensor.TYPE_PRESSURE).isEmpty()) {
-			try {
-				pressure.setName(PRESSURE);
-				pressure.setValue(Constants.NODE_VALUE_YES);
-				pressure.setValueType(Constants.NODE_VALUE_TYPE_BOOLEAN);
-				Logger.DEBUG(TAG, "Pressure");
-				masterChildren.add(pressure);
-			} catch (Exception e) {
-				Logger.ERROR(TAG, "Failed to set pressure sensor", e);
-				status = "Failed to set pressure sensor";
-			}
+		try {
+			pressure.setName(PRESSURE);
+			pressure.setValue(!sensorMgr.getSensorList(Sensor.TYPE_PRESSURE).isEmpty()
+								? Constants.NODE_VALUE_YES : Constants.NODE_VALUE_NO);
+			pressure.setValueType(Constants.NODE_VALUE_TYPE_BOOLEAN);
+			Logger.DEBUG(TAG, "Pressure");
+			masterChildren.add(pressure);
+		} catch (Exception e) {
+			Logger.ERROR(TAG, "Failed to set pressure sensor", e);
+			status = "Failed to set pressure sensor";
 		}
 
 		Data temperature = new Data();
-		if (!sensorMgr.getSensorList(Sensor.TYPE_TEMPERATURE).isEmpty()) {
-			try {
-				temperature.setName(TEMPERATURE);
-				temperature.setValue(Constants.NODE_VALUE_YES);
-				temperature.setValueType(Constants.NODE_VALUE_TYPE_BOOLEAN);
-				masterChildren.add(temperature);
-				Logger.DEBUG(TAG, "Temperature");
-			} catch (Exception e) {
-				Logger.ERROR(TAG, "Failed to set temperature sensor", e);
-				status = "Failed to set temperature sensor";
-			}
+		try {
+			temperature.setName(TEMPERATURE);
+			temperature.setValue(!sensorMgr.getSensorList(Sensor.TYPE_TEMPERATURE).isEmpty()
+									? Constants.NODE_VALUE_YES : Constants.NODE_VALUE_NO);
+			temperature.setValueType(Constants.NODE_VALUE_TYPE_BOOLEAN);
+			masterChildren.add(temperature);
+			Logger.DEBUG(TAG, "Temperature");
+		} catch (Exception e) {
+			Logger.ERROR(TAG, "Failed to set temperature sensor", e);
+			status = "Failed to set temperature sensor";
 		}
 
 		Data magnetic = new Data();
-		if (!sensorMgr.getSensorList(Sensor.TYPE_MAGNETIC_FIELD).isEmpty()) {
-			try {
-				magnetic.setName(MAGNETIC);
-				magnetic.setValue(Constants.NODE_VALUE_YES);
-				magnetic.setValueType(Constants.NODE_VALUE_TYPE_BOOLEAN);
-				Logger.DEBUG(TAG, "Magnetic");
-				masterChildren.add(magnetic);
-			} catch (Exception e) {
-				Logger.ERROR(TAG, "Failed to set magnetic sensor", e);
-				status = "Failed to set magnetic sensor";
-			}
+		try {
+			magnetic.setName(MAGNETIC);
+			magnetic.setValue(!sensorMgr.getSensorList(Sensor.TYPE_MAGNETIC_FIELD).isEmpty()
+								? Constants.NODE_VALUE_YES : Constants.NODE_VALUE_NO);
+			magnetic.setValueType(Constants.NODE_VALUE_TYPE_BOOLEAN);
+			Logger.DEBUG(TAG, "Magnetic");
+			masterChildren.add(magnetic);
+		} catch (Exception e) {
+			Logger.ERROR(TAG, "Failed to set magnetic sensor", e);
+			status = "Failed to set magnetic sensor";
 		}
 
 		return masterChildren;
