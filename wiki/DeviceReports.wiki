@@ -11,17 +11,20 @@ This is a [http://android-analyzer.googlecode.com/svn/trunk/docs/Sample%20Device
 || || || {{{<}}}Node{{{>}}} || || || || || || ||
 || || Metadata || || || || || || || ||
 || || || Analyzer || || || || || || ||
-|| || || || Version || || || String  || ||Format is: Major.Minor.Micro ||
+|| || || || Version || || || _string_ || ||Format is: Major.Minor.Micro ||
 || || || Plugins || || || || || || ||
 || || || || Plugin-{{{<x>}}}|| || || || || ||
-|| || || || || Human name || || String  || || Free text ||
-|| || || || || Class name || || String  || || this.getClass().getName() ||
-|| || || || || Version || || String   || || Format is: Major.Minor.Micro ||
-|| || || || || Vendor || || String   || || Free text ||
-|| || || || || Status || || String || || If status is "Failed" then Description node is available ||
-|| || || || || || Description || String || || ||
-|| || || Device || || || || || || ||
-|| || || || ID || || ||String || MD5H || Calculate hash code of TelephonyManager.getDeviceId().getBytes() ||
+|| || || || || Human name || || _string_|| || Free text ||
+|| || || || || Class name || || _string_|| || this.getClass().getName() ||
+|| || || || || Version || || _string_|| || Format is: Major.Minor.Micro ||
+|| || || || || Vendor || || _string_|| || Free text ||
+|| || || || || Status || || _boolean_ (e.g. Y, N) || || If failed then "Failure details" node is available ||
+|| || || || || Failure details || || _string_|| || Returned by the plugin ||
+|| || || Manufacturer || || || || || _string_ || _Build.class.getDeclaredField("MANUFACTURER")_ or _Build.PRODUCT_ as a fallback||
+|| || || Firmware version || || || || || _string_ || _Build.VERSION.RELEASE_ ||
+|| || || Operator || || || || || _string_ || _TelephonyManager.getNetworkOperatorName()_ ||
+|| || || Device ID Hash || || || ||String || MD5H || Calculate hash code of TelephonyManager.getDeviceId().getBytes() ||
+|| || || Model || || || || || _string_ || _Build.MODEL_ ||
 || || || Date|| || || || String ||Timestamp || Format is: yyyy/MM/dd HH:mm:ss ||
 
 
