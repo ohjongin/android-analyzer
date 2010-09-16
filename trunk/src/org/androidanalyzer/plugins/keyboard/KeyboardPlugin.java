@@ -196,7 +196,7 @@ public class KeyboardPlugin extends AbstractPlugin {
 
   @Override
   public boolean isPluginUIRequired() {
-	return true;
+	return false;
   }
 
 }
