@@ -47,7 +47,6 @@ import android.telephony.TelephonyManager;
  */
 public class AnalyzerCore {
 
-	private static final String VERSION = "1.0.0";
 	private static final String TAG = "Analyzer-Core";
 	private static int TIME_TO_WAIT_FOR_PLUGIN_CONNECTION;
 	private static int DEFAULT_MAX_TIME_TO_WAIT_FOR_PLUGIN_ANALYSIS_COMPLETION;
@@ -169,6 +168,7 @@ public class AnalyzerCore {
 		}
 		String pluginName = null;
 		String description = "";
+	
 		if (size > 0) {
 			for (String plugin : sortedEnabledPlugins) {
 				runningPluginConn = connectToPlugin(plugin);
@@ -214,7 +214,7 @@ public class AnalyzerCore {
 						Logger.DEBUG(TAG, "Waiting with TIME OUT");
 						while (pluginAnalyzing == true && tempReport == null && timeout > 0) {
 							try {
-								Thread.sleep(100);
+								Thread.sleep(100);//UI-less plugins are usually fast
 								timeout -= 100;
 							} catch (InterruptedException e) {
 								Logger.ERROR(TAG, "Could not Sleep thread in Core!");
@@ -224,7 +224,7 @@ public class AnalyzerCore {
 						Logger.DEBUG(TAG, "Waiting without TIME OUT");
 						while (pluginAnalyzing == true && tempReport == null) {
 							try {
-								Thread.sleep(100);
+								Thread.sleep(250);//UI plugins take more time
 							} catch (InterruptedException e) {
 								Logger.ERROR(TAG, "Could not Sleep thread in Core!");
 							}
@@ -296,7 +296,7 @@ public class AnalyzerCore {
 				manufacturer.setName(Constants.M_MANUFACTURER);
 				try {
 					// using reflection
-					Field manufacturerField = Build.class.getDeclaredField(Constants.MANUFACTURER);
+					Field manufacturerField = Build.class.getDeclaredField("MANUFACTURER");
 					manufacturerField.setAccessible(true);
 					Object myManufacturer = manufacturerField.get(null);
 					// value = android.os.Build.MANUFACTURER
@@ -380,10 +380,11 @@ public class AnalyzerCore {
 			Data analyzerVersion = new Data();
 			analyzerVersion.setName(Constants.METADATA_ANALYZER);
 			Data version = new Data();
+			String versionS = ctx.getResources().getString(R.string.app_version_name);
 			version.setName(Constants.METADATA_ANALYZER_VERSION);
-			version.setValue(VERSION);
+			version.setValue(versionS);
 			analyzerVersion.setValue(version);
-			Logger.DEBUG(TAG, "Version is: " + VERSION);
+			Logger.DEBUG(TAG, "Version is: " + versionS);
 			reportMetadata.setValue(analyzerVersion);
 		} catch (Exception e) {
 			Logger.ERROR(TAG, "Could not set Metadata!", e);
@@ -823,12 +824,16 @@ public class AnalyzerCore {
 
 			currentPluginStatus.setName(Constants.METADATA_PLUGIN_STATUS);
 			String status = plugin.getStatus();
-			if (status.equals(Constants.METADATA_PLUGIN_STATUS_PASSED)) {
-				currentPluginStatus.setValue(plugin.getStatus());
+			if (status.equals(Constants.METADATA_PLUGIN_STATUS_PASSED) || status.equals(Constants.NODE_STATUS_OK)) {
+				currentPluginStatus.setValue(Constants.NODE_VALUE_YES);
+				currentPluginStatus.setValueType(Constants.NODE_VALUE_TYPE_BOOLEAN);
 			} else {
+				currentPluginStatus.setValue(Constants.NODE_VALUE_NO);
+				currentPluginStatus.setValueType(Constants.NODE_VALUE_TYPE_BOOLEAN);
+				
 				Data currentPluginStatusDescription = new Data();
-				currentPluginStatusDescription.setName(Constants.METADATA_PLUGIN_STATUS_DESCRIPTION);
-				currentPluginStatusDescription.setValue(plugin.getStatus());
+				currentPluginStatusDescription.setName(Constants.METADATA_PLUGIN_FAILURE_DETAILS);
+				currentPluginStatusDescription.setValue(status);
 				currentPluginStatus.setValue(currentPluginStatusDescription);
 			}
 			currentPlugin.setValue(currentPluginStatus);
@@ -923,7 +928,7 @@ public class AnalyzerCore {
 						Logger.DEBUG(TAG, "Error while trying to activate debug for plugin : " + plugin);
 					}
 				}
-			}			
+			}
 		}
 		return sortedEnabledPlugins;
 	}
