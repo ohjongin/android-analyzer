@@ -1,0 +1,5 @@
+#labels Featured
+= Stable =
+|| *Version* || Stable || *Changes* ||
+|| [http://android-analyzer.googlecode.com/files/andanalyzer-debug-0.9.0.apk 0.9.0 Debug] || No || First public debug version ||
+|| [http://android-analyzer.googlecode.com/files/andanalyzer-debug-0.9.1.apk 0.9.1 Debug] || Yes || First public debug version ||
