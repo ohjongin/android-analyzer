@@ -27,7 +27,7 @@
     
     <string name="about_vendor_name">Android Analyzer Community</string>
     <string name="about_vendor_mail">mailto:android.analyzer@gmail.com</string>
-    <string name="about_version">Version: 0.9</string>
+    <string name="about_version">Version:</string>
     <string name="about_build">Build date: 16/Aug/2010</string>
 	<string name="about_vendor_label">Author:</string>
 </resources>
