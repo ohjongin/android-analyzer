@@ -64,7 +64,6 @@ public class Constants {
 	public static final String ROOT_DATA = "Data";
 	public static final String ROOT_METADATA = "Metadata";
 	public static final String MD5_IMEI = "md5.imei";
-	public static final String MANUFACTURER = "MANUFACTURER";
 	
 	public static final String M_MANUFACTURER = "Manufacturer";
 	public static final String M_DEVICE_MODEL = "Model";
@@ -80,10 +79,10 @@ public class Constants {
 	public static final String METADATA_PLUGIN_VERSION = "Version";
 	public static final String METADATA_PLUGIN_VENDOR = "Vendor";
 	public static final String METADATA_PLUGIN_STATUS = "Status";
-	public static final String METADATA_PLUGIN_STATUS_DESCRIPTION = "Description";
+	public static final String METADATA_PLUGIN_FAILURE_DETAILS = "Failure details";
 	public static final String METADATA_PLUGIN_STATUS_PASSED = "Passed";
 	public static final String METADATA_DEVICE = "Device ID";
-		public static final String METADATA_DEVICE_ID_METRIC = "MD5H";
+		public static final String METADATA_DEVICE_ID_METRIC = "MD5";
 	public static final String METADATA_DATE = "Date";
 	public static final String METADATA_DATE_METRIC = "Timestamp";
 	// File is located in data/data/org.androidanalyzer/files
