@@ -1,5 +1,6 @@
   * [Introduction]
   * [Roadmap]
+  * [Downloads]
   * [Architecture]
     * [Plugins]
       * [DisplayPlugin Display]
