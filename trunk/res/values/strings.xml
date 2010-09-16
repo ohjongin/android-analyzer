@@ -2,6 +2,7 @@
 <resources>
     <!-- Activity Names Strings -->
 	<string name="app_name">Device Analyzer</string>
+	<string name="app_version_name">0.9.1</string>
 	
 	<!-- Progress Dialog -->
 	<string name="progress_dialog_title">Analyzing...</string>
