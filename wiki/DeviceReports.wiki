@@ -14,17 +14,17 @@ This is a [http://android-analyzer.googlecode.com/svn/trunk/docs/Sample%20Device
 || || || || Version || || || _string_ || ||Format is: Major.Minor.Micro ||
 || || || Plugins || || || || || || ||
 || || || || Plugin-{{{<x>}}}|| || || || || ||
-|| || || || || Human name || || _string_|| || Free text ||
+|| || || || || Human name || || _string_|| || Human-readable name of the plugin||
 || || || || || Class name || || _string_|| || this.getClass().getName() ||
 || || || || || Version || || _string_|| || Format is: Major.Minor.Micro ||
 || || || || || Vendor || || _string_|| || Free text ||
 || || || || || Status || || _boolean_ (e.g. Y, N) || || If failed then "Failure details" node is available ||
 || || || || || Failure details || || _string_|| || Returned by the plugin ||
-|| || || Manufacturer || || || || || _string_ || _Build.class.getDeclaredField("MANUFACTURER")_ or _Build.PRODUCT_ as a fallback||
-|| || || Firmware version || || || || || _string_ || _Build.VERSION.RELEASE_ ||
-|| || || Operator || || || || || _string_ || _TelephonyManager.getNetworkOperatorName()_ ||
-|| || || Device ID Hash || || || ||String || MD5H || Calculate hash code of TelephonyManager.getDeviceId().getBytes() ||
-|| || || Model || || || || || _string_ || _Build.MODEL_ ||
+|| || || Manufacturer || || || || _string_ || || _Build.class.getDeclaredField("MANUFACTURER")_ or _Build.PRODUCT_ as a fallback||
+|| || || Firmware version || || || || _string_ || || _Build.VERSION.RELEASE_ ||
+|| || || Operator || || || || _string_ || || _TelephonyManager.getNetworkOperatorName()_ ||
+|| || || Device ID Hash || || || || String || MD5H || Calculate hash code of TelephonyManager.getDeviceId().getBytes() ||
+|| || || Model || || || || _string_ || || _Build.MODEL_ ||
 || || || Date|| || || || String ||Timestamp || Format is: yyyy/MM/dd HH:mm:ss ||
 
 
