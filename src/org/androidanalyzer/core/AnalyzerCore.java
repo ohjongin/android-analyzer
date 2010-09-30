@@ -47,7 +47,7 @@ import android.telephony.TelephonyManager;
  */
 public class AnalyzerCore {
 
-	private static final String TAG = "Analyzer-Core";
+  private static final String TAG = "Analyzer-Core";
 	private static int TIME_TO_WAIT_FOR_PLUGIN_CONNECTION;
 	private static int DEFAULT_MAX_TIME_TO_WAIT_FOR_PLUGIN_ANALYSIS_COMPLETION;
 	private static int DEFAULT_MIN_TIME_TO_WAIT_FOR_PLUGIN_ANALYSIS_COMPLETION;
@@ -127,7 +127,7 @@ public class AnalyzerCore {
 		Logger.DEBUG(TAG, "Read from chache");
 		ArrayList<String> enabledPlugins = new ArrayList<String>();
 		if (pluginCache != null) {
-			SharedPreferences prefs = ctx.getSharedPreferences("org.androidanalyzer.plugin.status", 0);
+			SharedPreferences prefs = ctx.getSharedPreferences(Constants.AA_STATUS_PREFS, 0);
 			String record;
 			PluginStatus decoded;
 			for (String pluginClass : pluginCache) {
@@ -153,12 +153,12 @@ public class AnalyzerCore {
 	 */
 	public Data startAnalyzing() {
 		Logger.DEBUG(TAG, "Start Analyzing");
-		Hashtable progressValues = null;
+		Hashtable<String, Object> progressValues = null;
 		int pluginCounter = 0;
 		Data plugins = null;
 		String status = null;
 		if (uiCallb != null)
-			progressValues = new Hashtable(5);
+			progressValues = new Hashtable<String, Object>(5);
 		Logger.DEBUG(TAG, "pluginCache : " + pluginCache);		
 		int size = sortedEnabledPlugins.size();
 		 //Updating UI on Analysis start 
@@ -473,7 +473,7 @@ public class AnalyzerCore {
 				fName = " sdcard/" + fName;
 			} else {
 				Logger.DEBUG(TAG, "SD card is not available");
-				fos = ctx.openFileOutput(fName, ctx.MODE_PRIVATE);
+				fos = ctx.openFileOutput(fName, Context.MODE_PRIVATE);
 				fName = " data/data/org.androidanalyzer/files/" + fName;
 			}
 			osw = new OutputStreamWriter(fos);
@@ -623,11 +623,6 @@ public class AnalyzerCore {
 					pluginCache = new ArrayList<String>();
 				}
 				pluginCache.add(pluginClass);
-				try {
-					checkNew(pluginClass);
-				} catch (Throwable t) {
-					t.printStackTrace();
-				}
 			}
 			Logger.DEBUG(TAG, "registered plugin : " + pluginClass);
 		}
@@ -708,7 +703,8 @@ public class AnalyzerCore {
 		@Override
 		public void onServiceConnected(ComponentName name, IBinder service) {
 			plugin = (IAnalyzerPlugin.Stub.asInterface((IBinder) service));
-			uiCallb.notifyPluginRegistered(plugin);
+			if (uiCallb != null)
+			  uiCallb.notifyPluginRegistered(plugin);
 			Logger.DEBUG(TAG, "Core Connected to plugin : " + name);
 		}
 
@@ -869,7 +865,7 @@ public class AnalyzerCore {
 	}
 
 	private void updatePluginStatus(String pluginName, String pluginClass, String status, String description) {
-		SharedPreferences prefs = ctx.getSharedPreferences("org.androidanalyzer.plugin.status", 0);
+		SharedPreferences prefs = ctx.getSharedPreferences(Constants.AA_STATUS_PREFS, 0);
 		String record = prefs.getString(pluginClass, null);
 		PluginStatus pluginStatus = null;
 		if (record != null) {
@@ -888,18 +884,6 @@ public class AnalyzerCore {
 		if (encode != null) {
 			Editor edit = prefs.edit();
 			edit.putString(pluginClass, encode);
-			edit.commit();
-		}
-	}
-
-	private void checkNew(String pluginClass) {
-		SharedPreferences prefs = ctx.getSharedPreferences("org.androidanalyzer.plugin.status", 0);
-		String record = prefs.getString(pluginClass, null);
-		if (record == null) {
-			String pluginName = pluginClass.substring(pluginClass.lastIndexOf(".") + 1);
-			PluginStatus status = new PluginStatus(pluginName, pluginClass, PluginStatus.STATUS_NOT_RUN, -1, "%");
-			Editor edit = prefs.edit();
-			edit.putString(pluginClass, PluginStatus.encodeStatus(status));
 			edit.commit();
 		}
 	}
@@ -931,5 +915,28 @@ public class AnalyzerCore {
 			}
 		}
 		return sortedEnabledPlugins;
+	}
+	
+	public void loadPluginMetadata() {
+	  PluginServiceConnection runningPlugin;
+	  PluginStatus status;
+	  SharedPreferences prefs = ctx.getSharedPreferences(Constants.AA_STATUS_PREFS, 0);
+	  Editor editor = prefs.edit();
+	  for (String plugin : pluginCache) {
+	    runningPlugin = connectToPlugin(plugin);
+	    if (runningPlugin != null && runningPlugin.plugin != null) {
+	      try {
+	        String name = runningPlugin.plugin.getName();
+	        String description = runningPlugin.plugin.getDescription();
+	        status = new PluginStatus(name, plugin, PluginStatus.STATUS_NOT_RUN, -1, description);
+	        editor.putString(plugin, PluginStatus.encodeStatus(status));
+	        ctx.unbindService(runningPlugin);
+	        runningPlugin = null;
+	      } catch (Exception e) {
+	        Logger.ERROR(TAG, "Error loading metadata from plugin: "+plugin, e);
+	      }	      
+	    }
+	  }
+	  editor.commit();
 	}
 }

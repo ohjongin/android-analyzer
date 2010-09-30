@@ -34,6 +34,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 /**
  * This is the main Activity of the Android Analyzer application.
@@ -58,9 +59,10 @@ public class AnalyzerList extends Activity implements UICallback {
   ProgressDialog waitDialog;
   int current = 0;
   DialogHandler guiHandler;
-  AnalyzerCore core;
+  static AnalyzerCore core;
   AlertDialog.Builder alert;
   CustomDialog customDialog;
+  RelativeLayout noResultsLayout;
   
 
   /** Called when the activity is first created. */
@@ -81,6 +83,8 @@ public class AnalyzerList extends Activity implements UICallback {
     plugins = preparePluginList(toUse);
     adapter = new AnalyzerListAdapter(toUse, plugins, this);
     list.setAdapter(adapter);
+    noResultsLayout = (RelativeLayout)findViewById(R.id.no_results);
+    checkVisibility(plugins.size());
     boolean debugEnabled = PreferencesManager.loadBooleanPreference(this, Constants.DEBUG);
     String host = PreferencesManager.loadStringPreference(this, Constants.HOST);
     if (host == null) {
@@ -105,6 +109,18 @@ public class AnalyzerList extends Activity implements UICallback {
 			}
 		});
   }   
+  
+  private void checkVisibility(int pluginSize) {
+    boolean hasPlugins = pluginSize != 0;
+    int listCurrent = list.getVisibility();
+    int layoutCurrent = noResultsLayout.getVisibility();
+    int listNew = hasPlugins ? View.VISIBLE : View.GONE;
+    int layoutNew = hasPlugins ? View.GONE : View.VISIBLE;
+    if (listCurrent != listNew)
+      list.setVisibility(listNew);
+    if (layoutCurrent != layoutNew)
+      noResultsLayout.setVisibility(layoutNew);
+  }
   
   /*
    * (non-Javadoc)
@@ -209,40 +225,44 @@ public class AnalyzerList extends Activity implements UICallback {
   @Override
   public void notifyPluginRegistered(IAnalyzerPlugin iAnalyzerPlugin) {
     try {
-      String pluginClass = iAnalyzerPlugin.getClassName();
-      SharedPreferences prefs = getSharedPreferences(PREFS_NAME, 0);
-      String status = prefs.getString(pluginClass, null);
-      String description = iAnalyzerPlugin.getDescription();
-      PluginStatus decoded = null;
-      String name = iAnalyzerPlugin.getName();
-      if (status == null) {
-        decoded = new PluginStatus(name, pluginClass, PluginStatus.STATUS_NOT_RUN, -1, description);
-      } else {
-        decoded = PluginStatus.decodeStatus(status);
-        decoded.setPluginName(name);
-        decoded.setPluginDescription(description);
-      }
-      if (decoded != null) {
-        String encoded = PluginStatus.encodeStatus(decoded);
-        if (encoded != null) {
-          Editor edit = prefs.edit();
-          edit.putString(pluginClass, encoded);
-          edit.commit();
-        }
-        PluginStatus old = name2status.get(pluginClass);
-        if (old != null) {
-          plugins.remove(old);
-       }
-        plugins.add(decoded);
-        name2status.put(pluginClass, decoded);
-        adapter.notifyDataSetChanged();
-//        adapter.listItems = plugins;
-//        list.setAdapter(adapter);
-      }
-    } catch (RemoteException e) {
-      Logger.ERROR(TAG, "Error handling plugin registered: "+e.getMessage());
-    }
-    
+      Logger.DEBUG(TAG, "notifyPluginRegistered: "+iAnalyzerPlugin.getName());
+    } catch (Throwable t) {}
+//    try {
+//      String pluginClass = iAnalyzerPlugin.getClassName();
+//      SharedPreferences prefs = getSharedPreferences(PREFS_NAME, 0);
+//      String status = prefs.getString(pluginClass, null);
+//      String description = iAnalyzerPlugin.getDescription();
+//      PluginStatus decoded = null;
+//      String name = iAnalyzerPlugin.getName();
+//      if (status == null) {
+//        decoded = new PluginStatus(name, pluginClass, PluginStatus.STATUS_NOT_RUN, -1, description);
+//      } else {
+//        decoded = PluginStatus.decodeStatus(status);
+//        decoded.setPluginName(name);
+//        decoded.setPluginDescription(description);
+//      }
+//      if (decoded != null) {
+//        String encoded = PluginStatus.encodeStatus(decoded);
+//        if (encoded != null) {
+//          Editor edit = prefs.edit();
+//          edit.putString(pluginClass, encoded);
+//          edit.commit();
+//        }
+//        PluginStatus old = name2status.get(pluginClass);
+//        if (old != null) {
+//          plugins.remove(old);
+//       }
+//        plugins.add(decoded);
+//        checkVisibility(plugins.size());
+//        name2status.put(pluginClass, decoded);
+//        adapter.notifyDataSetChanged();
+////        adapter.listItems = plugins;
+////        list.setAdapter(adapter);
+//      }
+//    } catch (RemoteException e) {
+//      Logger.ERROR(TAG, "Error handling plugin registered: "+e.getMessage());
+//    }
+//    
   }
 
   /*
@@ -252,19 +272,30 @@ public class AnalyzerList extends Activity implements UICallback {
   @Override
   public void notifyPluginUnregistered(IAnalyzerPlugin iAnalyzerPlugin) {
     try {
-      String pluginClass = iAnalyzerPlugin.getClassName();
-      SharedPreferences prefs = getSharedPreferences(PREFS_NAME, 0);
-      String status = prefs.getString(pluginClass, null);
-      if (status != null) {
-        PluginStatus decoded = PluginStatus.decodeStatus(status);
-        if (decoded != null) {
-          plugins.remove(decoded);
-          name2status.remove(pluginClass);
-        }
-      }
-    } catch (RemoteException e) {
-      Logger.ERROR(TAG, "Error handling plugin unregistered: "+e.getMessage());
-    }
+      Logger.DEBUG(TAG, "notifyPluginUnregistered: "+iAnalyzerPlugin.getName());
+    } catch (Throwable t) {}
+//    try {
+//      String pluginClass = iAnalyzerPlugin.getClassName();
+//      SharedPreferences prefs = getSharedPreferences(PREFS_NAME, 0);
+//      String status = prefs.getString(pluginClass, null);
+//      if (status != null) {
+//        PluginStatus decoded = PluginStatus.decodeStatus(status);
+//        if (decoded != null) {
+//          plugins.remove(decoded);
+//          name2status.remove(pluginClass);
+//          checkVisibility(plugins.size());
+//        }
+//      }
+//    } catch (RemoteException e) {
+//      Logger.ERROR(TAG, "Error handling plugin unregistered: "+e.getMessage());
+//    }
+  }
+  
+  void notifyAnalysisCompleted() {
+    plugins = preparePluginList(this);
+    checkVisibility(plugins.size());
+    adapter.listItems = plugins;
+    adapter.notifyDataSetChanged();
   }
 	
   protected void startAnalisys() {
@@ -286,6 +317,7 @@ public class AnalyzerList extends Activity implements UICallback {
     String host = PreferencesManager.loadStringPreference(this, Constants.HOST);
     intent.putExtra(Constants.GUI_HANDLER_SEND, result);
     intent.putExtra(Constants.HOST, host);
+    notifyAnalysisCompleted();    
     startActivity(intent);
   }
   

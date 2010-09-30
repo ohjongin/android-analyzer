@@ -6,14 +6,19 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import org.androidanalyzer.Constants;
 import org.androidanalyzer.R;
 import org.androidanalyzer.core.PluginStatus;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -28,6 +33,7 @@ public class PluginConfiguration extends Activity {
   AnalyzerConfigAdapter adapter;
   ArrayList<PluginStatus> plugins;
   ListView list;
+  ProgressDialog loadDialog;
   
   /*
    * (non-Javadoc)
@@ -40,7 +46,7 @@ public class PluginConfiguration extends Activity {
     list = (ListView)findViewById(R.id.config_list);
     plugins = preparePluginList(getApplicationContext());
     adapter = new AnalyzerConfigAdapter(getApplicationContext(), plugins);
-    list.setAdapter(adapter);
+    list.setAdapter(adapter);    
     Button saveB = (Button)findViewById(R.id.first_button);
     saveB.setOnClickListener(new View.OnClickListener() {
       
@@ -65,10 +71,14 @@ public class PluginConfiguration extends Activity {
         resetPluginState();
       }
     });
+    if (plugins.size() == 0) {
+      showDialog(Constants.PROGRESS_DIALOG);
+      new Thread(new ConfigProcess(handler, AnalyzerList.core)).start();
+    }
   }
   
   private void resetPluginState() {
-    SharedPreferences prefs = getSharedPreferences("org.androidanalyzer.plugin.status", 0);
+    SharedPreferences prefs = getSharedPreferences(Constants.AA_STATUS_PREFS, 0);
     Editor edit = prefs.edit();
     String encoded;
     for (PluginStatus toReset : plugins) {
@@ -84,7 +94,7 @@ public class PluginConfiguration extends Activity {
   }
   
   private void savePluginState() {
-    SharedPreferences prefs = getSharedPreferences("org.androidanalyzer.plugin.status", 0);
+    SharedPreferences prefs = getSharedPreferences(Constants.AA_STATUS_PREFS, 0);
     PluginStatus saved;
     String record;
     ArrayList<PluginStatus> toSave = new ArrayList<PluginStatus>();
@@ -115,7 +125,7 @@ public class PluginConfiguration extends Activity {
   
   ArrayList<PluginStatus> preparePluginList(Context ctx) {
     ArrayList<PluginStatus> plugins = new ArrayList<PluginStatus>();
-    SharedPreferences prefs = ctx.getSharedPreferences("org.androidanalyzer.plugin.status", 0);
+    SharedPreferences prefs = ctx.getSharedPreferences(Constants.AA_STATUS_PREFS, 0);
     Map<String, ?> all = prefs.getAll();
     Set<?> values = all.entrySet();
     Iterator<?> it = values.iterator();
@@ -129,6 +139,34 @@ public class PluginConfiguration extends Activity {
     }
     return plugins;
   }
+  
+  final Handler handler = new Handler() {
+
+    @Override
+    public void handleMessage(Message msg) {
+      boolean done = msg.getData().getBoolean(Constants.REPORT_DONE);
+      if (done) {
+        plugins = preparePluginList(PluginConfiguration.this);
+        adapter.listItems = plugins;
+        adapter.notifyDataSetChanged();
+        dismissDialog(Constants.PROGRESS_DIALOG);
+      }
+      // TODO Auto-generated method stub
+      super.handleMessage(msg);
+    }    
+  };
+
+  @Override
+  protected Dialog onCreateDialog(int id) {
+    if (id == Constants.PROGRESS_DIALOG) {
+      loadDialog = new ProgressDialog(this);
+      loadDialog.setMessage(getString(R.string.load_plugins_message));
+      return loadDialog;
+    }
+    return super.onCreateDialog(id);
+  }
+  
+  
   
 
 }
