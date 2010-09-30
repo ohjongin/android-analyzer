@@ -10,6 +10,7 @@ import org.androidanalyzer.core.utils.Logger;
 import org.androidanalyzer.plugins.AbstractPlugin;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
@@ -31,6 +32,10 @@ public class DisplayPlugin extends AbstractPlugin {
 	private static final String HRES = "Horizontal resolution";
 	private static final String VRES = "Vertical resolution";
 	private static final String TOUCH = "Touch support";
+	private static final String TOUCH_METHOD = "Touch method";
+	private static final String TOUCH_METHOD_UNKNOWN = "Unknown";
+	private static final String TOUCH_METHOD_STYLUS = "Stylus";
+	private static final String TOUCH_METHOD_FINGER = "Finger";
 	private static final String COLOR_DEPTH = "Color depth";
 	private static final String COLOR_DEPTH_METRIC = "bit";
 	private static final String DENSITY = "Density";
@@ -325,17 +330,42 @@ public class DisplayPlugin extends AbstractPlugin {
 			Logger.ERROR(TAG, "Could not set Density Vertical node!", e);
 			status = "Could not set Density Vertical node!"; 
 		}
+		
+		//Touch support
+	    Configuration c = getResources().getConfiguration();
+	    int touchMethod = c.touchscreen;
 		try {
 			touchHolder.setName(TOUCH);
-			touchHolder.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_API);
-			touchHolder.setValueType(Constants.NODE_VALUE_TYPE_STRING);
+			if ( touchMethod == Configuration.TOUCHSCREEN_UNDEFINED || touchMethod == Configuration.TOUCHSCREEN_NOTOUCH )
+				touchHolder.setValue(Constants.NODE_VALUE_NO);
+			else 
+				touchHolder.setValue(Constants.NODE_VALUE_YES);
+			touchHolder.setValueType(Constants.NODE_VALUE_TYPE_BOOLEAN);
 			touchHolder.setStatus(Constants.NODE_STATUS_OK);
 			displayChildren.add(touchHolder);
 		} catch (Exception e) {
 			Logger.ERROR(TAG, "Could not set Display Touch Support node!", e);
 			status = "Could not set Display Touch Support node!";
 		}
-
+		if ( touchMethod != Configuration.TOUCHSCREEN_NOTOUCH ) {
+			Data touchMethodHolder = new Data();
+			try {
+				touchMethodHolder.setName(TOUCH_METHOD);
+				if ( touchMethod == Configuration.TOUCHSCREEN_STYLUS )
+					touchMethodHolder.setValue(TOUCH_METHOD_STYLUS);
+				else if ( touchMethod == Configuration.TOUCHSCREEN_FINGER ) 
+					touchMethodHolder.setValue(TOUCH_METHOD_FINGER);
+				else
+					touchMethodHolder.setValue(TOUCH_METHOD_UNKNOWN);
+				touchMethodHolder.setValueType(Constants.NODE_VALUE_TYPE_STRING);
+				touchMethodHolder.setStatus(Constants.NODE_STATUS_OK);
+				displayChildren.add(touchMethodHolder);
+			} catch (Exception e) {
+				Logger.ERROR(TAG, "Could not set Display Touch Method node!", e);
+				status = "Could not set Display Touch Method node!";
+			}
+		}
+		
 		try {
 			colorDepthHolder.setName(COLOR_DEPTH);
 			colorDepthHolder.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_API);
