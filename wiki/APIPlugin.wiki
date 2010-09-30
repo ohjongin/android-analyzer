@@ -10,4 +10,4 @@ The following table defines the structure of data being inserted in the report, 
 || API  || || || || ||
 ||      || Android API Level || || _integer_ || {{{System.getProperty(android.os.Build.VERSION)}}} ||
 ||      || Google || || || ||
-||      || || com.google.android.maps || _boolean_ || {{{Class.forName("com.google.android.maps.MapView")}}} ||
+||      || || Google Maps Application || _boolean_ || {{{PackageManager.getActivityInfo(new ComponentName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity"))}}} ||
