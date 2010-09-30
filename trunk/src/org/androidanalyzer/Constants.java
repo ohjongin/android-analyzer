@@ -90,4 +90,6 @@ public class Constants {
 	
   public static final String DEBUG = "DEBUG";
   public static final String HOST = "HOST";
+
+  public static final String AA_STATUS_PREFS = "org.androidanalyzer.plugin.status";
 }
