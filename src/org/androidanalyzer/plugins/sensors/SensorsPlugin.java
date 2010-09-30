@@ -24,6 +24,8 @@ public class SensorsPlugin extends AbstractPlugin {
 	private static final String TAG = "Analyzer-SensorsPlugin";
 	private static final String SENSORS = "Sensors";
 	/** Main sensors */
+	private static final String SENSOR_NAME = "Name";
+	private static final String SENSOR_UNKNOWN = "Unknown";
 	private static final String ACCELEROMETER = "Accelerometer";
 	private static final String PROXIMITY = "Proximity";
 	private static final String GYROSCOPE = "Gyroscope";
@@ -32,13 +34,16 @@ public class SensorsPlugin extends AbstractPlugin {
 	private static final String PRESSURE = "Pressure";
 	private static final String TEMPERATURE = "Temperature";
 	private static final String MAGNETIC = "Magnetic field";
-	private static final String SENSOR_NAME = "Name";
+	private static final String[] SENSOR_NAME_LIST = {SENSOR_UNKNOWN, ACCELEROMETER, MAGNETIC, ORIENTATION, GYROSCOPE, LIGHT, PRESSURE, TEMPERATURE, PROXIMITY};
 	/** Sensors features */
 	private static final String SENSORS_CNT = "Sensor-";
 	private static final String MAX_RANGE = "Maximum range";
+	private static final String SENSOR_UNIT_METRIC = "SU";
 	private static final String POWER = "Power";
+	private static final String POWER_METRIC = "mA";
 	private static final String RESOLUTION = "Resolution";
 	private static final String TYPE = "Type";
+	private static final String TYPE_NAME = "Type name";
 	private static final String VENDOR = "Vendor";
 	private static final String VERSION = "Version";
 	private static final String DESCRIPTION = "Collects data on available device sensors";
@@ -291,6 +296,7 @@ public class SensorsPlugin extends AbstractPlugin {
 				float maxRange = sensor.getMaximumRange();
 				snsMaxRange.setValue(String.valueOf(maxRange));
 				snsMaxRange.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
+				snsMaxRange.setValueMetric(SENSOR_UNIT_METRIC);
 				Logger.DEBUG(TAG, "Sensor max range: " + maxRange);
 				sensorExtraInfoChildren.add(snsMaxRange);
 
@@ -299,6 +305,7 @@ public class SensorsPlugin extends AbstractPlugin {
 				float power = sensor.getPower();
 				snsPower.setValue(String.valueOf(power));
 				snsPower.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
+				snsPower.setValueMetric(POWER_METRIC);
 				Logger.DEBUG(TAG, "Sensor power: " + power);
 				sensorExtraInfoChildren.add(snsPower);
 
@@ -307,6 +314,7 @@ public class SensorsPlugin extends AbstractPlugin {
 				float resolution = sensor.getResolution();
 				snsResolution.setValue(String.valueOf(resolution));
 				snsResolution.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
+				snsResolution.setValueMetric(SENSOR_UNIT_METRIC);
 				Logger.DEBUG(TAG, "Sensor resolution: " + resolution);
 				sensorExtraInfoChildren.add(snsResolution);
 
@@ -318,6 +326,16 @@ public class SensorsPlugin extends AbstractPlugin {
 				Logger.DEBUG(TAG, "Sensor type: " + type);
 				sensorExtraInfoChildren.add(snsType);
 
+				String typeName = getSensorNameByType(type);
+				if (typeName != null ) {
+					Data snsTypeName = new Data();
+					snsTypeName.setName(TYPE_NAME);
+					snsTypeName.setValue(typeName);
+					snsTypeName.setValueType(Constants.NODE_VALUE_TYPE_STRING);
+					Logger.DEBUG(TAG, "Sensor type name: " + typeName);
+					sensorExtraInfoChildren.add(snsTypeName);
+				}
+				
 				Data snsVendor = new Data();
 				snsVendor.setName(VENDOR);
 				String vendor = sensor.getVendor();
@@ -342,6 +360,10 @@ public class SensorsPlugin extends AbstractPlugin {
 			counter++;
 		}
 		return masterChildren;
+	}
+	
+	public String getSensorNameByType(int type) {
+		return type >= 0 && type < SENSOR_NAME_LIST.length ? SENSOR_NAME_LIST[type] : null;
 	}
 
 }
