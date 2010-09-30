@@ -7,6 +7,9 @@ import org.androidanalyzer.core.Data;
 import org.androidanalyzer.core.utils.Logger;
 import org.androidanalyzer.plugins.AbstractPlugin;
 
+import android.content.ComponentName;
+import android.content.pm.ActivityInfo;
+
 /**
  * APIPlugin class that represents all API sets and versions available on the device.
  * 
@@ -19,7 +22,7 @@ public class APIPlugin extends AbstractPlugin {
 	private static final String API = "API";
 	private static final String ANDROID_API_LEVEL = "Android API Level";
 	private static final String GOOGLE = "Google";
-	private static final String GMAPS = "com.google.android.maps";
+	private static final String GMAPS = "Google Maps Application";
 	private static final String TAG = "Analyzer-APIPlugin";
 	private static final String DESCRIPTION = "Collects data on available Android and Google APIs and their versions";
 	private String status = Constants.METADATA_PLUGIN_STATUS_PASSED;
@@ -179,6 +182,42 @@ public class APIPlugin extends AbstractPlugin {
 			status = "Could not set Google node!";
 		}
 */
+		// Google
+		Data googleHolder = new Data();
+		
+		// Google -> com.google.android.maps
+		Data mapViewHolder = new Data();
+		try {
+			googleHolder.setName(GOOGLE);
+
+			ArrayList<Data> googleChildren = new ArrayList<Data>(2);
+			mapViewHolder.setName(GMAPS);
+			ActivityInfo gmapsActivityInfo = null;
+			try {
+				ComponentName cname = new ComponentName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+				gmapsActivityInfo = getPackageManager().getActivityInfo(cname, 0);
+			} catch (Throwable e) {
+				Logger.ERROR(TAG, "Could not obtain Google Maps Component or Package Manager", e);
+			}
+			if (gmapsActivityInfo == null) {
+				mapViewHolder.setValue(Constants.NODE_VALUE_NO);
+			} else {
+				mapViewHolder.setValue(Constants.NODE_VALUE_YES);
+			}
+			mapViewHolder.setStatus(Constants.NODE_STATUS_OK);
+			mapViewHolder.setValueType(Constants.NODE_VALUE_TYPE_BOOLEAN);
+			googleChildren.add(mapViewHolder);
+			
+			// TODO Check for others APIs <API Owner Name> <API Package Name>
+			
+			googleHolder = addToParent(googleHolder, googleChildren);
+			masterChildren.add(googleHolder);
+		} catch (Exception e) {
+			Logger.ERROR(TAG, "Could not set Google node!", e);
+			status = "Could not set Google node!";
+		}
+		
+		
 		parent = addToParent(parent, masterChildren);
 		return parent;
 	}
