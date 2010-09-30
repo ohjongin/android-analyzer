@@ -137,6 +137,9 @@ public class AnalyzerCore {
 					if (decoded != null && decoded.isEnabled()) {
 						enabledPlugins.add(pluginClass);
 					}
+				} else {//If no record is found in prefs. we assume plugin is enabled
+				  //This will happen when analyzer is started for the very first time
+				  enabledPlugins.add(pluginClass);
 				}
 			}
 		}
