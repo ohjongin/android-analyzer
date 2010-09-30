@@ -22,7 +22,7 @@ The following table defines the structure of data being inserted in the report, 
 || || || Name || _string_ || || {{{Sensor.getName()}}} ||
 || || || Vendor || _string_ || || {{{Sensor.getVendor()}}} ||
 || || || Version || _integer_ || || {{{Sensor.getVersion()}}} ||
-|| || || Power || _double_ || {{{Sensor.getPower()}}} ||
+|| || || Power || _double_ || || {{{Sensor.getPower()}}} ||
 || || || Resolution || _double_ || _SU_ || {{{Sensor.getResolution()}}} ||
 || || || Maximum range || _double_ || _SU_ || {{{Sensor.getMaximumRange()}}} ||
 
