@@ -20,6 +20,7 @@ import org.androidanalyzer.Constants;
 import org.androidanalyzer.R;
 import org.androidanalyzer.core.utils.Logger;
 import org.androidanalyzer.transport.Reporter;
+import org.androidanalyzer.transport.Reporter.Response;
 import org.androidanalyzer.transport.impl.json.HTTPJSONReporter;
 import org.androidanalyzer.transport.impl.json.JSONFormatter;
 import org.json.JSONObject;
@@ -444,7 +445,7 @@ public class AnalyzerCore {
 	 * 
 	 * @throws Exception
 	 */
-	public Object sendReport(Data data, URL host) throws Exception {
+	public Response sendReport(Data data, URL host) throws Exception {
 		if (data != null && host != null) {
 			HTTPJSONReporter reporter = new HTTPJSONReporter();
 			return reporter.send(data, host);
