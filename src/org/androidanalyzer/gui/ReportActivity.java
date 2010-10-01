@@ -32,10 +32,6 @@ import android.widget.TextView;
  */
 public class ReportActivity extends Activity {
 	
-	private static final String REPORT_UI_ACTION = "report.ui.action";
-	private static final String REPORT_UI_DONE = "report.ui.action.done";
-	private static final String REPORT_UI_RESPONSE = "report.ui.response";
-	private static final String REPORT_UI_RESPONSE_NEGATIVE = "report.ui.response.negative";
 	private static final int SEND_REPORT_PROGRESS = 0;
 	private static final int SAVE_REPORT_PROGRESS = 1;
 	private static final String TAG = "Analyzer-ReportActivity";
@@ -175,11 +171,11 @@ public class ReportActivity extends Activity {
 	final Handler handler = new Handler() {
 
 		public void handleMessage(Message msg) {
-			if (msg.getData().getBoolean(REPORT_UI_DONE)) {
-				int id = msg.getData().getInt(REPORT_UI_ACTION);
-				boolean negative = msg.getData().getBoolean(REPORT_UI_RESPONSE_NEGATIVE);
+			if (msg.getData().getBoolean(Constants.REPORT_UI_DONE)) {
+				int id = msg.getData().getInt(Constants.REPORT_UI_ACTION);
+				boolean negative = msg.getData().getBoolean(Constants.REPORT_UI_RESPONSE_NEGATIVE);
 				dismissDialog(id);
-				String response = msg.getData().getString(REPORT_UI_RESPONSE);
+				String response = msg.getData().getString(Constants.REPORT_UI_RESPONSE);
 				String reportID = msg.getData().getString(Constants.REPORT_LAST_ID);
 				showResultDialog(response, id, negative, reportID);
 			}
@@ -204,8 +200,8 @@ public class ReportActivity extends Activity {
 		public void run() {
 			Message msg = new Message();
 			Bundle bundle = new Bundle();
-			bundle.putBoolean(REPORT_UI_DONE, true);
-			bundle.putInt(REPORT_UI_ACTION, action);
+			bundle.putBoolean(Constants.REPORT_UI_DONE, true);
+			bundle.putInt(Constants.REPORT_UI_ACTION, action);
 			String response = null;
 			String reportID = null;
 			boolean negative = false;
@@ -214,7 +210,7 @@ public class ReportActivity extends Activity {
 				case SAVE_REPORT_PROGRESS:
 					response = core.writeToFile(result);
 					if (response != null)
-						bundle.putString(REPORT_UI_RESPONSE, response);
+						bundle.putString(Constants.REPORT_UI_RESPONSE, response);
 					break;
 				case SEND_REPORT_PROGRESS:
 					try {
@@ -239,7 +235,7 @@ public class ReportActivity extends Activity {
 					}
 					if (response != null) {
 						Logger.DEBUG(TAG, "response: " + response);
-						bundle.putString(REPORT_UI_RESPONSE, response);
+						bundle.putString(Constants.REPORT_UI_RESPONSE, response);
 					}
 					if (reportID != null) {
 						Logger.DEBUG(TAG, "reportID: " + reportID);
@@ -247,7 +243,7 @@ public class ReportActivity extends Activity {
 					}
 					break;
 			}
-			bundle.putBoolean(REPORT_UI_RESPONSE_NEGATIVE, negative);
+			bundle.putBoolean(Constants.REPORT_UI_RESPONSE_NEGATIVE, negative);
 			msg.setData(bundle);
 			handler.sendMessage(msg);
 		}

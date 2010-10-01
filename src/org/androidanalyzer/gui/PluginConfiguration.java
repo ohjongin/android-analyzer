@@ -144,7 +144,7 @@ public class PluginConfiguration extends Activity {
 
     @Override
     public void handleMessage(Message msg) {
-      boolean done = msg.getData().getBoolean(Constants.REPORT_DONE);
+      boolean done = msg.getData().getBoolean(Constants.REPORT_UI_DONE);
       if (done) {
         plugins = preparePluginList(PluginConfiguration.this);
         adapter.listItems = plugins;
