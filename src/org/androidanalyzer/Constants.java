@@ -50,10 +50,7 @@ public class Constants {
 	public static final String GUI_SETTINGS_DONE = "done";
 	public static final String GUI_SETTINGS_RESULT = "result";
 	
-	public static final String REPORT_DONE = "done";
-	public static final String REPORT_RESULT = "result";
-	public static final String REPORT_RESULT_NEGATIVE = "negative";
-	public static final String REPORT_ID = "id";
+	public static final String REPORT_LAST_ID = "report.last.id";
 	
 	
 	public static final int PROGRESS_DIALOG = 0;
