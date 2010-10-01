@@ -51,6 +51,10 @@ public class Constants {
 	public static final String GUI_SETTINGS_RESULT = "result";
 	
 	public static final String REPORT_LAST_ID = "report.last.id";
+	public static final String REPORT_UI_ACTION = "report.ui.action";
+	public static final String REPORT_UI_DONE = "report.ui.action.done";
+	public static final String REPORT_UI_RESPONSE = "report.ui.response";
+	public static final String REPORT_UI_RESPONSE_NEGATIVE = "report.ui.response.negative";
 	
 	
 	public static final int PROGRESS_DIALOG = 0;

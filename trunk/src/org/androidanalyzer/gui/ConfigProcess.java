@@ -27,7 +27,7 @@ public class ConfigProcess implements Runnable {
 		core.loadPluginMetadata();
 		Message msg = new Message();
 		Bundle bundle = new Bundle();
-		bundle.putBoolean(Constants.REPORT_DONE, true);
+		bundle.putBoolean(Constants.REPORT_UI_DONE, true);
 		msg.setData(bundle);
 		dataHandler.sendMessage(msg);
 	}
