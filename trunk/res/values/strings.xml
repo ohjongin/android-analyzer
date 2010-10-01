@@ -12,13 +12,14 @@
 	
 	<!-- Alert Dialog-->
 	<string name="alert_dialog_warning_title">Warning</string>
-	<string name="alert_dialog_warning_msg">Sending data failed!</string>
+	<string name="alert_dialog_warning_ss_msg">Sending data failed! Server responded: </string>
+	<string name="alert_dialog_warning_ssd_msg">Storing data failed!</string>
 	<string name="alert_dialog_warning_host">Host URI is invalid!</string>
 	<string name="alert_dialog_ok">OK</string>
 	<string name="alert_dialog_pos_title">Info</string>
-	<string name="alert_dialog_pos_ss">Data successfully sent! </string>
-	<string name="alert_dialog_pos_ssd">Data successfully saved! </string>
-	<string name="alert_dialog_pos_file_loc">File location is </string>
+	<string name="alert_dialog_pos_ss">Report successfully sent!</string>
+	<string name="alert_dialog_pos_ss_with_id">Report successfully sent!\nReport ID: </string>
+	<string name="alert_dialog_pos_ssd">Report successfully saved!\nReport file: </string>
 	<string name="alert_connection_failed">Connection to host failed!</string>
 	<string name="alert_connection_ok">Connection to host succeeded!</string>
 	<string name="alert_dialog_success_title">Success</string>
