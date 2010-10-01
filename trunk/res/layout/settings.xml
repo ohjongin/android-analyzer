@@ -44,5 +44,22 @@
 	     android:layout_marginRight="10dip" 
 	     android:singleLine="true"
 		/>
+		<TextView
+	        android:id="@+id/UserUIDLabel"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/Host"
+	        android:text="User UID:"
+	        android:layout_marginLeft="10dip" 
+		/>
+		<EditText android:id ="@+id/UserUID"
+		 android:hint="User UID"
+		 android:layout_below="@+id/UserUIDLabel"
+		 android:layout_width="fill_parent"
+		 android:layout_height="wrap_content"
+	     android:layout_marginLeft="10dip" 
+	     android:layout_marginRight="10dip" 
+	     android:singleLine="true"
+		/>
 	</RelativeLayout>		
 </RelativeLayout>

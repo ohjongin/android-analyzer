@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.util.Hashtable;
 import java.util.zip.GZIPOutputStream;
 
 import org.androidanalyzer.core.Data;
@@ -40,7 +41,9 @@ import org.json.JSONObject;
 public class HTTPJSONReporter extends Reporter {
 	//sent from AA to the backend
 	private static final String X_ANDROID_ANALYZER_REPORT_MD5 = "X_ANDROID_ANALYZER_REPORT_MD5";
-	//send from the backend to AA to inducate the ID of the new report in the database
+	//sent from AA to the backend, if set
+	private static final String X_ANDROID_ANALYZER_USER_UID = "X_ANDROID_ANALYZER_USER_UID";
+	//sent from the backend to AA to inducate the ID of the new report in the database
 	private static final String X_ANDROID_ANALYZER_REPORT_ID  = "X_ANDROID_ANALYZER_REPORT_ID";
 
 	private static final String TAG = "Analyzer-HTTPJSONReporter";
@@ -52,7 +55,7 @@ public class HTTPJSONReporter extends Reporter {
 	 * org.androidanalyzer.transport.Reporter#send(org.androidanalyzer.core.Data,
 	 * java.net.URL)
 	 */
-	public Response send(Data data, URL host) throws Exception {
+	public Response send(Data data, URL host, Hashtable extra) throws Exception {
 		int timeoutSocket = 5000;
 		HttpParams httpParameters = new BasicHttpParams();
 		HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
@@ -72,6 +75,8 @@ public class HTTPJSONReporter extends Reporter {
 		String hex = mD5H(bytes);
 		Logger.DEBUG(TAG, "[send] hex: " + hex);
 		httpost.setHeader(X_ANDROID_ANALYZER_REPORT_MD5, hex);
+		if ( extra != null && extra.contains(KEY_USER_UID) )
+			httpost.setHeader(X_ANDROID_ANALYZER_USER_UID, (String) extra.get(KEY_USER_UID));
 		httpost.setHeader("Content-Encoding", "gzip");
 		httpost.setEntity(new ByteArrayEntity(bytes));
 		HttpResponse responseObject = httpclient.execute(httpost, (HttpContext) null);

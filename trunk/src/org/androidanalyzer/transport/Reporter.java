@@ -13,11 +13,13 @@ import org.androidanalyzer.core.Data;
  */
 
 public abstract class Reporter {
-	
+	//default backend server
+	private static final String HOST_DEFAULT = "http://212.95.166.45:8080/af/SubmitDeviceReport";
+	//current backend server
 	private static String HOST = null;
-	//private static String DEFAULT_HOST = "http://212.95.166.45:8080/DataServlet";
-
-	private static String DEFAULT_HOST = "http://212.95.166.45:8080/af/SubmitDeviceReport";
+	
+	/** Key for the unique user identifier to be sent to the backend */
+	public static final String KEY_USER_UID = "report.user.uid";
 
 	/**
 	 * Send data collected from available plugins to the server
@@ -26,8 +28,10 @@ public abstract class Reporter {
 	 *          Collected data
 	 * @param host
 	 *          Establish a connection to the specified host server
+	 * @param extra
+	 *          Extra report properties or metadata to be sent, <code>line KEY_USER_UID</code>
 	 */
-	abstract public Response send(Data data, URL host) throws Exception;
+	abstract public Response send(Data data, URL host, Hashtable extra) throws Exception;
 
 	/**
 	 * 
@@ -62,7 +66,7 @@ public abstract class Reporter {
 	}
 
 	public static String getHost() {
-		HOST = HOST != null ? HOST : DEFAULT_HOST;
+		HOST = HOST != null ? HOST : HOST_DEFAULT;
 		return HOST;
 	}
 	

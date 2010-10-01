@@ -48,7 +48,7 @@ import android.telephony.TelephonyManager;
  */
 public class AnalyzerCore {
 
-  private static final String TAG = "Analyzer-Core";
+	private static final String TAG = "Analyzer-Core";
 	private static int TIME_TO_WAIT_FOR_PLUGIN_CONNECTION;
 	private static int DEFAULT_MAX_TIME_TO_WAIT_FOR_PLUGIN_ANALYSIS_COMPLETION;
 	private static int DEFAULT_MIN_TIME_TO_WAIT_FOR_PLUGIN_ANALYSIS_COMPLETION;
@@ -445,10 +445,10 @@ public class AnalyzerCore {
 	 * 
 	 * @throws Exception
 	 */
-	public Response sendReport(Data data, URL host) throws Exception {
+	public Response sendReport(Data data, URL host, Hashtable extra) throws Exception {
 		if (data != null && host != null) {
 			HTTPJSONReporter reporter = new HTTPJSONReporter();
-			return reporter.send(data, host);
+			return reporter.send(data, host, extra);
 		}
 		return null;
 	}
