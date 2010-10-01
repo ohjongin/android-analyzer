@@ -89,8 +89,9 @@ public class Constants {
 	// File is located in data/data/org.androidanalyzer/files
 	public static final String FILE_NAME = "aa-report";
 	
-  public static final String DEBUG = "DEBUG";
-  public static final String HOST = "HOST";
+	public static final String DEBUG = "DEBUG";
+	public static final String HOST = "HOST";
+	public static final String USER_UID = "USER_UID";
 
-  public static final String AA_STATUS_PREFS = "org.androidanalyzer.plugin.status";
+	public static final String AA_STATUS_PREFS = "org.androidanalyzer.plugin.status";
 }

@@ -40,9 +40,11 @@ public class SettingsActivity extends Activity {
 
   private CheckBox debug;
   private EditText hostField;
+  private EditText userUIDField;
   
   boolean debugEnabled;
   String host;
+  String userUID;
 
   /*
    * (non-Javadoc)
@@ -53,6 +55,7 @@ public class SettingsActivity extends Activity {
     setContentView(R.layout.settings);
     debug = (CheckBox) findViewById(R.id.Debug);
     hostField = (EditText) findViewById(R.id.Host);
+    userUIDField = (EditText) findViewById(R.id.UserUID);
     final Button applyButton = (Button) findViewById(R.id.first_button);
     applyButton.setEnabled(false);
     applyButton.setText(R.string.save_button_txt);
@@ -86,8 +89,15 @@ public class SettingsActivity extends Activity {
             }
           }
         } 
+        String newUserUID = userUIDField.getText().toString();
+        if ( newUserUID != null && !newUserUID.trim().equals("") )
+        	PreferencesManager.savePreference(SettingsActivity.this, Constants.USER_UID, newUserUID);
+        else
+        	PreferencesManager.savePreference(SettingsActivity.this, Constants.USER_UID, null);
       }
     });
+    TextFieldWatcher textFieldWatcher = new TextFieldWatcher(applyButton);
+    
     host = PreferencesManager.loadStringPreference(this, Constants.HOST);    
     if (host == null) {
       host = Reporter.getHost();
@@ -95,41 +105,16 @@ public class SettingsActivity extends Activity {
     }
 		Reporter.setHost(host);
     hostField.setText(host);
-    hostField.addTextChangedListener(new TextWatcher() {
-      /*
-       * (non-Javadoc)
-       * @see android.text.TextWatcher#onTextChanged(java.lang.CharSequence, int, int, int)
-       */
-    	@Override
-      public void onTextChanged(CharSequence s, int start, int before, int count) {
-        applyButton.setEnabled(true);
-      }
-      
-      /*
-       * (non-Javadoc)
-       * @see android.text.TextWatcher#beforeTextChanged(java.lang.CharSequence, int, int, int)
-       */
-      @Override
-      public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-      }
-      
-      /*
-       * (non-Javadoc)
-       * @see android.text.TextWatcher#afterTextChanged(android.text.Editable)
-       */
-      @Override
-      public void afterTextChanged(Editable s) {
-      }
-    });
+    hostField.addTextChangedListener(textFieldWatcher);
+    
+    userUID = PreferencesManager.loadStringPreference(this, Constants.USER_UID);    
+    if (userUID != null)
+    	userUIDField.setText(host);
+	userUIDField.addTextChangedListener(textFieldWatcher);
+    
     debugEnabled = PreferencesManager.loadBooleanPreference(this, Constants.DEBUG);
     debug.setChecked(debugEnabled);
     debug.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-      
-      /*
-       * (non-Javadoc)
-       * @see android.widget.CompoundButton.OnCheckedChangeListener#onCheckedChanged(android.widget.CompoundButton, boolean)
-       */
-    	@Override
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if ((isChecked && !debugEnabled) || (!isChecked && debugEnabled))
           applyButton.setEnabled(true);
@@ -137,12 +122,6 @@ public class SettingsActivity extends Activity {
     });
     Button testLink = (Button)findViewById(R.id.test_link_btn);
     testLink.setOnClickListener(new View.OnClickListener() {
-      
-      /*
-       * (non-Javadoc)
-       * @see android.view.View.OnClickListener#onClick(android.view.View)
-       */
-    	@Override
       public void onClick(View v) {
         showDialog(CONNECTION_TEST);
         new ProgressThread(pHandler).start();
@@ -227,7 +206,22 @@ public class SettingsActivity extends Activity {
     
   };
   
-  private class ProgressThread extends Thread {
+  private final class TextFieldWatcher implements TextWatcher {
+	private final Button applyButton;
+
+	private TextFieldWatcher(Button applyButton) {
+		this.applyButton = applyButton;
+	}
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+    	applyButton.setEnabled(true);
+    }
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    }
+    public void afterTextChanged(Editable s) {
+    }
+  }
+
+private class ProgressThread extends Thread {
     
     Handler handler;
     

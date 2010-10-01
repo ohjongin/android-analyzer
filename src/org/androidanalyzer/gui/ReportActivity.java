@@ -2,12 +2,14 @@ package org.androidanalyzer.gui;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 import org.androidanalyzer.Constants;
 import org.androidanalyzer.R;
 import org.androidanalyzer.core.AnalyzerCore;
 import org.androidanalyzer.core.Data;
 import org.androidanalyzer.core.utils.Logger;
+import org.androidanalyzer.transport.Reporter;
 import org.androidanalyzer.transport.Reporter.Response;
 import org.apache.http.client.HttpResponseException;
 
@@ -177,6 +179,7 @@ public class ReportActivity extends Activity {
 				dismissDialog(id);
 				String response = msg.getData().getString(Constants.REPORT_UI_RESPONSE);
 				String reportID = msg.getData().getString(Constants.REPORT_LAST_ID);
+				PreferencesManager.savePreference(ReportActivity.this, Constants.REPORT_LAST_ID, reportID);
 				showResultDialog(response, id, negative, reportID);
 			}
 		}
@@ -216,7 +219,14 @@ public class ReportActivity extends Activity {
 					try {
 						String host = (String) data.get(Constants.HOST);
 						URL lHost = new URL(host);
-						Response responseObject = core.sendReport(result, lHost);
+						Hashtable extra = null;
+						
+						String userUID = PreferencesManager.loadStringPreference(ReportActivity.this, Constants.USER_UID);
+						if ( userUID != null ) {
+							extra = new Hashtable(2);
+							extra.put(Reporter.KEY_USER_UID, userUID);
+						}
+						Response responseObject = core.sendReport(result, lHost, extra);
 						if ( responseObject != null ) {
 							response = responseObject.responseStatus;
 							reportID = responseObject.reportID;
