@@ -8,6 +8,7 @@ import org.androidanalyzer.R;
 import org.androidanalyzer.core.AnalyzerCore;
 import org.androidanalyzer.core.Data;
 import org.androidanalyzer.core.utils.Logger;
+import org.androidanalyzer.transport.Reporter.Response;
 import org.apache.http.client.HttpResponseException;
 
 import android.app.Activity;
@@ -30,7 +31,11 @@ import android.widget.TextView;
  * back-end) the collected data.
  */
 public class ReportActivity extends Activity {
-
+	
+	private static final String REPORT_UI_ACTION = "report.ui.action";
+	private static final String REPORT_UI_DONE = "report.ui.action.done";
+	private static final String REPORT_UI_RESPONSE = "report.ui.response";
+	private static final String REPORT_UI_RESPONSE_NEGATIVE = "report.ui.response.negative";
 	private static final int SEND_REPORT_PROGRESS = 0;
 	private static final int SAVE_REPORT_PROGRESS = 1;
 	private static final String TAG = "Analyzer-ReportActivity";
@@ -127,24 +132,26 @@ public class ReportActivity extends Activity {
 		return progress;
 	}
 
-	void showResultDialog(String message, int action, boolean negative) {
+	void showResultDialog(String message, int action, boolean negative, String reportID) {
 		Logger.DEBUG(TAG, "message - " + message + " action - " + action + " negative - " + negative);
 		AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 		switch (action) {
 		case SAVE_REPORT_PROGRESS:
 			dialog.setTitle(message != null ? R.string.alert_dialog_pos_title : R.string.alert_dialog_warning_title);
 			dialog.setIcon(message != null ? R.drawable.ok_icon : R.drawable.warning_icon_yellow);
-			dialog.setMessage(message != null ? getString(R.string.alert_dialog_pos_ssd) + " "
-					+ getString(R.string.alert_dialog_pos_file_loc) + message : getString(R.string.alert_dialog_warning_msg));
+			Logger.DEBUG(TAG, "message (save report) - " + message);
+			dialog.setMessage(message != null ? getString(R.string.alert_dialog_pos_ssd) + message : getString(R.string.alert_dialog_warning_ssd_msg));
 			break;
 		case SEND_REPORT_PROGRESS:
 			dialog.setTitle(negative ? R.string.alert_dialog_warning_title : R.string.alert_dialog_pos_title);
 			dialog.setIcon(negative ? R.drawable.warning_icon_yellow : R.drawable.ok_icon);
-			Logger.DEBUG(TAG, "message - " + message);
 			if( message != null && message.length() != 0)
-				message = getString(R.string.alert_dialog_warning_msg) + " " + message;
-			Logger.DEBUG(TAG, "message -- " + message);
-			dialog.setMessage(negative ? message : getString(R.string.alert_dialog_pos_ss) + message);
+				message = getString(R.string.alert_dialog_warning_ss_msg) + " " + message;
+			Logger.DEBUG(TAG, "message (send report) -- " + message);
+			String prefix = reportID == null ? getString(R.string.alert_dialog_pos_ss)
+					 						 : getString(R.string.alert_dialog_pos_ss_with_id) + reportID;
+			Logger.DEBUG(TAG, "message (prefix) -- " + prefix);
+			dialog.setMessage(negative ? message : prefix + (message == null ? "" : "\n" + message));
 			break;
 		}
 		dialog.setCancelable(false);
@@ -168,12 +175,13 @@ public class ReportActivity extends Activity {
 	final Handler handler = new Handler() {
 
 		public void handleMessage(Message msg) {
-			if (msg.getData().getBoolean(Constants.REPORT_DONE)) {
-				int id = msg.getData().getInt(Constants.REPORT_ID);
-				boolean negative = msg.getData().getBoolean(Constants.REPORT_RESULT_NEGATIVE);
+			if (msg.getData().getBoolean(REPORT_UI_DONE)) {
+				int id = msg.getData().getInt(REPORT_UI_ACTION);
+				boolean negative = msg.getData().getBoolean(REPORT_UI_RESPONSE_NEGATIVE);
 				dismissDialog(id);
-				String response = msg.getData().getString(Constants.REPORT_RESULT);
-				showResultDialog(response, id, negative);
+				String response = msg.getData().getString(REPORT_UI_RESPONSE);
+				String reportID = msg.getData().getString(Constants.REPORT_LAST_ID);
+				showResultDialog(response, id, negative, reportID);
 			}
 		}
 
@@ -196,41 +204,50 @@ public class ReportActivity extends Activity {
 		public void run() {
 			Message msg = new Message();
 			Bundle bundle = new Bundle();
-			bundle.putBoolean(Constants.REPORT_DONE, true);
-			bundle.putInt(Constants.REPORT_ID, action);
+			bundle.putBoolean(REPORT_UI_DONE, true);
+			bundle.putInt(REPORT_UI_ACTION, action);
 			String response = null;
+			String reportID = null;
 			boolean negative = false;
 			Data result = (Data) data.get(Constants.GUI_HANDLER_SEND);
 			switch (action) {
-			case SAVE_REPORT_PROGRESS:
-				response = core.writeToFile(result);
-				if (response != null)
-					bundle.putString(Constants.REPORT_RESULT, response);
-				break;
-			case SEND_REPORT_PROGRESS:
-				try {
-					String host = (String) data.get(Constants.HOST);
-					URL lHost = new URL(host);
-					response = (String) core.sendReport(result, lHost);
-				} catch (HttpResponseException ex) {
-					Logger.ERROR(TAG, "[HttpResponseException] Error while sending data", ex);
-					negative = true;
-					int code = ex.getStatusCode();
-					String messsage = ex.getMessage();
-					response = "Status - " + code
-							+ " " + messsage;
-				} catch (Exception ex) {
-					negative = true;
-					Logger.ERROR(TAG, "[Exception] Error while sending data", ex);
-					String messsage = ex.getMessage();
-					response = "Status - " + messsage;
-				}
-				if (response != null)
-					Logger.DEBUG(TAG, "response: " + response);
-					bundle.putString(Constants.REPORT_RESULT, response);
-				break;
+				case SAVE_REPORT_PROGRESS:
+					response = core.writeToFile(result);
+					if (response != null)
+						bundle.putString(REPORT_UI_RESPONSE, response);
+					break;
+				case SEND_REPORT_PROGRESS:
+					try {
+						String host = (String) data.get(Constants.HOST);
+						URL lHost = new URL(host);
+						Response responseObject = core.sendReport(result, lHost);
+						if ( responseObject != null ) {
+							response = responseObject.responseStatus;
+							reportID = responseObject.reportID;
+						}
+					} catch (HttpResponseException ex) {
+						Logger.ERROR(TAG, "[HttpResponseException] Error while sending data", ex);
+						negative = true;
+						int code = ex.getStatusCode();
+						String messsage = ex.getMessage();
+						response = "Status - " + code + " " + messsage;
+					} catch (Exception ex) {
+						negative = true;
+						Logger.ERROR(TAG, "[Exception] Error while sending data", ex);
+						String messsage = ex.getMessage();
+						response = "Status - " + messsage;
+					}
+					if (response != null) {
+						Logger.DEBUG(TAG, "response: " + response);
+						bundle.putString(REPORT_UI_RESPONSE, response);
+					}
+					if (reportID != null) {
+						Logger.DEBUG(TAG, "reportID: " + reportID);
+						bundle.putString(Constants.REPORT_LAST_ID, reportID);
+					}
+					break;
 			}
-			bundle.putBoolean(Constants.REPORT_RESULT_NEGATIVE, negative);
+			bundle.putBoolean(REPORT_UI_RESPONSE_NEGATIVE, negative);
 			msg.setData(bundle);
 			handler.sendMessage(msg);
 		}
