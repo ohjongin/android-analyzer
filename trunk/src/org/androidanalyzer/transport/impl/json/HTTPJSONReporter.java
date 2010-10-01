@@ -13,7 +13,11 @@ import java.util.zip.GZIPOutputStream;
 import org.androidanalyzer.core.Data;
 import org.androidanalyzer.core.utils.Logger;
 import org.androidanalyzer.transport.Reporter;
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
+import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
@@ -23,6 +27,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
+import org.apache.http.protocol.HttpContext;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
 /**
@@ -32,8 +38,10 @@ import org.json.JSONObject;
  */
 
 public class HTTPJSONReporter extends Reporter {
-
+	//sent from AA to the backend
 	private static final String X_ANDROID_ANALYZER_REPORT_MD5 = "X_ANDROID_ANALYZER_REPORT_MD5";
+	//send from the backend to AA to inducate the ID of the new report in the database
+	private static final String X_ANDROID_ANALYZER_REPORT_ID  = "X_ANDROID_ANALYZER_REPORT_ID";
 
 	private static final String TAG = "Analyzer-HTTPJSONReporter";
 
@@ -44,7 +52,7 @@ public class HTTPJSONReporter extends Reporter {
 	 * org.androidanalyzer.transport.Reporter#send(org.androidanalyzer.core.Data,
 	 * java.net.URL)
 	 */
-	public String send(Data data, URL host) throws Exception {
+	public Response send(Data data, URL host) throws Exception {
 		int timeoutSocket = 5000;
 		HttpParams httpParameters = new BasicHttpParams();
 		HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
@@ -66,10 +74,18 @@ public class HTTPJSONReporter extends Reporter {
 		httpost.setHeader(X_ANDROID_ANALYZER_REPORT_MD5, hex);
 		httpost.setHeader("Content-Encoding", "gzip");
 		httpost.setEntity(new ByteArrayEntity(bytes));
-		ResponseHandler<String> responseHandler = new BasicResponseHandler();
-		String response = httpclient.execute(httpost, responseHandler);
-		return response;
+		HttpResponse responseObject = httpclient.execute(httpost, (HttpContext) null);
+		Header reportIDHeader = responseObject.getFirstHeader(X_ANDROID_ANALYZER_REPORT_ID);
+		return new Response(getResponseStatus(responseObject), reportIDHeader == null ? null : reportIDHeader.getValue(), null);
 	}
+	
+	private String getResponseStatus(HttpResponse response) throws HttpResponseException, IOException {
+	 	StatusLine statusLine = response.getStatusLine();
+	 	if (statusLine.getStatusCode() >= 300)
+	 		throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());
+	 	HttpEntity entity = response.getEntity();
+	 	return entity == null ? null : EntityUtils.toString(entity);
+	 }
 
 	private byte[] doCompress(StringEntity se) {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();

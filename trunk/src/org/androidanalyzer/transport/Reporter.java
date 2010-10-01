@@ -3,6 +3,7 @@ package org.androidanalyzer.transport;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Hashtable;
 
 import org.androidanalyzer.core.Data;
 
@@ -12,11 +13,11 @@ import org.androidanalyzer.core.Data;
  */
 
 public abstract class Reporter {
+	
 	private static String HOST = null;
 	//private static String DEFAULT_HOST = "http://212.95.166.45:8080/DataServlet";
 
 	private static String DEFAULT_HOST = "http://212.95.166.45:8080/af/SubmitDeviceReport";
-
 
 	/**
 	 * Send data collected from available plugins to the server
@@ -26,7 +27,7 @@ public abstract class Reporter {
 	 * @param host
 	 *          Establish a connection to the specified host server
 	 */
-	abstract public Object send(Data dat1a, URL host) throws Exception;
+	abstract public Response send(Data data, URL host) throws Exception;
 
 	/**
 	 * 
@@ -64,4 +65,19 @@ public abstract class Reporter {
 		HOST = HOST != null ? HOST : DEFAULT_HOST;
 		return HOST;
 	}
+	
+	public static class Response {
+		public Hashtable extra;
+		public String reportID;
+		public String responseStatus;
+		
+		public Response(String responseStatus, String reportID, Hashtable extra) {
+			Response.this.reportID = reportID;
+			Response.this.responseStatus = responseStatus;
+			Response.this.extra = extra;
+		}
+		
+	}
+	
+
 }
