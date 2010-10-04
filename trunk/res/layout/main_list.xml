@@ -18,7 +18,6 @@
   	android:gravity="center"
   	android:layout_alignParentBottom="true"
   	android:layout_margin="10dip"
-  	android:textAppearance="?android:attr/textAppearanceLarge"
   	android:background="@drawable/report_bg"
   	android:text="@string/last_report_label"
   />

@@ -147,7 +147,7 @@ public class AnalyzerList extends Activity implements UICallback {
     boolean hasReportId = lastReportId != null && lastReportId.length() > 0; 
     if (hasReportId) {
       String text = getString(R.string.last_report_label);
-      text = text.concat(lastReportId);
+      text = text.concat(" ").concat(lastReportId);
       reportView.setText(text);
     }
     reportView.setVisibility(hasReportId ? View.VISIBLE : View.GONE);
