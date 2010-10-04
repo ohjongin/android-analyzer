@@ -35,6 +35,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 /**
  * This is the main Activity of the Android Analyzer application.
@@ -63,6 +64,8 @@ public class AnalyzerList extends Activity implements UICallback {
   AlertDialog.Builder alert;
   CustomDialog customDialog;
   RelativeLayout noResultsLayout;
+  RelativeLayout listLayout;
+  TextView reportView;
   
 
   /** Called when the activity is first created. */
@@ -84,6 +87,7 @@ public class AnalyzerList extends Activity implements UICallback {
     adapter = new AnalyzerListAdapter(toUse, plugins, this);
     list.setAdapter(adapter);
     noResultsLayout = (RelativeLayout)findViewById(R.id.no_results);
+    listLayout = (RelativeLayout)findViewById(R.id.list_layout);
     checkVisibility(plugins.size());
     boolean debugEnabled = PreferencesManager.loadBooleanPreference(this, Constants.DEBUG);
     String host = PreferencesManager.loadStringPreference(this, Constants.HOST);
@@ -91,6 +95,7 @@ public class AnalyzerList extends Activity implements UICallback {
       host = Reporter.getHost();
       PreferencesManager.savePreference(this, Constants.HOST, host);
     }
+    reportView = (TextView)findViewById(R.id.last_report);
     Logger.setDebug(debugEnabled);
     Button analyzeB = (Button)findViewById(R.id.first_button);
     analyzeB.setText(R.string.analyze_button);
@@ -112,12 +117,12 @@ public class AnalyzerList extends Activity implements UICallback {
   
   private void checkVisibility(int pluginSize) {
     boolean hasPlugins = pluginSize != 0;
-    int listCurrent = list.getVisibility();
+    int listCurrent = listLayout.getVisibility();
     int layoutCurrent = noResultsLayout.getVisibility();
     int listNew = hasPlugins ? View.VISIBLE : View.GONE;
     int layoutNew = hasPlugins ? View.GONE : View.VISIBLE;
     if (listCurrent != listNew)
-      list.setVisibility(listNew);
+      listLayout.setVisibility(listNew);
     if (layoutCurrent != layoutNew)
       noResultsLayout.setVisibility(layoutNew);
   }
@@ -133,7 +138,22 @@ public class AnalyzerList extends Activity implements UICallback {
     super.onDestroy();
   }
   
+  
 	
+  @Override
+  protected void onResume() {
+    super.onResume();
+    String lastReportId = PreferencesManager.loadStringPreference(this, Constants.REPORT_LAST_ID);
+    boolean hasReportId = lastReportId != null && lastReportId.length() > 0; 
+    if (hasReportId) {
+      String text = getString(R.string.last_report_label);
+      text = text.concat(lastReportId);
+      reportView.setText(text);
+    }
+    reportView.setVisibility(hasReportId ? View.VISIBLE : View.GONE);
+    
+  }
+
   /*
    * (non-Javadoc)
    * 
