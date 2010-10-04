@@ -4,12 +4,30 @@
   android:layout_width="fill_parent"
   android:layout_height="fill_parent">
   <include android:id="@+id/button_panel" layout="@layout/button_panel"/>
-  <ListView android:id="@+id/plugins_list"
+  <RelativeLayout
+  	android:id="@+id/list_layout"
   	android:layout_width="fill_parent"
   	android:layout_height="fill_parent"
   	android:layout_above="@+id/button_panel"
   	android:visibility="gone"
+  >
+  <TextView
+  	android:id="@+id/last_report"
+  	android:layout_width="fill_parent"
+  	android:layout_height="wrap_content"
+  	android:gravity="center"
+  	android:layout_alignParentBottom="true"
+  	android:layout_margin="10dip"
+  	android:textAppearance="?android:attr/textAppearanceLarge"
+  	android:background="@drawable/report_bg"
+  	android:text="@string/last_report_label"
   />
+  <ListView android:id="@+id/plugins_list"
+  	android:layout_width="fill_parent"
+  	android:layout_height="fill_parent"
+  	android:layout_above="@+id/last_report"
+  />
+  </RelativeLayout>
   <RelativeLayout
   	android:id="@+id/no_results"
   	android:layout_above="@+id/button_panel"
