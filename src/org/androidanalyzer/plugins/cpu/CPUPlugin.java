@@ -141,7 +141,7 @@ public class CPUPlugin extends AbstractPlugin {
 			Data insSet = new Data();
 			insSet.setName(INSTRUCTION_SET);
 			Logger.DEBUG(TAG, "OS Architecture: " + os_arch);
-			if (os_arch != null && os_arch.length() > 0) {
+			if (os_arch != null && os_arch.length() > 0 && !"OS_ARCH".equals(os_arch)) {
 				insSet.setValue(os_arch);
 				insSet.setStatus(Constants.NODE_STATUS_OK);
 			} else {
