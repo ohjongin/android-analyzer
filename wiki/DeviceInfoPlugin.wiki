@@ -5,3 +5,6 @@ Collects general device info like manufacturer, model and brand. Also provides d
 *Class Name:* {{{org.androidanalyzer.plugins.device.DeviceInfoPlugin}}}
 
 The following table defines the structure of data being inserted in the report, and the APIs or methods used to retrieve the value. 
+
+|| *Node* || *Node* || *Node* || *Value* || *Metric* || *Retrieval Method* ||
+|| Device ||        ||        ||         ||          ||                    ||
