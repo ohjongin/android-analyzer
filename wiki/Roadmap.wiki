@@ -5,7 +5,7 @@ Features:
     * Analyzer Core, JSON HTTP Reporter
     * Pluggable architecture, discovery of internal and external plugins
     * Reporting to backend with user comments and a simple UI
-    * Plugins: Display, Radio, Memory, API, CPU, Location, Location Accuracy, Sensor, Camera, Keyboard
+    * Plugins: Display, Radio, Memory, API, CPU, Location, Location Accuracy, Sensor, Camera, Keyboard, Device Info
 
 = Android Analyzer 2.0: Q4/2010 =
 Features:
