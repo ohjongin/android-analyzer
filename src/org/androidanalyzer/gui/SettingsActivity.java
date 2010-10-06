@@ -109,7 +109,7 @@ public class SettingsActivity extends Activity {
     
     userUID = PreferencesManager.loadStringPreference(this, Constants.USER_UID);    
     if (userUID != null)
-    	userUIDField.setText(host);
+    	userUIDField.setText(userUID);
 	userUIDField.addTextChangedListener(textFieldWatcher);
     
     debugEnabled = PreferencesManager.loadBooleanPreference(this, Constants.DEBUG);
