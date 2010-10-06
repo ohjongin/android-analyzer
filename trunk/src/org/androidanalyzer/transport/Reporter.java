@@ -31,7 +31,7 @@ public abstract class Reporter {
 	 * @param extra
 	 *          Extra report properties or metadata to be sent, <code>line KEY_USER_UID</code>
 	 */
-	abstract public Response send(Data data, URL host, Hashtable extra) throws Exception;
+	abstract public Response send(Data data, URL host, Hashtable<String, String> extra) throws Exception;
 
 	/**
 	 * 
@@ -71,11 +71,11 @@ public abstract class Reporter {
 	}
 	
 	public static class Response {
-		public Hashtable extra;
+		public Hashtable<String, String> extra;
 		public String reportID;
 		public String responseStatus;
 		
-		public Response(String responseStatus, String reportID, Hashtable extra) {
+		public Response(String responseStatus, String reportID, Hashtable<String, String> extra) {
 			Response.this.reportID = reportID;
 			Response.this.responseStatus = responseStatus;
 			Response.this.extra = extra;

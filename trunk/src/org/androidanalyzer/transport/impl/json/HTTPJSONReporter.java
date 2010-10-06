@@ -55,7 +55,8 @@ public class HTTPJSONReporter extends Reporter {
 	 * org.androidanalyzer.transport.Reporter#send(org.androidanalyzer.core.Data,
 	 * java.net.URL)
 	 */
-	public Response send(Data data, URL host, Hashtable extra) throws Exception {
+	@Override
+	public Response send(Data data, URL host, Hashtable<String, String> extra) throws Exception {
 		int timeoutSocket = 5000;
 		HttpParams httpParameters = new BasicHttpParams();
 		HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
@@ -75,8 +76,9 @@ public class HTTPJSONReporter extends Reporter {
 		String hex = mD5H(bytes);
 		Logger.DEBUG(TAG, "[send] hex: " + hex);
 		httpost.setHeader(X_ANDROID_ANALYZER_REPORT_MD5, hex);
-		if ( extra != null && extra.contains(KEY_USER_UID) )
-			httpost.setHeader(X_ANDROID_ANALYZER_USER_UID, (String) extra.get(KEY_USER_UID));
+		String userUID = extra != null ? extra.get(KEY_USER_UID) : null;
+		if (userUID != null)
+		  httpost.setHeader(X_ANDROID_ANALYZER_USER_UID, userUID);
 		httpost.setHeader("Content-Encoding", "gzip");
 		httpost.setEntity(new ByteArrayEntity(bytes));
 		HttpResponse responseObject = httpclient.execute(httpost, (HttpContext) null);

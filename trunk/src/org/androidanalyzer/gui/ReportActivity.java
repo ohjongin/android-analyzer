@@ -219,11 +219,11 @@ public class ReportActivity extends Activity {
 					try {
 						String host = (String) data.get(Constants.HOST);
 						URL lHost = new URL(host);
-						Hashtable extra = null;
+						Hashtable<String, String> extra = null;
 						
 						String userUID = PreferencesManager.loadStringPreference(ReportActivity.this, Constants.USER_UID);
 						if ( userUID != null ) {
-							extra = new Hashtable(2);
+							extra = new Hashtable<String, String>(2);
 							extra.put(Reporter.KEY_USER_UID, userUID);
 						}
 						Response responseObject = core.sendReport(result, lHost, extra);
