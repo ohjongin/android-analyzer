@@ -2,7 +2,7 @@ Collects general device info like manufacturer, model and brand. Also provides d
 
 *Plugin Name:* Device Info Plugin
 
-_Plugin Classname: org.androidanalyzer.plugins.device.DeviceInfoPlugin_
+*Class Name:* {{{org.androidanalyzer.plugins.device.DeviceInfoPlugin}}}
 = Introduction =
 
 Add your content here.
