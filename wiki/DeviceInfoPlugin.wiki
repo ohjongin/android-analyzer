@@ -1,5 +1,8 @@
 Collects general device info like manufacturer, model and brand. Also provides details on the firmware, kernel and baseband versions.
 
+*Plugin Name:* Device Info Plugin
+
+_Plugin Classname: org.androidanalyzer.plugins.device.DeviceInfoPlugin_
 = Introduction =
 
 Add your content here.
