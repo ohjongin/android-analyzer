@@ -13,5 +13,6 @@
       * [SensorPlugin Sensor]
       * [CameraPlugin Camera]
       * [KeyboardPlugin Keyboard]
+      * [DeviceInfoPlugin Device Info Plugin]
     * [DeviceReports Device Reports]
   * [SandboxBackend Sandbox Backend]
