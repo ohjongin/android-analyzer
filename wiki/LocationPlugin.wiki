@@ -9,9 +9,8 @@ The following table defines the structure of data being inserted in the report, 
 || *Node* || *Node* || *Node* || *Node* || *Value* || *Retrieval Method* ||
 || Location || || || || || ||
 ||      || GPS || || || || ||
-||      || || Supported ||  ||_boolean_ (Y, N) || {{{LocationManager.getAllProviders().contains("gps")}}}  ||
-||      || || Capabilities || || || ||
-||      || || || A-GPS  ||_boolean_ (Y, N) || {{{Settings.Secure.getInt(this.getContentResolver(), ASSISTED_GPS_ENABLED) != 0}}} ||
+||      || || GPS supported ||  ||_boolean_ (Y, N) || {{{LocationManager.getAllProviders().contains("gps")}}}  ||
+||      || || A-GPS supported || ||_boolean_ (Y, N) || {{{Settings.Secure.getInt(this.getContentResolver(), ASSISTED_GPS_ENABLED) != 0}}} ||
 ||      || Network-based || || || || ||
 || || || Supported || || _boolean_ (Y, N) || {{{LocationManager.getAllProviders().contains("network")}}} ||
 
