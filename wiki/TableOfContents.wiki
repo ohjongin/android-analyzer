@@ -14,5 +14,6 @@
       * [CameraPlugin Camera]
       * [KeyboardPlugin Keyboard]
       * [DeviceInfoPlugin Device Info]
+      * [BrowserPlugin Browser]
     * [DeviceReports Device Reports]
   * [SandboxBackend Sandbox Backend]
