@@ -262,7 +262,7 @@ public class DisplayPlugin extends AbstractPlugin {
 		}
 		try {//Density -> Logical
 			logicalDensityHolder.setName(DENSITY_LOGICAL);
-			logicalDensityHolder.setValue(String.valueOf(outMetrics.density));
+			logicalDensityHolder.setValue(getFormattedDouble(outMetrics.density, "#0.0"));
 			Logger.DEBUG(TAG, "Logical:" + outMetrics.density);
 			logicalDensityHolder.setValueType(Constants.NODE_VALUE_TYPE_INT);
 			logicalDensityHolder.setStatus(Constants.NODE_STATUS_OK);
@@ -294,7 +294,7 @@ public class DisplayPlugin extends AbstractPlugin {
 		
 		try {//Density -> Scaled
 			scaledDensityHolder.setName(DENSITY_SCALED);
-			scaledDensityHolder.setValue(String.valueOf(outMetrics.scaledDensity));
+			scaledDensityHolder.setValue(getFormattedDouble(outMetrics.scaledDensity, "#0.0"));
 			Logger.DEBUG(TAG, "Scaled:" + outMetrics.scaledDensity);
 			scaledDensityHolder.setValueType(Constants.NODE_VALUE_TYPE_INT);
 			scaledDensityHolder.setStatus(Constants.NODE_STATUS_OK);
@@ -307,7 +307,7 @@ public class DisplayPlugin extends AbstractPlugin {
 		
 		try {//Density -> Horizontal
 			horizontalDensityHolder.setName(DENSITY_HORIZONTAL);
-			horizontalDensityHolder.setValue(String.valueOf(outMetrics.xdpi));
+			horizontalDensityHolder.setValue(getFormattedDouble(outMetrics.xdpi, "#0.0"));
 			Logger.DEBUG(TAG, "Horizontal:" + outMetrics.xdpi);
 			horizontalDensityHolder.setValueType(Constants.NODE_VALUE_TYPE_INT);
 			horizontalDensityHolder.setStatus(Constants.NODE_STATUS_OK);
@@ -320,7 +320,7 @@ public class DisplayPlugin extends AbstractPlugin {
 		
 		try {//Density -> Vertical
 			verticalDensityHolder.setName(DENSITY_VERTICAL);
-			verticalDensityHolder.setValue(String.valueOf(outMetrics.ydpi));
+			verticalDensityHolder.setValue(getFormattedDouble(outMetrics.ydpi, "#0.0"));
 			Logger.DEBUG(TAG, "Vertical:" + outMetrics.ydpi);
 			verticalDensityHolder.setValueType(Constants.NODE_VALUE_TYPE_INT);
 			verticalDensityHolder.setStatus(Constants.NODE_STATUS_OK);
@@ -418,5 +418,9 @@ public class DisplayPlugin extends AbstractPlugin {
 		}
 		
 		return result;
+	}
+	
+	private String getFormattedDouble(double size, String format) {
+		return new DecimalFormat(format).format(size);
 	}
 }
