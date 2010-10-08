@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -359,8 +360,8 @@ public class CameraPlugin extends AbstractPlugin {
 						Logger.ERROR(TAG, "Could not set children node to parent node !");
 					}
 				} else {
-					node = dataFailed(node.getName(), Constants.NODE_STATUS_FAILED_UNKNOWN);
-					Logger.DEBUG(TAG, "Null tempNode in getInfoThroughGetters for obj : " + obj);
+					node = dataFailed(node.getName(), Constants.NODE_STATUS_FAILED_UNAVAILABLE_API);
+					Logger.DEBUG(TAG, "Null tempNode in getInfoThroughGetters for obj: " + obj);
 				}
 			}
 		}
@@ -847,17 +848,16 @@ public class CameraPlugin extends AbstractPlugin {
 				} else {
 					data.setValue(Constants.NODE_VALUE_NO);
 				}
+				data.setValueType(Constants.NODE_VALUE_TYPE_BOOLEAN);
 			} catch (Exception e) {
 				Logger.ERROR(TAG, "Could not create node name !");
 				data = null;
 			}
 		}
 		if (data == null) {
-			data = dataFailed(nodeName);
+			data = dataFailed(nodeName, Constants.NODE_STATUS_FAILED_UNAVAILABLE_API);
 		}
-		if (data != null) {
-			Logger.DEBUG(TAG, "Node " + nodeName + " value : " + data.getValue());
-		}
+		Logger.DEBUG(TAG, "Node " + nodeName + " value : " + data.getValue());
 		return data;
 	}
 
@@ -901,14 +901,13 @@ public class CameraPlugin extends AbstractPlugin {
 				data = null;
 			}
 		}
-		if (data == null && getAPIversion() >= 5) {
-			data = dataFailed(nodeName);
-		} else if (data == null) {
-			data = dataFailed(nodeName, Constants.NODE_STATUS_FAILED_UNAVAILABLE_API);
+		if (data == null ) {
+			if ( getAPIversion() >= 5 )
+				data = dataFailed(nodeName, Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
+			else
+				data = dataFailed(nodeName, Constants.NODE_STATUS_FAILED_UNAVAILABLE_API);
 		}
-		if (data != null) {
-			Logger.DEBUG(TAG, "Node " + nodeName + " value : " + data.getValue());
-		}
+		Logger.DEBUG(TAG, "Node " + nodeName + " value : " + data.getValue());
 		return data;
 	}
 
@@ -952,14 +951,13 @@ public class CameraPlugin extends AbstractPlugin {
 				data = null;
 			}
 		}
-		if (data == null && getAPIversion() >= 3) {
-			data = dataFailed(nodeName);
-		} else if (data == null && getAPIversion() < 3) {
-			data = dataFailed(nodeName, Constants.NODE_STATUS_FAILED_UNAVAILABLE_API);
+		if (data == null ) {
+			if ( getAPIversion() >= 3)
+				data = dataFailed(nodeName, Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
+			else
+				data = dataFailed(nodeName, Constants.NODE_STATUS_FAILED_UNAVAILABLE_API);
 		}
-		if (data != null) {
-			Logger.DEBUG(TAG, "Node " + nodeName + " value : " + data.getValue());
-		}
+		Logger.DEBUG(TAG, "Node " + nodeName + " value : " + data.getValue());
 		return data;
 	}
 
@@ -1094,14 +1092,13 @@ public class CameraPlugin extends AbstractPlugin {
 				data = null;
 			}
 		}
-		if (data == null && getAPIversion() >= 5) {
-			data = dataFailed(IMAGE_RESOLUTIONS_SUPPORTED_RESOLUTIONS);
-		} else if (data == null) {
-			data = dataFailed(IMAGE_RESOLUTIONS_SUPPORTED_RESOLUTIONS, Constants.NODE_STATUS_FAILED_UNAVAILABLE_API);
+		if (data == null) {
+			if ( getAPIversion() >= 5 )
+				data = dataFailed(IMAGE_RESOLUTIONS_SUPPORTED_RESOLUTIONS, Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
+			else
+				data = dataFailed(IMAGE_RESOLUTIONS_SUPPORTED_RESOLUTIONS, Constants.NODE_STATUS_FAILED_UNAVAILABLE_API);
 		}
-		if (data != null) {
-			Logger.DEBUG(TAG, "Camera Supported resolutions : " + data.getValue());
-		}
+		Logger.DEBUG(TAG, "Camera Supported resolutions : " + data.getValue());
 		return data;
 	}
 
@@ -1207,14 +1204,13 @@ public class CameraPlugin extends AbstractPlugin {
 				data = null;
 			}
 		}
-		if (data == null && getAPIversion() >= 5) {
-			data = dataFailed(nodeName);
-		} else if (data == null) {
-			data = dataFailed(nodeName, Constants.NODE_STATUS_FAILED_UNAVAILABLE_API);
+		if (data == null ) {
+			if ( getAPIversion() >= 5 )
+				data = dataFailed(nodeName, Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
+			else
+				data = dataFailed(nodeName, Constants.NODE_STATUS_FAILED_UNAVAILABLE_API);
 		}
-		if (data != null) {
-			Logger.DEBUG(TAG, "Node " + nodeName + " value : " + data.getValue());
-		}
+		Logger.DEBUG(TAG, "Node " + nodeName + " value : " + data.getValue());
 		return data;
 	}
 
@@ -1272,7 +1268,7 @@ public class CameraPlugin extends AbstractPlugin {
 			try {
 				data.setName(PARENT_NODE_NAME_RESOLUTION);
 				size = size / 1000000;
-				data.setValue(String.valueOf(size));
+				data.setValue(getFormattedDouble(size, "#0.00"));
 				data.setValueMetric("MP");
 				data.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
 			} catch (Exception e) {
@@ -1281,12 +1277,14 @@ public class CameraPlugin extends AbstractPlugin {
 			}
 		}
 		if (data == null) {
-			data = dataFailed(PARENT_NODE_NAME_RESOLUTION);
+			data = dataFailed(PARENT_NODE_NAME_RESOLUTION, Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
 		}
-		if (data != null) {
-			Logger.DEBUG(TAG, "Camera resolution : " + data.getValue());
-		}
+		Logger.DEBUG(TAG, "Camera resolution : " + data.getValue());
 		return data;
+	}
+
+	private String getFormattedDouble(double size, String format) {
+		return new DecimalFormat(format).format(size);
 	}
 
 	/**

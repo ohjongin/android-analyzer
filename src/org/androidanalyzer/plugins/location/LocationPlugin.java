@@ -26,8 +26,8 @@ public class LocationPlugin extends AbstractPlugin {
 	private static final String PARENT_NODE_NAME = "Location";
 
 	private static final String GPS = "GPS";
-	private static final String GPS_SUPPORTED = "Supported";
-	private static final String AGPS = "A-GPS support";
+	private static final String GPS_SUPPORTED = "GPS supported";
+	private static final String AGPS = "A-GPS supported";
 	private static final String NETWORK_BASED = "Network based";
 	private static final Object NETWORK_PROVIDER = "network";
 	private static final Object GPS_PROVIDER = "gps";
