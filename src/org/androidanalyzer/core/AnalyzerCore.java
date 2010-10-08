@@ -359,15 +359,18 @@ public class AnalyzerCore {
 
 		/* Create Metadata - Device ID */
 
-		String deviceIMEI = telephonyManager.getDeviceId();
+		String deviceID = telephonyManager.getDeviceId();
 		Data device = new Data();
 		try {
 			device.setName(Constants.METADATA_DEVICE);
 		} catch (Exception e) {
 			Logger.ERROR(TAG, "Could not set Metadata!", e);
 		}
-		if (deviceIMEI != null && reportPlugins != null) {
-			String md5 = Reporter.mD5H(deviceIMEI.getBytes());
+		//hack: the following line is a fallback for a case when the emulator returns null for device ID
+		deviceID = deviceID == null ? ""+System.currentTimeMillis() : deviceID;
+		
+		if (reportPlugins != null) {
+			String md5 = Reporter.mD5H(deviceID.getBytes());
 			try {
 				device.setValue(md5);
 				device.setValueMetric(Constants.METADATA_DEVICE_ID_METRIC);
@@ -376,7 +379,7 @@ public class AnalyzerCore {
 				Logger.ERROR(TAG, "Could not set Metadata!", e);
 			}
 		} else {
-			Logger.ERROR(TAG, "IMEI Check Failed");
+			Logger.ERROR(TAG, "Device ID Check Failed");
 		}
 
 		/* Create Metadata - Analyzer Version */
