@@ -48,10 +48,10 @@ public class CameraPlugin extends AbstractPlugin {
 	private static final String IMAGE_FOCUS_MODES = "Focus modes";
 	private static final String IMAGE_ZOOM = "Zoom";
 	private static final String IMAGE_GEOTAGGING = "Geotagging";
-	private static final String IMAGE_HAND_JITTER_REDUCTION = "Hand Jitter Reduction";
-	private static final String IMAGE_RED_EYE_REDUCTION = "Red Eye Reduction";
-	private static final String IMAGE_FACE_RECOGNITION = "Face Recognition";
-	private static final String IMAGE_DYNAMIC_RANGE_OPTIMIZATION = "Dynamic Range Optimization";
+	private static final String IMAGE_HAND_JITTER_REDUCTION = "Hand jitter reduction";
+	private static final String IMAGE_RED_EYE_REDUCTION = "Red eye reduction";
+	private static final String IMAGE_FACE_RECOGNITION = "Face recognition";
+	private static final String IMAGE_DYNAMIC_RANGE_OPTIMIZATION = "Dynamic range optimization";
 	private static final String IMAGE_OTHER_FEATURES = "Other features";
 	private static final String IMAGE_FORMAT = "Format";
 	private static final String IMAGE_SUPPORTED_FORMATS = "Supported formats";
@@ -60,13 +60,13 @@ public class CameraPlugin extends AbstractPlugin {
 	private static final String IMAGE_RESOLUTIONS_SUPPORTED_RESOLUTIONS = "Supported resolutions";
 	private static final String IMAGE_SUPPORTED_COMPRESSION_RATIOS = "Supported compression ratios";
 	private static final String VIDEO_PARENT_NODE = "Video";
-	private static final String VIDEO_SELF_TIMER = "Self Timer";
+	private static final String VIDEO_SELF_TIMER = "Self timer";
 	private static final String VIDEO_FLASH_MOVIE_LIGHT = "Flash / Movie light";
 	private static final String ZOOM = "Zoom";
 	private static final String VIDEO_WHITE_BALANCE_BRIGHTNESS = "White Balance / Brightness";
-	private static final String VIDEO_COLOR_TONE = "Color Tone";
-	private static final String VIDEO_SELF_PORTRAIT_VIDEO_MODE = "Self-Portrait Video Mode";
-	private static final String VIDEO_LONG_VIDEO_CAPTURE = "Long Video Capture";
+	private static final String VIDEO_COLOR_TONE = "Color tone";
+	private static final String VIDEO_SELF_PORTRAIT_VIDEO_MODE = "Self-portrait video mode";
+	private static final String VIDEO_LONG_VIDEO_CAPTURE = "Long video capture";
 	private static final String VIDEO_OTHER_CAPABILITIES = "Other capabilities";
 	private static final String VIDEO_FORMATS = "Formats";
 	private static final String VIDEO_FORMATS_MPEG4 = "MPEG-4";
@@ -769,6 +769,7 @@ public class CameraPlugin extends AbstractPlugin {
 				} else {
 					data.setValue(Constants.NODE_VALUE_NO);
 				}
+				data.setValueType(Constants.NODE_VALUE_TYPE_BOOLEAN);
 
 			} else {
 				data.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
@@ -941,11 +942,10 @@ public class CameraPlugin extends AbstractPlugin {
 				data.setName(nodeName);
 				if (hasFeature) {
 					data.setValue(Constants.NODE_VALUE_YES);
-					data.setValueType(Constants.NODE_VALUE_TYPE_BOOLEAN);
 				} else {
 					data.setValue(Constants.NODE_VALUE_NO);
-					data.setValueType(Constants.NODE_VALUE_TYPE_BOOLEAN);
 				}
+				data.setValueType(Constants.NODE_VALUE_TYPE_BOOLEAN);
 			} catch (Exception e) {
 				Logger.ERROR(TAG, "Could not create node name !");
 				data = null;
@@ -1010,7 +1010,6 @@ public class CameraPlugin extends AbstractPlugin {
 		String methodName = "isZoomSupported";
 
 		Camera.Parameters params = getCameraParams(cameraNumber);
-		Data data = null;
 		Boolean hasFeature = null;
 		if (getAPIversion() >= 5) {
 			try {
