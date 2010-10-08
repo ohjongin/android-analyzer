@@ -189,7 +189,21 @@
 	         </intent-filter>
         </service>
         
-		
+        <!-- **** Browser Plugin **** -->
+        <receiver android:enabled="true"
+	          android:exported="true"
+	          android:label="browser plugin receiver"
+	          android:name=".plugins.browser.BReceiver" >
+	           <intent-filter>
+	                <action android:name="org.androidanalyzer.plugins.discovery" />
+	            </intent-filter>
+	    </receiver>
+	    <service android:name=".plugins.browser.BrowserPlugin" android:process=":aanalyzer_plugins">
+	    	<intent-filter>												 
+                <action android:name="org.androidanalyzer.plugins.browser.BrowserPlugin"  />
+	         </intent-filter>
+        </service>
+        		
 		<!-- **** Dummy Plugin - Camera View GUI **** -->
         <!--
 		<receiver android:enabled="true"
