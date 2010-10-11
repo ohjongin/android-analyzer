@@ -1,0 +1,7 @@
+This page will provide some guidelines what to do prior implementing an AnalyzerPlugin
+
+In order to make developer's life easier, here are couple of steps, where to start from:
+
+  * Create detailed tree-like structure of the data that your AnalyzerPlugin will collect. This will help structuring the code that implements data collection later.
+  * Specify the hierarchy of nodes, types of the data collected, metrics if applicable, and last but not least, method/technique how data is collected. You can check [ here] for an example.
+  * Assumed that implementors are familiar with the architecture of the AndroidAnalyzer application, there is one convenience class (AbstractPlugin) that they can utilize in their plugins instead of implementing the AIDL from scratch.
