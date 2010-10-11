@@ -4,6 +4,6 @@ The Developer's Guide aims to provide comprehensive details how to implement an 
 
 The Developer's Guide covers the following aspects:
 || *Chapter* || *Goals* ||
-|| Where to start from? || Decide what information a plugin will collect. How it will be structured, etc. ||
+|| [WhereToStartFrom Where to start from?] || Decide what information a plugin will collect. How it will be structured, etc. ||
 || Implementing Analyzer Plugin || Cover the steps for implementing plugins, with emphasis on specifics when plugin has or not UI, or is packed within the core or as separate application, how to register it in the PluginRegistry ||
 || Constructing Data Objects || Provide detailed overview how Data objects are created, what are the best practices when dealing with the collected data ||
