@@ -1,0 +1,10 @@
+#summary Covers specifics when Plugins are implemented as seperate Android application
+
+= Introduction =
+
+The AndroidAnalyzer supports AnalyzerPlugin discovery when plugin is deployed in its own .apk file by design. 
+
+
+= Details =
+
+TBD
