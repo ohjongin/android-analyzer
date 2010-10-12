@@ -118,4 +118,4 @@ The following step-by-step guide assumes that plugin developer will base his plu
     return device;
   }
     }}}
-  #  Use Service.stopSelf() method to abort data collection when core explicitly requests data collection abortion.
+  #  Use {{{Service.stopSelf()}}} method to abort data collection when core explicitly requests data collection abortion.
