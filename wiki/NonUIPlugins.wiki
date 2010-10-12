@@ -7,7 +7,5 @@ Non-UI plugins can be implemented based on AbstractPlugin class that is provided
 
 = Details =
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+The following step-by-step guide assumes that plugin developer will base his plugin on top of the AbstractPlugin that comes with the AndroidAnalyzer project. At the end of the guide, differences implementing the AIDL on your own will be listed.
+  # Define class that extends {{{org.androidanalyzer.plugins.AbstractPlugin}}}
