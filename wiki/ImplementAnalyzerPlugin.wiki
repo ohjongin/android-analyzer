@@ -1,4 +1,4 @@
-This page will cover the different aspects of how an AnalyzerPlugin can be implemented. 
+#summary Covers the different aspects of how an AnalyzerPlugin can be implemented.
 
 = Overview =
 
