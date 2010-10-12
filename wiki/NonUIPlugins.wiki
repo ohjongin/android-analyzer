@@ -83,3 +83,39 @@ The following step-by-step guide assumes that plugin developer will base his plu
   # Time consuming operations should be run in separate threads with means to forcibly stop them after a timeout expires. 
   #  If certain operations or values are known that are not available for API Levels below certain number, plugin implemetor is advised to check API level before executing the operation and handle the result if it is not supported. AbstractPlugin.getAPIversion() is a convinience method to easily check API level. (For example see method {{{getDeviceHardware()}}} listed above.
   # When all data is collected, merge results in a single {{{Data}}} object, with tree structure matching the table created.
+    {{{
+  protected Data getData() {
+    Data device = new Data();
+    try {
+      device.setName(DEVICE_NODE);
+    } catch (Exception e) {
+      Logger.ERROR(TAG, "Error creating device node: "+e.getMessage(), e);
+      status = "Could not create Device root node";
+      return null;
+    }
+    ArrayList<Data> subnodes = new ArrayList<Data>();
+    try {
+      Data product = new Data();
+      product.setName(PRODUCT_NODE);
+      ArrayList<Data> productData = readProductData();
+      addToParent(product, productData);
+      subnodes.add(product);
+    } catch (Throwable t) {
+      Logger.ERROR(TAG, "Error creating product subnodes: "+t.getMessage(), t);
+      status = "Could not create Product subnode";
+    }
+    try {
+      Data firmware = new Data();
+      firmware.setName(FIRMWARE_NODE);
+      ArrayList<Data> firmwareData = readFirmwareData();
+      addToParent(firmware, firmwareData);
+      subnodes.add(firmware);
+    } catch (Throwable t) {
+      Logger.ERROR(TAG, "Error creating firmware subnodes: "+t.getMessage(), t);
+      status = "Could not create Firmware subnode";
+    }
+    addToParent(device, subnodes);
+    return device;
+  }
+    }}}
+  #  Use Service.stopSelf() method to abort data collection when core explicitly requests data collection abortion.
