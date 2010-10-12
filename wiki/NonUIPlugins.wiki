@@ -1,4 +1,4 @@
-This page provides detailed information how to implement an non-UI AnalyzerPlugin
+#summary Provides detailed information how to implement an non-UI AnalyzerPlugin
 
 = Overview =
 
