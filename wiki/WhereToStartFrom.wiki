@@ -1,4 +1,4 @@
-This page will provide some guidelines what to do prior implementing an AnalyzerPlugin
+#summary Provides some guidelines what to do prior implementing an AnalyzerPlugin
 
 In order to make developer's life easier, here are couple of steps, where to start from:
 
