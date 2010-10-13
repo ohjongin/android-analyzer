@@ -1,10 +1,18 @@
 #summary Covers specifics when Plugins are implemented as seperate Android application
 
-= Introduction =
+= Overview =
 
 The AndroidAnalyzer supports AnalyzerPlugin discovery when plugin is deployed in its own .apk file by design. 
 
 
 = Details =
 
-TBD
+In general there is no difference in the way plugin collects its data. The plugin provider has to comply with the following requirements:
+
+  # Include the AndroidAnalyzer AIDL files in the application.
+  # Either implement IAnalyzerPlugin.Stub or copy AbstractPlugin class from the AndroidAnalyzer application and implement the plugin on top of it
+  # Register your plugin in the PluginRegistry (Note: this is not required if you implement on top of AbstractPlugin).
+
+There are some benefits using AbstractPlugin instead of implementing IAnalyzerPlugin.Stub:
+  # AbstractPlugin handles connection to PluginRegistry service, so plugin developer's don't have to bother about it. 
+  # AbstractPlugin provides an Android Service that eases the communication between the core and the plugins. Otherwise plugin developer has to handle this on his own.
