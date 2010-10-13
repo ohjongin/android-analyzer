@@ -24,17 +24,17 @@ public class KeyboardPlugin extends AbstractPlugin {
   private static final String PARENT_NODE_NAME = "Keyboard";
 
   private static final String HARD_KEYBOARD = "Hard keyboard";
-  private static final String KEYBOARD_NOKEYS = "Keyboard without keys";
-  private static final String KEYBOARD_12KEY = "Keyboard with 12 keys";
-  private static final String KEYBOARD_QUERTY = "Querty keyboard";
-  private static final String KEYBOARD_UNDEFINED = "Undefined";
+  private static final String KEYBOARD_NOKEYS = "Custom keys";
+  private static final String KEYBOARD_12KEY = "Numeric pad";
+  private static final String KEYBOARD_QWERTY = "QWERTY";
+  private static final String KEYBOARD_UNDEFINED = "Unknown";
   
   private static final String NAVIGATION = "Navigation";
-  private static final String NAVIGATION_NONAV = "No Navigation";
+  private static final String NAVIGATION_NONAV = "No navigation";
   private static final String NAVIGATION_WHEEL = "Wheel";
-  private static final String NAVIGATION_DPAD = "DPad";
+  private static final String NAVIGATION_DPAD = "Directional pad";
   private static final String NAVIGATION_TRACKBALL = "Trackball";
-  private static final String NAVIGATION_UNDEFINED = "Undefined";
+  private static final String NAVIGATION_UNDEFINED = "Unknown";
   
   
   
@@ -73,7 +73,7 @@ public class KeyboardPlugin extends AbstractPlugin {
 		} else if (c.keyboard == Configuration.KEYBOARD_12KEY){
 			hardKeyboard.setValue(KEYBOARD_12KEY);			
 		} else if (c.keyboard == Configuration.KEYBOARD_QWERTY){
-			hardKeyboard.setValue(KEYBOARD_QUERTY);
+			hardKeyboard.setValue(KEYBOARD_QWERTY);
 		} else if (c.keyboard == Configuration.KEYBOARD_UNDEFINED){
 			hardKeyboard.setValue(KEYBOARD_UNDEFINED);
 		} else {
