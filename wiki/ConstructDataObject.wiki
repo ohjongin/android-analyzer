@@ -36,3 +36,15 @@ By default Data object treats its value as of `String` type. In the cases where 
 
 Ordinal values should have metrics, especially if they match any of the already defined ones. Data value metrics is set via {{{Data.setValueMetrics(String)}}} method.
 
+|| *Constant* || *Usage* ||
+|| `NODE_INPUT_SOURCE_AUTOMATIC` || (*default*) Denotes that data was retrieved automatically with a testcase ||
+|| `NODE_INPUT_SOURCE_MANUAL` || Denotes that data collected is provided by the user ||
+
+These values are set via {{{Data.setInputSource(String)}}} method and if data is collected with a testcase, setting input source is handled by the AnalyzerCore automatically.
+
+|| *Constant* || *Usage* ||
+|| `NODE_CONFIRMATION_LEVEL_TEST_CASE_CONFIRMED` || (*default*) Denotes that data si collected by a testcase ||
+|| `NODE_CONFIRMATION_LEVEL_USER_CONFIRMED` || Denotes that data has been manually input by the user ||
+|| `NODE_CONFIRMATION_LEVEL_UNCONFIRMED` || Denotes that collected data cannot be confirmed. Usually this is data that is provided from manual input source || 
+
+Confirmation level is set via {{{Data.setConfirmationLevel(String)}}} method and should be used when collected data is confirmed by user or cannot be confirmed. 
