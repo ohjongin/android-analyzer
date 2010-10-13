@@ -8,8 +8,8 @@ The following table defines the structure of data being inserted in the report, 
 
 || *Node* || *Node* || *Node* || *Value* || *Retrieval Method* ||
 || Keyboard|| || || || ||
-||      || Hard keyboard || || _string_ (Querty keyboard, Keyboard with 12 keys, Keyboard without keys, Undefined || {{{!Resources.Configuration.keyboard}}} ||
-||      || Navigation|| || _string_ (DPad, No Navigation, Trackball, Wheel, Undefined) || {{{!Resources.Configuration.navigation}}} ||
+||      || Hard keyboard || || _string_ (Custom keys, Numeric pad, QWERTY, Unknown) || {{{!Resources.Configuration.keyboard}}} ||
+||      || Navigation|| || _string_ (Directional pad, No navigation, Trackball, Wheel, Unknown) || {{{!Resources.Configuration.navigation}}} ||
 ||      || Hard key -{{{x}}}|| ||   ||  ||
 || || || Name || _string_ || (to be defined) ||
 
