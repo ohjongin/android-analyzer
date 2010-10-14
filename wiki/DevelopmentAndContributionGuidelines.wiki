@@ -1,6 +1,6 @@
 #summary Covers the specifics of the development and contribution processes
 
-= Introduction =
+= Overview =
 
 This page provides guidelines about the process of development and contribution of AnalyzerPlugins. 
 
