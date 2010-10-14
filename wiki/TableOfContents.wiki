@@ -17,7 +17,7 @@
       * [BrowserPlugin Browser]
     * [DeviceReports Device Reports]
   * [DeveloperGuide Developer's Guide]
-    * [WhereToStartFrom Development and Contribution Guidelines]
+    * [DevelopmentAndContributionGuidelines Development and Contribution Guidelines]
     * [ImplementAnalyzerPlugin Implementing Analyzer Plugin]
       * [NonUIPlugins Non-UI Plugins]
       * [UIPlugins UI Plugins]
