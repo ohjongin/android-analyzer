@@ -2,6 +2,10 @@
 
 = Overview =
 
+This page aims to cover the different aspects of AnalyzerPlugins and provide rich technical advise on implementing them. 
+
+= Details =
+
 By design the AndroidAnalyzer application supports two types of plugins: UI and non-UI.
 
 UI plugins have a visual part which usually interacts with the user and expects some feedback from him (e.g text bounces on the screen, and user has to confirm he has seen and read it).
@@ -9,8 +13,6 @@ UI plugins have a visual part which usually interacts with the user and expects 
 On the other hand non-UI plugins collect data without the user consent. 
 
 Another aspect of the implementation of a plugin is where it resides: is it part of the AndroidAnalyzer application or it is implemented as a separate Android application.
-
-= Details =
 
 The following table provides more details about the specifics of implementing AnalyzerPlugins:
 
