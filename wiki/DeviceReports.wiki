@@ -26,7 +26,7 @@ This is a [http://android-analyzer.googlecode.com/svn/trunk/docs/Sample%20Device
 || || || Device ID Hash || || || || _string_ || MD5H || Calculate hash code of TelephonyManager.getDeviceId().getBytes() ||
 || || || Model || || || || _string_ || || _Build.MODEL_ ||
 || || || Date|| || || || _string_ ||Timestamp || Format is: yyyy/MM/dd HH:mm:ss ||
-|| || || Android API Level || || || || _integer_ || {{{System.getProperty(android.os.Build.VERSION)}}} ||
+|| || || Android API Level || || || || _integer_ || || {{{System.getProperty(android.os.Build.VERSION)}}} ||
 
 
 For further details about *< Node >* structure please see [Plugins Plugins] section.
