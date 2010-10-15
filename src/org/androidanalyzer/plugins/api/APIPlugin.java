@@ -119,7 +119,7 @@ public class APIPlugin extends AbstractPlugin {
 		/* API Level */
 		try {
 			apiLevelHolder.setName(ANDROID_API_LEVEL);
-			int apiVersion = getAPIversion();
+			int apiVersion = getAPIVersion();
 			if (apiVersion > 0) {
 				apiLevelHolder.setValue("" + apiVersion);
 				apiLevelHolder.setStatus(Constants.NODE_STATUS_OK);

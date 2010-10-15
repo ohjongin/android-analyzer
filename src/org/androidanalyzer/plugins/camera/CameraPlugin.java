@@ -542,7 +542,7 @@ public class CameraPlugin extends AbstractPlugin {
 
 					List<Camera.Size> sizes = null;
 					if (params != null) {
-						if (getAPIversion() >= 5) {
+						if (getAPIVersion() >= 5) {
 							String methodName = "getSupportedPreviewSizes";
 							try {
 								Method method = Camera.Parameters.class.getDeclaredMethod(methodName);
@@ -815,7 +815,7 @@ public class CameraPlugin extends AbstractPlugin {
 		Camera.Parameters params = getCameraParams(cameraNumber);
 		Data data = null;
 		Boolean hasFeature = null;
-		if (getAPIversion() >= 5) {
+		if (getAPIVersion() >= 5) {
 			try {
 				Method method = Camera.Parameters.class.getDeclaredMethod(methodName);
 				if (method != null) {
@@ -866,7 +866,7 @@ public class CameraPlugin extends AbstractPlugin {
 		Camera.Parameters params = getCameraParams(cameraNumber);
 		Data data = null;
 		StringBuffer modeList = null;
-		if (getAPIversion() >= 5) {
+		if (getAPIVersion() >= 5) {
 			try {
 				Method method = Camera.Parameters.class.getDeclaredMethod(methodName);
 				if (method != null) {
@@ -903,7 +903,7 @@ public class CameraPlugin extends AbstractPlugin {
 			}
 		}
 		if (data == null ) {
-			if ( getAPIversion() >= 5 )
+			if ( getAPIVersion() >= 5 )
 				data = dataFailed(nodeName, Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
 			else
 				data = dataFailed(nodeName, Constants.NODE_STATUS_FAILED_UNAVAILABLE_API);
@@ -952,7 +952,7 @@ public class CameraPlugin extends AbstractPlugin {
 			}
 		}
 		if (data == null ) {
-			if ( getAPIversion() >= 3)
+			if ( getAPIVersion() >= 3)
 				data = dataFailed(nodeName, Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
 			else
 				data = dataFailed(nodeName, Constants.NODE_STATUS_FAILED_UNAVAILABLE_API);
@@ -971,7 +971,7 @@ public class CameraPlugin extends AbstractPlugin {
 
 		String methodName = "getSupportedFlashModes";
 		Boolean hasFeature = null;
-		if (getAPIversion() >= 5) {
+		if (getAPIVersion() >= 5) {
 			Camera.Parameters params = getCameraParams(cameraNumber);
 			try {
 				Method method = Camera.Parameters.class.getDeclaredMethod(methodName);
@@ -1011,7 +1011,7 @@ public class CameraPlugin extends AbstractPlugin {
 
 		Camera.Parameters params = getCameraParams(cameraNumber);
 		Boolean hasFeature = null;
-		if (getAPIversion() >= 5) {
+		if (getAPIVersion() >= 5) {
 			try {
 				Method method = Camera.Parameters.class.getDeclaredMethod(methodName);
 				if (method != null) {
@@ -1050,7 +1050,7 @@ public class CameraPlugin extends AbstractPlugin {
 		Camera.Parameters params = getCameraParams(cameraNumber);
 		Data data = null;
 		StringBuffer sizesStr = null;
-		if (getAPIversion() >= 5) {
+		if (getAPIVersion() >= 5) {
 			String methodName = "getSupportedPictureSizes";
 			try {
 				Method method = Camera.Parameters.class.getDeclaredMethod(methodName);
@@ -1092,7 +1092,7 @@ public class CameraPlugin extends AbstractPlugin {
 			}
 		}
 		if (data == null) {
-			if ( getAPIversion() >= 5 )
+			if ( getAPIVersion() >= 5 )
 				data = dataFailed(IMAGE_RESOLUTIONS_SUPPORTED_RESOLUTIONS, Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
 			else
 				data = dataFailed(IMAGE_RESOLUTIONS_SUPPORTED_RESOLUTIONS, Constants.NODE_STATUS_FAILED_UNAVAILABLE_API);
@@ -1165,7 +1165,7 @@ public class CameraPlugin extends AbstractPlugin {
 		Camera.Parameters params = getCameraParams(cameraNumber);
 		Data data = null;
 		StringBuffer formatsSupported = null;
-		if (getAPIversion() >= 5) {
+		if (getAPIVersion() >= 5) {
 			try {
 				Method method = Camera.Parameters.class.getDeclaredMethod(methodName);
 				if (method != null) {
@@ -1204,7 +1204,7 @@ public class CameraPlugin extends AbstractPlugin {
 			}
 		}
 		if (data == null ) {
-			if ( getAPIversion() >= 5 )
+			if ( getAPIVersion() >= 5 )
 				data = dataFailed(nodeName, Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
 			else
 				data = dataFailed(nodeName, Constants.NODE_STATUS_FAILED_UNAVAILABLE_API);
@@ -1229,7 +1229,7 @@ public class CameraPlugin extends AbstractPlugin {
 		Camera.Parameters params = getCameraParams(cameraNumber);
 		Data data = null;
 		double size = 0;
-		if (getAPIversion() >= 5) {
+		if (getAPIVersion() >= 5) {
 			String methodName = "getSupportedPictureSizes";
 			try {
 				Method method = Camera.Parameters.class.getDeclaredMethod(methodName);
@@ -1256,7 +1256,7 @@ public class CameraPlugin extends AbstractPlugin {
 			} catch (InvocationTargetException e) {
 			}
 		}
-		if ((getAPIversion() > 0 && getAPIversion() < 5) || size == 0) {
+		if ((getAPIVersion() > 0 && getAPIVersion() < 5) || size == 0) {
 			Size sizeFromParams = params.getPictureSize();
 			if (sizeFromParams != null) {
 				size = sizeFromParams.width * sizeFromParams.height;
