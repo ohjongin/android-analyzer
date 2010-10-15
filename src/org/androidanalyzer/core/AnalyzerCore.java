@@ -71,6 +71,7 @@ public class AnalyzerCore {
 	private Data tempReport = null;
 	private UninstallBReceiver unRecv = null;
 	private int uiPluginsCounter = 0;
+	private int sdkVersion = 0;
 
 	public static AnalyzerCore getInstance() {
 		if (core == null)
@@ -330,6 +331,17 @@ public class AnalyzerCore {
 			}
 
 			try {
+				Data apiLevel = new Data();
+				apiLevel.setName(Constants.M_ANDROID_API_LEVEL);
+				int apiVersion = getAPIVersion();
+				apiLevel.setValue("" + apiVersion);
+				Logger.DEBUG(TAG, "API Level is " + apiVersion);
+				reportMetadata.setValue(apiLevel);
+			} catch (Exception e) {
+				Logger.ERROR(TAG, "Could not set API Level data!", e);
+			}
+			
+			try {
 				Data firmwareVersion = new Data();
 				firmwareVersion.setName(Constants.M_FIRMWARE_VERSION);
 				String model = Build.VERSION.RELEASE;
@@ -428,6 +440,53 @@ public class AnalyzerCore {
 		return root;
 	}
 
+	/**
+	 * Gets the current API version as an integer value
+	 * TODO: pull out the same code from AbstractPlugin.getAPIversion to the same place
+	 * 
+	 * @return the current API version as an int value
+	 */
+	public int getAPIVersion() {
+		if (sdkVersion > 0) {
+			return sdkVersion;
+		}
+		String SDK_INT_FIELD = "SDK_INT";
+		String SDK_STRING_FIELD = "SDK";
+		try {
+			Field sdkField = android.os.Build.VERSION.class.getDeclaredField(SDK_INT_FIELD);
+			if (sdkField != null) {
+				sdkVersion = sdkField.getInt(android.os.Build.VERSION.class.newInstance());
+				Logger.DEBUG(TAG, "API version : " + sdkVersion);
+				if (sdkVersion > 0)
+					return sdkVersion;
+			}
+		} catch (Exception e) {
+			Logger.DEBUG(TAG, "Could not get SDK_INT field for sdk version !");
+		}
+
+		try {
+			Field sdkField = android.os.Build.VERSION.class.getDeclaredField(SDK_STRING_FIELD);
+			if (sdkField != null) {
+				Object temp = sdkField.get(android.os.Build.VERSION.class.newInstance());
+				if (temp instanceof String) {
+					String sdkVerString = (String) temp;
+					try {
+						sdkVersion = Integer.parseInt(sdkVerString);
+						Logger.DEBUG(TAG, "API version : " + sdkVersion);
+						if (sdkVersion > 0)
+							return sdkVersion;
+					} catch (Exception e) {
+						Logger.DEBUG(TAG, "Could not get API version from sdkVerString : " + sdkVerString);
+					}
+				}
+			}
+		} catch (Exception e) {
+			Logger.DEBUG(TAG, "Could not get SDK_INT field for sdk version !");
+		}
+		Logger.DEBUG(TAG, "Could not get API version !");
+		return 0;
+	}
+	
 	/**
 	 * Stops ongoing Analysis from the Core
 	 */
