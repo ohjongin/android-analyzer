@@ -70,6 +70,7 @@ public class Constants {
 	public static final String M_DEVICE_MODEL = "Model";
 	public static final String M_FIRMWARE_VERSION= "Firmware version";
 	public static final String M_OPERATOR = "Operator";
+	public static final String M_ANDROID_API_LEVEL = "Android API Level";
 	
 	public static final String METADATA_ANALYZER = "Analyzer";
 	public static final String METADATA_ANALYZER_VERSION = "Version";
