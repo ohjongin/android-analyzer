@@ -297,7 +297,7 @@ public class DeviceInfoPlugin extends AbstractPlugin {
   }
   
   private boolean isApiAvailable(int since) {
-    return getAPIversion() >= since;
+    return getAPIVersion() >= since;
   }
   
   private ArrayList<Data> readFirmwareData() {

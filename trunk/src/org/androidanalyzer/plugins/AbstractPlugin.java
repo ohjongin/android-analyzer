@@ -247,7 +247,7 @@ public abstract class AbstractPlugin extends Service {
 	 * 
 	 * @return the current API version as an int value
 	 */
-	public int getAPIversion() {
+	public int getAPIVersion() {
 
 		if (sdkVersion > 0) {
 			return sdkVersion;
