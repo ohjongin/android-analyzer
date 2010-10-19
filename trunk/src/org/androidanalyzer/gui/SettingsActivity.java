@@ -79,7 +79,7 @@ public class SettingsActivity extends Activity {
             try {
               URI host = new URI(newHost);
               String scheme = host.getScheme();
-              if (scheme != null && scheme.startsWith("http://"))
+              if (scheme != null && scheme.startsWith("http"))
                 PreferencesManager.savePreference(SettingsActivity.this, Constants.HOST, newHost);
               else
                 showAlertDialog();
