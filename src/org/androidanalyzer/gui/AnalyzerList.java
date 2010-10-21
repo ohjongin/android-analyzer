@@ -94,6 +94,8 @@ public class AnalyzerList extends Activity implements UICallback {
     if (host == null) {
       host = Reporter.getHost();
       PreferencesManager.savePreference(this, Constants.HOST, host);
+    } else {
+      Reporter.setHost(host);
     }
     reportView = (TextView)findViewById(R.id.last_report);
     Logger.setDebug(debugEnabled);

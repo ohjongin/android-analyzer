@@ -50,7 +50,7 @@ public class ReportActivity extends Activity {
 		Intent intent = getIntent();
 		Bundle data = intent.getExtras();
 		final Data analysisResult = (Data) data.get(Constants.GUI_HANDLER_SEND);
-		final AnalyzerCore core = AnalyzerCore.getInstance();
+//		final AnalyzerCore core = AnalyzerCore.getInstance();
 		final String host = (String) data.get(Constants.HOST);
 		Button sendB = (Button) findViewById(R.id.first_button);
 		sendB.setText(R.string.send_report_button);
