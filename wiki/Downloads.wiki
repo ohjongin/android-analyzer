@@ -1,5 +1,6 @@
 #labels Featured
 *QR permalink to the latest release:*
+<br>
 [http://android-analyzer.googlecode.com/svn/wiki/analyzer_permalink_qr.png]
 
 || *Versions* || *Backend* || *Stable* || *Changes* ||
