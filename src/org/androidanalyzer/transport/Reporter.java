@@ -14,8 +14,7 @@ import org.androidanalyzer.core.Data;
 
 public abstract class Reporter {
 	//default backend server
-//	private static final String HOST_DEFAULT = "http://212.95.166.45:8080/af/SubmitDeviceReport";
-	private static final String HOST_DEFAULT = "http://AndroidFragmentation.com/SubmitDeviceReport";
+	private static final String HOST_DEFAULT = "http://212.95.166.45:8080/af/SubmitDeviceReport";
 	//current backend server
 	private static String HOST = null;
 	
