@@ -4,6 +4,9 @@
 [http://android-analyzer.googlecode.com/svn/wiki/analyzer_permalink_qr.png]
 
 Android Market release backend: [http://AndroidFragmentation.com]
+<br>
+<br>
+
 
 || *Versions* || *Backend* || *Stable* || *Changes* ||
 || [http://code.google.com/p/android-analyzer/downloads/detail?name=andanalyzer-debug-1.0.0.apk&can=2&q= 1.0.0 Debug] || [http://212.95.166.45:8080/af Sandbox] || Yes || Latest version promoted to 1.0.0 ||
