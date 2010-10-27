@@ -1,4 +1,3 @@
-#labels Featured
 *QR permalink to the latest _Android Market_ release:*
 <br>
 [http://android-analyzer.googlecode.com/svn/wiki/analyzer_permalink_qr.png]
