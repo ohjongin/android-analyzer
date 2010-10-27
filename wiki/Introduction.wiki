@@ -1,4 +1,4 @@
-#labels Phase-Requirements
+#labels Phase-Requirements,Featured
 = Goals =
 The Android Analyzer project aims at developing an Android application that analyzes and collects hardware and software capabilities of devices based on the Android OS. Capability reports can be sent to an online database, currently hosted at [http://AndroidFragmentation.com] sister-site, where a comprehensive user interface is presented for browsing and comparing device capabilities for one or more devices. We believe that the Android developer community will benefit significantly from having an in-depth capability analysis at their fingertips, saving time, money and frustration.
 
