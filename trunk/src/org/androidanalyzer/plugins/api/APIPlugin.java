@@ -9,6 +9,9 @@ import org.androidanalyzer.plugins.AbstractPlugin;
 
 import android.content.ComponentName;
 import android.content.pm.ActivityInfo;
+import android.content.pm.ProviderInfo;
+import android.database.Cursor;
+import android.net.Uri;
 
 /**
  * APIPlugin class that represents all API sets and versions available on the device.
@@ -17,12 +20,14 @@ import android.content.pm.ActivityInfo;
 public class APIPlugin extends AbstractPlugin {
 
 	private static final String NAME = "API Plugin";
-	private static final String PLUGIN_VERSION = "1.0.0";
+	private static final String PLUGIN_VERSION = "1.0.1";
 	private static final String PLUGIN_VENDOR = "ProSyst Software GmbH";
 	private static final String API = "API";
 	private static final String ANDROID_API_LEVEL = "Android API Level";
 	private static final String GOOGLE = "Google";
 	private static final String GMAPS = "Google Maps Application";
+	private static final String CONTACTS = "Contacts";
+	private static final String MY_CONTACT_CART = "MyContactCard type";
 	private static final String TAG = "Analyzer-APIPlugin";
 	private static final String DESCRIPTION = "Collects data on available Android and Google APIs and their versions";
 	private String status = Constants.METADATA_PLUGIN_STATUS_PASSED;
@@ -107,7 +112,6 @@ public class APIPlugin extends AbstractPlugin {
 		Logger.DEBUG(TAG, "getData in API Plugin");
 		Data parent = new Data();
 		ArrayList<Data> masterChildren = new ArrayList<Data>(2);
-
 		try {
 			parent.setName(API);
 		} catch (Exception e) {
@@ -182,6 +186,7 @@ public class APIPlugin extends AbstractPlugin {
 			status = "Could not set Google node!";
 		}
 */
+		
 		// Google
 		Data googleHolder = new Data();
 		
@@ -217,6 +222,40 @@ public class APIPlugin extends AbstractPlugin {
 			status = "Could not set Google node!";
 		}
 		
+		// Contacts
+		Data contactsHolder = new Data();
+		
+		// Contacts -> MyContactCard
+		Data myContactCardHolder = new Data();
+		try {
+			contactsHolder.setName(CONTACTS);
+
+			ArrayList<Data> contactsChildren = new ArrayList<Data>(2);
+			myContactCardHolder.setName(MY_CONTACT_CART);
+			myContactCardHolder.setValueType(Constants.NODE_VALUE_TYPE_STRING);
+			try{				
+				String contactCardType = getContentResolver().getType(Uri.parse("content://contacts/myContactCard"));
+				if (contactCardType == null){
+					myContactCardHolder.setValue(Constants.NODE_VALUE_UNKNOWN);		
+				} else {
+					myContactCardHolder.setValue(contactCardType);
+				}
+				myContactCardHolder.setStatus(Constants.NODE_STATUS_OK);
+			} catch (Exception e){
+				Logger.ERROR(TAG, "Could not read content resolver", e);
+				myContactCardHolder.setStatus(Constants.NODE_STATUS_FAILED);
+				myContactCardHolder.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
+			} 
+							
+			contactsChildren.add(myContactCardHolder);
+			
+			
+			contactsHolder = addToParent(contactsHolder, contactsChildren);
+			masterChildren.add(contactsHolder);
+		} catch (Exception e) {
+			Logger.ERROR(TAG, "Could not set Contacts node!", e);
+			status = "Could not set Contacts node!";
+		}
 		
 		parent = addToParent(parent, masterChildren);
 		return parent;
