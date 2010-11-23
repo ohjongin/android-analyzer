@@ -43,7 +43,7 @@ public class HTTPJSONReporter extends Reporter {
 	//sent from the backend to AA to indicate the content is compressed in gzip format
 	private static final String X_ANDROID_ANALYZER_CONTETN_ENCODING ="Content-Encoding";
 	//sent from the backend to AA to indicate the content is encoded in UTF-16
-	private static final String X_ANDROID_ANALYZER_CHARACTER_ENCODING ="Character-Encoding";
+	private static final String X_ANDROID_ANALYZER_CHARACTER_ENCODING ="X_ANDROID_ANALYZER_CHARACTER_ENCODING";
 
 	private static final String TAG = "Analyzer-HTTPJSONReporter";
 
