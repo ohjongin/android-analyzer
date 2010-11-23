@@ -72,6 +72,7 @@ public class AnalyzerCore {
 	private UninstallBReceiver unRecv = null;
 	private int uiPluginsCounter = 0;
 	private int sdkVersion = 0;
+	private boolean setStatus = false;
 
 	public static AnalyzerCore getInstance() {
 		if (core == null)
@@ -123,7 +124,6 @@ public class AnalyzerCore {
 		}
 	}
 
-	
 	public void readFromCache() {
 		cleanReport();
 		Logger.DEBUG(TAG, "Read from chache");
@@ -139,9 +139,9 @@ public class AnalyzerCore {
 					if (decoded != null && decoded.isEnabled()) {
 						enabledPlugins.add(pluginClass);
 					}
-				} else {//If no record is found in prefs. we assume plugin is enabled
-				  //This will happen when analyzer is started for the very first time
-				  enabledPlugins.add(pluginClass);
+				} else {// If no record is found in prefs. we assume plugin is enabled
+					// This will happen when analyzer is started for the very first time
+					enabledPlugins.add(pluginClass);
 				}
 			}
 		}
@@ -149,6 +149,7 @@ public class AnalyzerCore {
 		ArrayList<String> sortedEnabledPlugins = sortPluginList(enabledPlugins);
 		Logger.DEBUG(TAG, "Sorted enabledPlugins - " + sortedEnabledPlugins);
 	}
+
 	/**
 	 * Starts Analysis in the Core. Each plugin is taken from the registry Cache
 	 * and called for analysis.
@@ -164,21 +165,23 @@ public class AnalyzerCore {
 		String status = null;
 		if (uiCallb != null)
 			progressValues = new Hashtable<String, Object>(5);
-		Logger.DEBUG(TAG, "pluginCache : " + pluginCache);		
+		Logger.DEBUG(TAG, "pluginCache : " + pluginCache);
 		int size = sortedEnabledPlugins.size();
-		 //Updating UI on Analysis start 
+		// Updating UI on Analysis start
 		if (progressValues != null) {
 			progressValues.put(UICallback.NUMBER_OF_PLUGINS, size);
 			uiCallb.updateAnalysisProgress(progressValues);
 		}
 		String pluginName = null;
 		String description = "";
-	
+
 		if (size > 0) {
 			for (String plugin : sortedEnabledPlugins) {
+				Data currentPlugin = null;
 				runningPluginConn = connectToPlugin(plugin);
 				if (runningPluginConn != null && runningPluginConn.plugin != null) {
 					try {
+						currentPlugin = getPluginMetaData(runningPluginConn.plugin, pluginCounter++);
 						runningPluginConn.plugin.setDebugEnabled(Logger.getDebug());
 					} catch (RemoteException exp) {
 						Logger.DEBUG(TAG, "Error while trying to activate debug for plugin : " + plugin);
@@ -214,12 +217,12 @@ public class AnalyzerCore {
 						timeout = DEFAULT_MIN_TIME_TO_WAIT_FOR_PLUGIN_ANALYSIS_COMPLETION;
 					tempReport = null;
 					pluginAnalyzing = true;
-					exec.execute(new PluginAnalysisHandler(runningPluginConn.plugin, progressValues));
+					exec.execute(new PluginAnalysisHandler(runningPluginConn.plugin, progressValues, currentPlugin));
 					if (!isPluginRequiredUI) {
 						Logger.DEBUG(TAG, "Waiting with TIME OUT");
 						while (pluginAnalyzing == true && tempReport == null && timeout > 0) {
 							try {
-								Thread.sleep(100);//UI-less plugins are usually fast
+								Thread.sleep(100);// UI-less plugins are usually fast
 								timeout -= 100;
 							} catch (InterruptedException e) {
 								Logger.ERROR(TAG, "Could not Sleep thread in Core!");
@@ -229,7 +232,7 @@ public class AnalyzerCore {
 						Logger.DEBUG(TAG, "Waiting without TIME OUT");
 						while (pluginAnalyzing == true && tempReport == null) {
 							try {
-								Thread.sleep(250);//UI plugins take more time
+								Thread.sleep(250);// UI plugins take more time
 							} catch (InterruptedException e) {
 								Logger.ERROR(TAG, "Could not Sleep thread in Core!");
 							}
@@ -251,7 +254,8 @@ public class AnalyzerCore {
 							Logger.ERROR(TAG, "Could not set Metadata!", e);
 						}
 					}
-					Data currentPlugin = getPluginMetaData(runningPluginConn.plugin, pluginCounter++);
+					// Data currentPlugin = getPluginMetaData(runningPluginConn.plugin, pluginCounter++);
+					currentPlugin = setPluginStatus(currentPlugin, status);
 					try {
 						plugins.setValue(currentPlugin);
 					} catch (Exception e) {
@@ -340,7 +344,7 @@ public class AnalyzerCore {
 			} catch (Exception e) {
 				Logger.ERROR(TAG, "Could not set API Level data!", e);
 			}
-			
+
 			try {
 				Data firmwareVersion = new Data();
 				firmwareVersion.setName(Constants.M_FIRMWARE_VERSION);
@@ -356,7 +360,7 @@ public class AnalyzerCore {
 				Data operatorName = new Data();
 				operatorName.setName(Constants.M_OPERATOR);
 				String name = telephonyManager.getNetworkOperatorName();
-				Logger.DEBUG(TAG, "Operator name is " + name);				
+				Logger.DEBUG(TAG, "Operator name is " + name);
 				if (name == null || name.length() == 0) {
 					name = Constants.NODE_VALUE_UNKNOWN;
 				}
@@ -378,9 +382,10 @@ public class AnalyzerCore {
 		} catch (Exception e) {
 			Logger.ERROR(TAG, "Could not set Metadata!", e);
 		}
-		//hack: the following line is a fallback for a case when the emulator returns null for device ID
-		deviceID = deviceID == null ? ""+System.currentTimeMillis() : deviceID;
-		
+		// hack: the following line is a fallback for a case when the emulator
+		// returns null for device ID
+		deviceID = deviceID == null ? "" + System.currentTimeMillis() : deviceID;
+
 		if (reportPlugins != null) {
 			String md5 = Reporter.mD5H(deviceID.getBytes());
 			try {
@@ -442,7 +447,7 @@ public class AnalyzerCore {
 
 	/**
 	 * Gets the current API version as an integer value
-	 * TODO: pull out the same code from AbstractPlugin.getAPIversion to the same place
+   * TODO: pull out the same code from AbstractPlugin.getAPIversion to the same place
 	 * 
 	 * @return the current API version as an int value
 	 */
@@ -486,7 +491,7 @@ public class AnalyzerCore {
 		Logger.DEBUG(TAG, "Could not get API version !");
 		return 0;
 	}
-	
+
 	/**
 	 * Stops ongoing Analysis from the Core
 	 */
@@ -561,7 +566,7 @@ public class AnalyzerCore {
 	public int getPluginUIRequired() {
 		return uiPluginsCounter;
 	}
-	
+
 	/**
 	 * Adds data to main Report in Core
 	 * 
@@ -770,7 +775,7 @@ public class AnalyzerCore {
 		public void onServiceConnected(ComponentName name, IBinder service) {
 			plugin = (IAnalyzerPlugin.Stub.asInterface((IBinder) service));
 			if (uiCallb != null)
-			  uiCallb.notifyPluginRegistered(plugin);
+				uiCallb.notifyPluginRegistered(plugin);
 			Logger.DEBUG(TAG, "Core Connected to plugin : " + name);
 		}
 
@@ -790,13 +795,16 @@ public class AnalyzerCore {
 
 		private IAnalyzerPlugin plugin;
 		private Hashtable progressValues;
+		private Data currentPlugin;
 
 		/**
+		 * @param currentPlugin 
      * 
      */
-		public PluginAnalysisHandler(IAnalyzerPlugin plugin, Hashtable progressValues) {
+		public PluginAnalysisHandler(IAnalyzerPlugin plugin, Hashtable progressValues, Data currentPlugin) {
 			this.plugin = plugin;
 			this.progressValues = progressValues;
+			this.currentPlugin = currentPlugin;
 		}
 
 		/*
@@ -810,8 +818,7 @@ public class AnalyzerCore {
 			try {
 				pluginName = plugin.getName();
 				tempReport = plugin.startAnalysis();
-			} catch (RemoteException e) {
-
+			} catch (Exception e) {
 				if (progressValues != null) {
 					progressValues.remove(UICallback.PLUGIN_STARTED_ANALYZING);
 					progressValues.put(UICallback.PLUGIN_FAILED, true);
@@ -819,17 +826,18 @@ public class AnalyzerCore {
 				}
 				Logger.ERROR(TAG, "Plulgin disconected durring analysis!", e);
 			} finally {
+				/*
+				 * if (tempReport == null) { try { if (pluginName != null &&
+				 * pluginName.length() > 0) { tempReport = new Data();
+				 * tempReport.setName(pluginName);
+				 * tempReport.setStatus(Constants.NODE_STATUS_FAILED); } } catch
+				 * (Exception e1) { Logger.ERROR(TAG,
+				 * "Could create dummy node for failed Plugin!", e1); tempReport = null;
+				 * } }
+				 */
 				if (tempReport == null) {
-					try {
-						if (pluginName != null && pluginName.length() > 0) {
-							tempReport = new Data();
-							tempReport.setName(pluginName);
-							tempReport.setStatus(Constants.NODE_STATUS_FAILED);
-						}
-					} catch (Exception e1) {
-						Logger.ERROR(TAG, "Could create dummy node for failed Plugin!", e1);
-						tempReport = null;
-					}
+					Logger.DEBUG(TAG, "Plugin Failed!");
+					setPluginStatus(currentPlugin, Constants.NODE_STATUS_FAILED_UNKNOWN);
 				}
 				pluginAnalyzing = false;
 			}
@@ -864,7 +872,7 @@ public class AnalyzerCore {
 		Data currentPluginClassName = new Data();
 		Data currentPluginVersion = new Data();
 		Data currentPluginVendor = new Data();
-		Data currentPluginStatus = new Data();
+		setStatus = false;
 		try {
 			currentPlugin.setName(Constants.METADATA_PLUGIN_ + counter);
 
@@ -883,24 +891,36 @@ public class AnalyzerCore {
 			currentPluginVendor.setName(Constants.METADATA_PLUGIN_VENDOR);
 			currentPluginVendor.setValue(plugin.getVendor());
 			currentPlugin.setValue(currentPluginVendor);
-
-			currentPluginStatus.setName(Constants.METADATA_PLUGIN_STATUS);
-			String status = plugin.getStatus();
-			if (status.equals(Constants.METADATA_PLUGIN_STATUS_PASSED) || status.equals(Constants.NODE_STATUS_OK)) {
-				currentPluginStatus.setValue(Constants.NODE_VALUE_YES);
-				currentPluginStatus.setValueType(Constants.NODE_VALUE_TYPE_BOOLEAN);
-			} else {
-				currentPluginStatus.setValue(Constants.NODE_VALUE_NO);
-				currentPluginStatus.setValueType(Constants.NODE_VALUE_TYPE_BOOLEAN);
-				
-				Data currentPluginStatusDescription = new Data();
-				currentPluginStatusDescription.setName(Constants.METADATA_PLUGIN_FAILURE_DETAILS);
-				currentPluginStatusDescription.setValue(status);
-				currentPluginStatus.setValue(currentPluginStatusDescription);
-			}
-			currentPlugin.setValue(currentPluginStatus);
 		} catch (Exception e) {
 			Logger.ERROR(TAG, "Could not set current plugin data!", e);
+		}
+		return currentPlugin;
+	}
+
+	private Data setPluginStatus(Data currentPlugin, String status) {
+		if (!setStatus) {
+			Data currentPluginStatus = new Data();
+			try {
+				currentPluginStatus.setName(Constants.METADATA_PLUGIN_STATUS);
+				// String status = plugin.getStatus();
+				if (status.equals(Constants.METADATA_PLUGIN_STATUS_PASSED) || status.equals(Constants.NODE_STATUS_OK)) {
+					currentPluginStatus.setValue(Constants.NODE_VALUE_YES);
+					currentPluginStatus.setValueType(Constants.NODE_VALUE_TYPE_BOOLEAN);
+				} else {
+					currentPluginStatus.setValue(Constants.NODE_VALUE_NO);
+					currentPluginStatus.setValueType(Constants.NODE_VALUE_TYPE_BOOLEAN);
+
+					Data currentPluginStatusDescription = new Data();
+					currentPluginStatusDescription.setName(Constants.METADATA_PLUGIN_FAILURE_DETAILS);
+					currentPluginStatusDescription.setValue(status);
+					currentPluginStatus.setValue(currentPluginStatusDescription);
+				}
+
+				currentPlugin.setValue(currentPluginStatus);
+			} catch (Exception e) {
+				Logger.ERROR(TAG, "Could not set current plugin data!", e);
+			}
+			setStatus = true;
 		}
 		return currentPlugin;
 	}
@@ -967,7 +987,7 @@ public class AnalyzerCore {
 							Logger.DEBUG(TAG, "Plugin " + plugin + " required UI");
 							sortedEnabledPlugins.add(0, plugin);
 							uiPluginsCounter++;
-							Logger.DEBUG(TAG, "uiPluginsCounter : "+uiPluginsCounter);
+							Logger.DEBUG(TAG, "uiPluginsCounter : " + uiPluginsCounter);
 						} else {
 							Logger.DEBUG(TAG, "Plugin " + plugin + " doesn't required UI");
 							sortedEnabledPlugins.add(plugin);
@@ -982,27 +1002,27 @@ public class AnalyzerCore {
 		}
 		return sortedEnabledPlugins;
 	}
-	
+
 	public void loadPluginMetadata() {
-	  PluginServiceConnection runningPlugin;
-	  PluginStatus status;
-	  SharedPreferences prefs = ctx.getSharedPreferences(Constants.AA_STATUS_PREFS, 0);
-	  Editor editor = prefs.edit();
-	  for (String plugin : pluginCache) {
-	    runningPlugin = connectToPlugin(plugin);
-	    if (runningPlugin != null && runningPlugin.plugin != null) {
-	      try {
-	        String name = runningPlugin.plugin.getName();
-	        String description = runningPlugin.plugin.getDescription();
-	        status = new PluginStatus(name, plugin, PluginStatus.STATUS_NOT_RUN, -1, description);
-	        editor.putString(plugin, PluginStatus.encodeStatus(status));
-	        ctx.unbindService(runningPlugin);
-	        runningPlugin = null;
-	      } catch (Exception e) {
-	        Logger.ERROR(TAG, "Error loading metadata from plugin: "+plugin, e);
-	      }	      
-	    }
-	  }
-	  editor.commit();
+		PluginServiceConnection runningPlugin;
+		PluginStatus status;
+		SharedPreferences prefs = ctx.getSharedPreferences(Constants.AA_STATUS_PREFS, 0);
+		Editor editor = prefs.edit();
+		for (String plugin : pluginCache) {
+			runningPlugin = connectToPlugin(plugin);
+			if (runningPlugin != null && runningPlugin.plugin != null) {
+				try {
+					String name = runningPlugin.plugin.getName();
+					String description = runningPlugin.plugin.getDescription();
+					status = new PluginStatus(name, plugin, PluginStatus.STATUS_NOT_RUN, -1, description);
+					editor.putString(plugin, PluginStatus.encodeStatus(status));
+					ctx.unbindService(runningPlugin);
+					runningPlugin = null;
+				} catch (Exception e) {
+					Logger.ERROR(TAG, "Error loading metadata from plugin: " + plugin, e);
+				}
+			}
+		}
+		editor.commit();
 	}
 }
