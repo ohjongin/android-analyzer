@@ -4,6 +4,7 @@
   * [Architecture]
     * [Plugins]
       * [DisplayPlugin Display]
+      * [GraphicsPlugin GPU(OpenGL)]
       * [RadioPlugin Radio]
       * [MemoryPlugin Memory]
       * [APIPlugin API]
