@@ -151,7 +151,6 @@ public class PluginConfiguration extends Activity {
         adapter.notifyDataSetChanged();
         dismissDialog(Constants.PROGRESS_DIALOG);
       }
-      // TODO Auto-generated method stub
       super.handleMessage(msg);
     }    
   };
