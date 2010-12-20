@@ -12,7 +12,7 @@ The following table defines the structure of data being inserted in the report, 
 || || Instruction Set || || _string_ || || {{{System.getProperty(OS_ARCH)}}} ||
 || || Name || || _string_ || || Parse the {{{/proc/cpuinfo}}} file for the processor name code in line starting with _Processor_ ||
 || || Operational Frequency || || _double_ || MHz || Read the {{{/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq}}} file and divide by 1000 to get MHz ||
-|| || Cores || || int || || Parse {{{/proc/cpuinfo}}} file. Number of cores is detected by the count _Processor_ line that occur in the file ||
+|| || Cores || || _int_ || || Parse {{{/proc/cpuinfo}}} file. Number of cores is detected by the count _Processor_ line that occur in the file ||
 || || CPU Revision || || _int_ || || Parse {{{/proc/cpuinfo}}} file for the line _CPU revision_. ||
 || || CPU Variant || || _int_ || || Parse {{{/proc/cpuinfo}}} file for the line _CPU variant_. ||
 || || Features || || _string_ || || Parse {{{/proc/cpuinfo}}} file for the line _Features_. Value represents list of CPU's features. ||
