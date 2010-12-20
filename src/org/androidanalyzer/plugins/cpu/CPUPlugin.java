@@ -18,7 +18,7 @@ import org.androidanalyzer.plugins.AbstractPlugin;
 public class CPUPlugin extends AbstractPlugin {
 
 	private static final String NAME = "CPU Plugin";
-	private static final String PLUGIN_VERSION = "1.0.0";
+	private static final String PLUGIN_VERSION = "1.1.0";
 	private static final String PLUGIN_VENDOR = "ProSyst Software GmbH";
 	private static final String PARENT_NODE_NAME = "CPU";
 	private static final String TAG = "Analyzer-CPUPlugin";
@@ -36,6 +36,18 @@ public class CPUPlugin extends AbstractPlugin {
 
 	private static final String DESCRIPTION = "Collects information on the device\'s main CPU";
 	private String status = Constants.METADATA_PLUGIN_STATUS_PASSED;
+	
+	// NEW for v1.1.0 of the plugin
+	private static final String BOGOMIPS = "BogoMIPS";
+	private static final String FEATURES = "Features";
+	private static final String CPU_ARCHITECTURE = "CPU Architecture";
+	private static final String CPU_VARIANT = "CPU variant";
+	private static final String CPU_REVISION = "CPU revision";
+	private static final String SERIAL_NUMBER = "Serial #";
+	private static final String HARDWARE = "Hardware";
+	private static final String REVISION = "Revision";
+	private static final String CORES = "Cores";
+	
 
 	/*
 	 * (non-Javadoc)
@@ -115,24 +127,24 @@ public class CPUPlugin extends AbstractPlugin {
 			status = "Could not set CPU parent node!";
 		}
 
-		try {
-			/* Manifacturer */
-			Data manifacturer = new Data();
-			manifacturer.setName(MANUFACTURER);
-			String manifac = getCpuManufacturer();
-			Logger.DEBUG(TAG, "Manifacturer: " + manifac);
-			if (manifac != null && manifac.length() > 0) {
-				manifacturer.setValue(manifac);
-				manifacturer.setStatus(Constants.NODE_STATUS_OK);
-			} else {
-				manifacturer.setStatus(Constants.NODE_STATUS_FAILED);
-				manifacturer.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
-			}
-			children.add(manifacturer);
-		} catch (Exception e) {
-			Logger.ERROR(TAG, "Could not set Manifacturer node!", e);
-			status = "Could not set Manifacturer node!";
-		}
+//		try {
+//			/* Manifacturer */
+//			Data manifacturer = new Data();
+//			manifacturer.setName(MANUFACTURER);
+//			String manifac = getCpuManufacturer();
+//			Logger.DEBUG(TAG, "Manifacturer: " + manifac);
+//			if (manifac != null && manifac.length() > 0) {
+//				manifacturer.setValue(manifac);
+//				manifacturer.setStatus(Constants.NODE_STATUS_OK);
+//			} else {
+//				manifacturer.setStatus(Constants.NODE_STATUS_FAILED);
+//				manifacturer.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
+//			}
+//			children.add(manifacturer);
+//		} catch (Exception e) {
+//			Logger.ERROR(TAG, "Could not set Manifacturer node!", e);
+//			status = "Could not set Manifacturer node!";
+//		}
 
 		String os_arch = System.getProperty(OS_ARCH);
 
@@ -156,21 +168,23 @@ public class CPUPlugin extends AbstractPlugin {
 
 		/* CPU Name */
 		try {
-			Data name = new Data();
-			name.setName(CPU_NAME);
-			String nameString = getCpuName();
-			Logger.DEBUG(TAG, "CPU name: " + nameString);
-			if (nameString != null && nameString.length() > 0) {
-				name.setValue(nameString);
-				name.setStatus(Constants.NODE_STATUS_OK);
-			} else {
-				name.setStatus(Constants.NODE_STATUS_FAILED);
-				name.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
-			}
-			children.add(name);
+		  ArrayList<Data> cpuInfo = parseCpuInfo();
+		  children.addAll(cpuInfo);
+//			Data name = new Data();
+//			name.setName(CPU_NAME);
+//			String nameString = getCpuName();
+//			Logger.DEBUG(TAG, "CPU name: " + nameString);
+//			if (nameString != null && nameString.length() > 0) {
+//				name.setValue(nameString);
+//				name.setStatus(Constants.NODE_STATUS_OK);
+//			} else {
+//				name.setStatus(Constants.NODE_STATUS_FAILED);
+//				name.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
+//			}
+//			children.add(name);
 		} catch (Exception e) {
-			Logger.ERROR(TAG, "Could not set CPU Name", e);
-			status = "Could not set CPU Name";
+			Logger.ERROR(TAG, "Could not parse CPU info", e);
+			status = "Could not parse CPU info";
 		}
 
 		/* CPU frequency */
@@ -205,8 +219,287 @@ public class CPUPlugin extends AbstractPlugin {
 		addToParent(parent, children);
 		return parent;
 	}
+	
+	private final String extractValue(String source, String delim) {
+	  if (source != null && source.length() > 0 && delim != null && delim.length() > 0) {
+	    if (delim.length() > 1) {
+	      StringTokenizer sTok = new StringTokenizer(source, delim);
+	      String value = null;
+	      for (;sTok.hasMoreTokens();) {
+	        value = sTok.nextToken();//go through all tokens. we need the last one
+	      }
+	      return value;
+	    } else {
+  	    String[] tokens = source.split(delim);
+  	    if (tokens != null && tokens.length >= 2) {
+  	      return tokens[1].trim();
+  	    }
+	    }
+	  }
+	  return null;
+	}
+	
+	private final String checkManifacturer(String source) {
+	  String manifac = null;
+	  if (source != null && source.length() > 0) {
+	    int hex = Integer.parseInt(source, 16);
+      switch (hex) {
+      case 0x41:
+        manifac = "ARM Limited";
+        break;
+      case 0x44:
+        manifac = "Digital Equipment Corporation";
+        break;
+      case 0x4D:
+        manifac = "Motorola, Freescale Semiconductor Inc.";
+        break;
+      case 0x51:
+        manifac = "QUALCOMM Inc.";
+        break;
+      case 0x56:
+        manifac = "Marvell Semiconductor Inc.";
+        break;
+      case 0x69:
+        manifac = "Intel Corporation";
+        break;  
+      default:
+        manifac = source;
+        break;
+      }
+	  }
+    Logger.WARNING(TAG, "CPUPlugin Manifacturer : " + manifac);
+	  return manifac;
+	}
 
-	/*
+	private ArrayList<Data> parseCpuInfo() throws Exception {
+    ArrayList<Data> cpuInfo = new ArrayList<Data>();
+    BufferedReader in = null;
+    try {
+      in = new BufferedReader(new FileReader(CPU_INFO_FILE));
+      String str;
+      Data data;
+      int cores = 0;
+      while ((str = in.readLine()) != null) {
+        if (str.startsWith("Processor")) {
+          cores++;
+          data = new Data();
+          data.setName(CPU_NAME);
+          try {
+            String value = extractValue(str, ":");
+            if (value != null) {
+              data.setValue(value);
+              data.setStatus(Constants.NODE_STATUS_OK);
+            } else {
+              data.setStatus(Constants.NODE_STATUS_FAILED);
+              data.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
+            }
+          } catch (Exception e) {
+            data.setStatus(Constants.NODE_STATUS_FAILED);
+            data.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);            
+          }
+          cpuInfo.add(data);
+        } else if (str.startsWith(BOGOMIPS)) {
+          data = new Data();
+          data.setName(BOGOMIPS);
+          try {
+            String value = extractValue(str, ":");
+            if (value != null) {
+              double dValue = new Double(value);
+              data.setValue(String.valueOf(dValue));
+              data.setValueType(Constants.NODE_VALUE_TYPE_DOUBLE);
+              data.setStatus(Constants.NODE_STATUS_OK);
+            } else {
+              data.setStatus(Constants.NODE_STATUS_FAILED);
+              data.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
+            }
+          } catch (Exception e) {
+            data.setStatus(Constants.NODE_STATUS_FAILED);
+            data.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);            
+          }  
+          cpuInfo.add(data);
+          //Skip adding this data to cpuInfo for now
+        } else if (str.startsWith(FEATURES)) {
+          data = new Data();
+          data.setName(FEATURES);
+          try {
+            String value = extractValue(str, ":");
+            if (value != null) {
+              data.setValue(value);
+              data.setStatus(Constants.NODE_STATUS_OK);
+            } else {
+              data.setStatus(Constants.NODE_STATUS_FAILED);
+              data.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
+            }
+          } catch (Exception e) {
+            data.setStatus(Constants.NODE_STATUS_FAILED);
+            data.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);            
+          }
+          cpuInfo.add(data);          
+        } else if (str.startsWith("CPU implementer")) {
+          data = new Data();
+          data.setName(MANUFACTURER);
+          try {
+            String value = extractValue(str, ": \tx");
+            if (value != null) {
+              String mfg = checkManifacturer(value);
+              if (mfg != null) {
+                data.setValue(mfg);
+                data.setStatus(Constants.NODE_STATUS_OK);
+              } else {
+                data.setStatus(Constants.NODE_STATUS_FAILED);
+                data.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);                
+              }
+            } else {
+              data.setStatus(Constants.NODE_STATUS_FAILED);
+              data.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
+            }
+          } catch (Exception e) {
+            Logger.ERROR(TAG, "Error parsing manifacturer", e);
+            data.setStatus(Constants.NODE_STATUS_FAILED);
+            data.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);            
+          }
+          cpuInfo.add(data);          
+        } else if (str.startsWith(CPU_ARCHITECTURE)) {
+          data = new Data();
+          data.setName(CPU_ARCHITECTURE);
+          try {
+            String value = extractValue(str, ":");
+            if (value != null) {
+              int arch = new Integer(value);
+              data.setValue(String.valueOf(arch));
+              data.setValueType(Constants.NODE_VALUE_TYPE_INT);
+              data.setStatus(Constants.NODE_STATUS_OK);
+            } else {
+              data.setStatus(Constants.NODE_STATUS_FAILED);
+              data.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
+            }
+          } catch (Exception e) {
+            Logger.ERROR(TAG, "Error parsing CPU architecture", e);
+            data.setStatus(Constants.NODE_STATUS_FAILED);
+            data.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);            
+          }
+          cpuInfo.add(data);          
+        } else if (str.startsWith(CPU_VARIANT)) {
+          data = new Data();
+          data.setName(CPU_VARIANT);
+          try {
+            String value = extractValue(str, ": \tx");
+            if (value != null) {
+              int variant = Integer.parseInt(value, 10);
+              data.setValue(String.valueOf(variant));
+              data.setValueType(Constants.NODE_VALUE_TYPE_INT);
+              data.setStatus(Constants.NODE_STATUS_OK);
+            } else {
+              data.setStatus(Constants.NODE_STATUS_FAILED);
+              data.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
+            }
+          } catch (Exception e) {
+            Logger.ERROR(TAG, "Error parsing CPU variant", e);
+            data.setStatus(Constants.NODE_STATUS_FAILED);
+            data.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);            
+          }
+          cpuInfo.add(data);
+        } else if (str.startsWith(CPU_REVISION)) {
+          data = new Data();
+          data.setName(CPU_REVISION);
+          try {
+            String value = extractValue(str, ":");
+            if (value != null) {
+              int revision = Integer.parseInt(value);
+              data.setValue(String.valueOf(revision));
+              data.setValueType(Constants.NODE_VALUE_TYPE_INT);
+              data.setStatus(Constants.NODE_STATUS_OK);
+            } else {
+              data.setStatus(Constants.NODE_STATUS_FAILED);
+              data.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
+            }
+          } catch (Exception e) {
+            Logger.ERROR(TAG, "Error parsing CPU Revision", e);
+            data.setStatus(Constants.NODE_STATUS_FAILED);
+            data.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);            
+          }
+          cpuInfo.add(data);          
+        } else if (str.startsWith(HARDWARE)) {
+          data = new Data();
+          data.setName(HARDWARE);
+          try {
+            String value = extractValue(str, ":");
+            if (value != null) {
+              data.setValue(value);
+              data.setStatus(Constants.NODE_STATUS_OK);
+            } else {
+              data.setStatus(Constants.NODE_STATUS_FAILED);
+              data.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
+            }
+          } catch (Exception e) {
+            data.setStatus(Constants.NODE_STATUS_FAILED);
+            data.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);            
+          }
+          cpuInfo.add(data);
+        } else if (str.startsWith(REVISION)) {
+          data = new Data();
+          data.setName(REVISION);
+          try {
+            String value = extractValue(str, ":");
+            if (value != null) {
+              data.setValue(value);
+              data.setStatus(Constants.NODE_STATUS_OK);
+            } else {
+              data.setStatus(Constants.NODE_STATUS_FAILED);
+              data.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
+            }
+          } catch (Exception e) {
+            data.setStatus(Constants.NODE_STATUS_FAILED);
+            data.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);            
+          }
+          cpuInfo.add(data);
+        } else if (str.startsWith(SERIAL_NUMBER)) {
+          data = new Data();
+          data.setName(SERIAL_NUMBER);
+          try {
+            String value = extractValue(str, ":");
+            if (value != null) {
+              data.setValue(value);
+              data.setStatus(Constants.NODE_STATUS_OK);
+            } else {
+              data.setStatus(Constants.NODE_STATUS_FAILED);
+              data.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
+            }
+          } catch (Exception e) {
+            Logger.ERROR(TAG, "Error parsing Serial #", e);
+            data.setStatus(Constants.NODE_STATUS_FAILED);
+            data.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);            
+          }
+          cpuInfo.add(data);
+        }
+      }
+      data = new Data();
+      data.setName(CORES);
+      if (cores > 0) {
+        data.setValue(String.valueOf(cores));
+        data.setValueType(Constants.NODE_VALUE_TYPE_INT);
+        data.setStatus(Constants.NODE_STATUS_OK);
+      } else {
+        data.setStatus(Constants.NODE_STATUS_FAILED);
+        data.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
+      }
+      cpuInfo.add(data);
+      in.close();
+    } catch (IOException e) {
+      Logger.ERROR(TAG, "Could not open " + CPU_INFO_FILE, e);
+      throw e;
+//      return null;
+    } finally {
+      if (in != null)
+        try {
+          in.close();
+        } catch (IOException e) {
+        }
+    }
+    return cpuInfo;
+  }
+
+  /*
 	 * (non-Javadoc)
 	 * 
 	 * @see org.androidanalyzer.plugins.AbstractPlugin#getPluginStatus()
@@ -335,11 +628,13 @@ public class CPUPlugin extends AbstractPlugin {
 			if (manifac != null && manifac.length() > 0) {
 				StringTokenizer token = new StringTokenizer(manifac, ": \tx");
 				while (token.hasMoreElements()) {
+				  Logger.WARNING(TAG, "[getCpuManufacturer] tokens of manifac: "+manifac);
 					manifac = (String) token.nextElement();
 				}
 			}
-
-			switch (Integer.parseInt(manifac, 16)) {
+			int hex = Integer.parseInt(manifac, 16);
+			Logger.WARNING(TAG, "[getCpuManufacturer] hex: "+Integer.toHexString(hex));
+			switch (hex) {
 			case 0x41:
 				manifac = "ARM Limited";
 				break;
