@@ -99,11 +99,12 @@ public class SettingsActivity extends Activity {
     TextFieldWatcher textFieldWatcher = new TextFieldWatcher(applyButton);
     
     host = PreferencesManager.loadStringPreference(this, Constants.HOST);    
-    if (host == null) {
-      host = Reporter.getHost();
-      PreferencesManager.savePreference(this, Constants.HOST, host);
-    }
-		Reporter.setHost(host);
+		if (host == null) {
+			host = Reporter.getHost();
+			PreferencesManager.savePreference(this, Constants.HOST, host);
+		} else {
+			Reporter.setHost(host);
+		}
     hostField.setText(host);
     hostField.addTextChangedListener(textFieldWatcher);
     
@@ -240,7 +241,7 @@ private class ProgressThread extends Thread {
       data.putBoolean(Constants.GUI_SETTINGS_DONE, true);
       boolean result = false;
       try {
-        URI test = new URI(host);
+        URI test = new URI(hostField.getText().toString());
         URL connect = test.toURL();
         URLConnection c = connect.openConnection();
         c.setDoOutput(true);
