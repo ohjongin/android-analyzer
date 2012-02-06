@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,12 +24,20 @@ import android.hardware.Camera.Size;
 /**
  * CameraPlugin class is used to gathering main camera functionality and data
  * 
+ * New in version 1.1.0: correctly detect number of cameras on devices runing Android OS 2.3 and above
+ * 
  */
 public class CameraPlugin extends AbstractPlugin {
 
+	private static final String RAW_METADATA = "Raw metadata";
+	private static final String CAMERA_LOCATION_UNKNOWN = "Unknown";
+	private static final String CAMERA_LOCATION_FRONT = "Front";
+	private static final String CAMERA_LOCATION_BACK = "Back";
+	private static final String CAMERA_LOCATION = "Location";
+	private static final String FIELD_CAMERAINFO_FACING = "facing";
 	private static final String TAG = "Analyzer-CameraPlugin";
 	private static final String NAME = "Camera Plugin";
-	private static final String PLUGIN_VERSION = "1.0.0";
+	private static final String PLUGIN_VERSION = "1.1.0";
 	private static final String PLUGIN_VENDOR = "ProSyst Software GmbH";
 	private static final String PARENT_NODE_NAME = "Camera";
 	private static final String PARENT_NODE_NAME_IMAGE = "Image";
@@ -41,7 +50,7 @@ public class CameraPlugin extends AbstractPlugin {
 	private static final String PARENT_NODE_NAME_RESOLUTIONS = "Resolutions";
 
 	private static final String NUMBER_OF_CAMERAS = "Number of cameras";
-	private static final String LOCATION = "Location";
+	private static final String LOCATION = CAMERA_LOCATION;
 	private static final String RESOLUTION = "Resolution";
 	private static final String FLASH = "Flash";
 	private static final String IMAGE_PARENT_NODE = "Image";
@@ -111,6 +120,8 @@ public class CameraPlugin extends AbstractPlugin {
 			/* Data Name */
 			PARENT_NODE_NAME,
 			/* Data direct Node retriving methods */
+			"flatten",/* new in v1.1.0 */
+			"getCameraLocation",/* new in v1.1.0 */
 			"getCameraResolution",
 			new Object[] { FLASH, "getFlashSupported", },
 			/* Data children nodes */
@@ -133,6 +144,7 @@ public class CameraPlugin extends AbstractPlugin {
 	private String status = Constants.METADATA_PLUGIN_STATUS_PASSED;
 
 	private static final String DESCRIPTION = "Collects data on available cameras and their capabilities";
+	private static final String CAMERA_INFO_CLASSNAME = "android.hardware.Camera$CameraInfo";
 
 	/*
 	 * (non-Javadoc)
@@ -242,17 +254,68 @@ public class CameraPlugin extends AbstractPlugin {
 			status = "Could not set Camera parent node!";
 			return null;
 		}
+		
+		int numOfCameras = getCameraCount();
+		if (numOfCameras == -1) {
+			cachedCamera = Camera.open();
+			if (cachedCamera != null) {
+				/* Get this properly when api is available */
+				numOfCameras = 1;
+				camParams = new Camera.Parameters[numOfCameras];
+				for (int i = 0; i < numOfCameras; i++) {
+					Data camera = null;
+					camera = getCameraInfo(i);
+					if (camera != null) {
+						children.add(camera);
+					}
+				}
+				if (children != null && children.size() > 0) {
+					addToParent(parent, children);
+				} else {
+					try {
+						parent.setStatus(Constants.NODE_STATUS_FAILED);
+						parent.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
+					} catch (Exception e) {
+						Logger.ERROR(TAG, "Could not set values for parent Node!", e);
+						status = "Could not set value for Camera parent node!";
+					}
+				}
+			} else {
+				try {
+					parent.setStatus(Constants.NODE_STATUS_FAILED);
+					parent.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
+				} catch (Exception e) {
+					Logger.ERROR(TAG, "Could not set values for parent Node!", e);
+					status = "Could not set value for Camera parent node!";
+				}
 
-		cachedCamera = Camera.open();
-		if (cachedCamera != null) {
-			/* Get this properly when api is available */
-			int numOfCameras = 1;
+			}
+
+			/* Clear cached Camera object */
+			if (cachedCamera != null)
+				cachedCamera.release();
+			cachedCamera = null;
+			camParams = null;			
+		} else {//we're running device with Android OS 2.3 or higher
 			camParams = new Camera.Parameters[numOfCameras];
 			for (int i = 0; i < numOfCameras; i++) {
-				Data camera = null;
-				camera = getCameraInfo(i);
-				if (camera != null) {
-					children.add(camera);
+				cachedCamera = openCamera(i);
+				if (cachedCamera != null) {
+					Data camera = null;
+					camera = getCameraInfo(i);
+					if (camera != null) {
+						children.add(camera);
+					}
+					cachedCamera.release();
+					cachedCamera = null;
+				} else {
+					try {
+						parent.setStatus(Constants.NODE_STATUS_FAILED);
+						parent.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
+					} catch (Exception e) {
+						Logger.ERROR(TAG, "Could not set values for Camera-"+i+" Node!", e);
+						status = "Could not set value for Camera-"+i+" parent node!";
+					}
 				}
 			}
 			if (children != null && children.size() > 0) {
@@ -266,23 +329,52 @@ public class CameraPlugin extends AbstractPlugin {
 					status = "Could not set value for Camera parent node!";
 				}
 			}
-		} else {
-			try {
-				parent.setStatus(Constants.NODE_STATUS_FAILED);
-				parent.setValue(Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
-			} catch (Exception e) {
-				Logger.ERROR(TAG, "Could not set values for parent Node!", e);
-				status = "Could not set value for Camera parent node!";
-			}
-
+			camParams = null;			
 		}
 
-		/* Clear cached Camera object */
-		if (cachedCamera != null)
-			cachedCamera.release();
-		cachedCamera = null;
-		camParams = null;
 		return parent;
+	}
+	
+	/*new in v1.1.0*/
+	private Camera openCamera(int cameraId) {
+		Camera camera = null;
+		try {
+			Method open = Camera.class.getDeclaredMethod("open", new Class[] {int.class});
+			if (open != null) {
+				Object result = open.invoke(null, new Object[] {cameraId});
+				if (result != null) {
+					return (Camera)result;
+				}
+			}
+		} catch (Exception e) {
+			Logger.ERROR(TAG, "Error opening camera with id: "+cameraId);
+		}
+		return camera;
+	}
+	
+	/*new in v1.1.0*/
+	private int getCameraCount() {
+		int count = -1;//If method returns -1 than API level is < 9 and method for count of camera is not available;
+		if (getAPIVersion() > 8) {
+			try {
+				Method countMethod = Camera.class.getDeclaredMethod("getNumberOfCameras", null);
+				if (countMethod != null) {
+					Object result = countMethod.invoke(null, new Object[] {});
+					if (result != null) {
+						try {
+							count = (Integer)result;
+							Logger.DEBUG(TAG, "Retrieved number of cameras: "+count);
+						} catch (NumberFormatException nfe) {
+							Logger.ERROR(TAG, "Error parsing int from method result");
+						}
+					}
+				}
+			} catch (Exception e) {
+				Logger.ERROR(TAG, "Cannot retrieve number of cameras on device");
+				e.printStackTrace();
+			}
+		}
+		return count;
 	}
 
 	/**
@@ -1223,6 +1315,72 @@ public class CameraPlugin extends AbstractPlugin {
 
 	private Data getImageFocusModes(int cameraNumber) {
 		return getAllSupportedModes(cameraNumber, IMAGE_FOCUS_MODES, "getSupportedFocusModes");
+	}
+	
+	/**
+	 * @since 1.1.0
+	 */
+	private Data flatten(int cameraNumber) {
+		Data result = null;
+		try {
+			Camera.Parameters params = getCameraParams(cameraNumber);
+			if (params != null) {
+				String representation = params.flatten();
+				if (representation != null) {
+					result = new Data();
+					result.setName(RAW_METADATA);
+					result.setValue(representation);
+				}
+			}
+		} catch (Exception e) {
+			Logger.ERROR(TAG, "Error reading camera params for "+cameraNumber);
+		}
+		if (result == null) {
+			result = dataFailed(RAW_METADATA, Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
+		}
+		return result;
+	}
+	
+	/**
+	 * 
+	 * @param cameraNumber
+	 * @return
+	 * @since 1.1.0
+	 */
+	private Data getCameraLocation(int cameraNumber) {
+		Data data = null;
+		if (getAPIVersion() > 8) {
+			try {
+				Class cameraInfo = Class.forName(CAMERA_INFO_CLASSNAME);
+				if (cameraInfo != null) {
+					Object instance = cameraInfo.newInstance();
+					if (instance != null) {
+						Method getCameraInfo = Camera.class.getDeclaredMethod("getCameraInfo", new Class[] {int.class, cameraInfo});
+						if (getCameraInfo != null) {
+							getCameraInfo.invoke(null, new Object[] {cameraNumber, instance});
+							try {
+								Field facing = cameraInfo.getDeclaredField(FIELD_CAMERAINFO_FACING);
+								if (facing != null) {
+									int value = facing.getInt(instance);
+									data = new Data();
+									data.setName(CAMERA_LOCATION);
+									data.setValue(value == 0 ? CAMERA_LOCATION_BACK : (value == 1 ? CAMERA_LOCATION_FRONT : CAMERA_LOCATION_UNKNOWN));
+								}
+							} catch (Exception e) {
+								Logger.ERROR(TAG, "Could not retrieve value from props");
+							}
+						}
+					}
+				}
+			} catch (Exception e) {
+				Logger.ERROR(TAG, "Could not load Camera.CameraInfo class");
+			}
+		}
+		if (data == null) {
+			data = dataFailed(CAMERA_LOCATION, Constants.NODE_STATUS_FAILED_UNAVAILABLE_VALUE);
+		}
+		Logger.DEBUG(TAG, "Camera location : " + data.getValue());
+		return data;
 	}
 
 	private Data getCameraResolution(int cameraNumber) {
