@@ -18,7 +18,7 @@ import org.androidanalyzer.plugins.AbstractPlugin;
 public class CPUPlugin extends AbstractPlugin {
 
 	private static final String NAME = "CPU Plugin";
-	private static final String PLUGIN_VERSION = "1.1.0";
+	private static final String PLUGIN_VERSION = "1.1.1";
 	private static final String PLUGIN_VENDOR = "ProSyst Software GmbH";
 	private static final String PARENT_NODE_NAME = "CPU";
 	private static final String TAG = "Analyzer-CPUPlugin";
@@ -30,6 +30,8 @@ public class CPUPlugin extends AbstractPlugin {
 
 	private static final String CPU_FREQ_FILE = "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq";
 	private static final String CPU_INFO_FILE = "/proc/cpuinfo";
+	// NEW for v1.1.1 of the plugin. Lists available cpu cores
+	private static final String CPU_CORE_FILE = "/sys/devices/system/cpu/possible";
 
 	private static final String ARCH_ARM = "arm";
 	private static final String FREQ_METRIC = "MHz";
@@ -278,10 +280,10 @@ public class CPUPlugin extends AbstractPlugin {
       in = new BufferedReader(new FileReader(CPU_INFO_FILE));
       String str;
       Data data;
-      int cores = 0;
+//      int cores = 0;
       while ((str = in.readLine()) != null) {
         if (str.startsWith("Processor")) {
-          cores++;
+//          cores++;
           data = new Data();
           data.setName(CPU_NAME);
           try {
@@ -475,6 +477,7 @@ public class CPUPlugin extends AbstractPlugin {
       }
       data = new Data();
       data.setName(CORES);
+      int cores = parseCpuCores();
       if (cores > 0) {
         data.setValue(String.valueOf(cores));
         data.setValueType(Constants.NODE_VALUE_TYPE_INT);
@@ -499,7 +502,50 @@ public class CPUPlugin extends AbstractPlugin {
     return cpuInfo;
   }
 
-  /*
+  private int parseCpuCores() {
+	int cores = 0;
+	BufferedReader in = null;
+	try {
+		in = new BufferedReader(new FileReader(CPU_CORE_FILE));
+		String str = in.readLine();
+		Logger.DEBUG(TAG, "Read from "+CPU_CORE_FILE+" > "+str);
+		if (str != null && str.length() > 0) {
+			int index = str.indexOf("-");
+			if (index != -1) {
+				StringTokenizer sTok = new StringTokenizer(str, "-", false);
+				int parsed;
+				for(;sTok.hasMoreTokens();) {
+					try {
+						parsed = Integer.parseInt(sTok.nextToken());
+						cores++;
+					} catch (NumberFormatException nfe) {
+						Logger.ERROR(TAG, "Could not parse substring!");
+					}
+				}
+			} else {
+				try {
+					int parsed = Integer.parseInt(str);			
+					cores = 1;
+				} catch (NumberFormatException nfe) {
+					Logger.ERROR(TAG, "Could not parse number!");
+				}
+			}
+		}
+		in.close();
+	} catch (IOException e) {
+		Logger.ERROR(TAG, "Could not open " + CPU_CORE_FILE, e);
+		return cores;
+	} finally {
+		if (in != null)
+			try {
+				in.close();
+			} catch (IOException e) {
+			}
+	}
+	return cores;
+  }
+
+/*
 	 * (non-Javadoc)
 	 * 
 	 * @see org.androidanalyzer.plugins.AbstractPlugin#getPluginStatus()

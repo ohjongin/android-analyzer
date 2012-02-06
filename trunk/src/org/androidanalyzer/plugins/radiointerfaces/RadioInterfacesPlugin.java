@@ -17,7 +17,7 @@ import android.telephony.TelephonyManager;
  */
 public class RadioInterfacesPlugin extends AbstractPlugin {
 	private static final String NAME = "Radio Interfaces Plugin";
-	private static final String PLUGIN_VERSION = "1.0.0";
+	private static final String PLUGIN_VERSION = "1.0.1";
 	private static final String PLUGIN_VENDOR = "ProSyst Software GmbH";
 	private static final String RADIOINTERFACES = "Radio Interfaces";
 	private static final String TAG = "Analyzer-RadioInterfacesPlugin";
@@ -26,6 +26,7 @@ public class RadioInterfacesPlugin extends AbstractPlugin {
 	private static final String GPRS = "GPRS";
 	private static final String EDGE = "EDGE";
 	private static final String UMTS = "UMTS";
+	private static final String LTE  = "LTE";
 	private static final String UNKNOWN = "UNKNOWN";
 
 	private static final String HSUPA = "HSUPA";
@@ -266,6 +267,8 @@ public class RadioInterfacesPlugin extends AbstractPlugin {
 			return TYPE_1xRTT;
 		case 11: // NETWORK_TYPE_IDEN
 			return IDEN;
+		case 13: //NETWORK_TYPE_LTE (since API Level 11)
+			return LTE;
 		case TelephonyManager.NETWORK_TYPE_UNKNOWN:
 		default:
 			break;

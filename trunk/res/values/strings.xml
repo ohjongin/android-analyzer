@@ -2,7 +2,7 @@
 <resources>
     <!-- Activity Names Strings -->
 	<string name="app_name">Device Analyzer</string>
-	<string name="app_version_name">1.1.0</string>
+	<string name="app_version_name">1.1.1</string>
 	<string name="settings_hint_line1">No report has been generated yet</string>
 	<string name="settings_hint_line2">To select/deselect device analyzer plugins, go to the settings menu"</string>
 	<string name="last_report_label">Last Report ID:</string>
